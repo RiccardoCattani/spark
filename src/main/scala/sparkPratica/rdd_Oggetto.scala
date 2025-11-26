@@ -12,8 +12,8 @@ object rdd_Oggetto {
         // Imposta il livello di log su ERROR per meno output
         sc.setLogLevel("ERROR")
 
-        // Legge il file CSV da /mnt/nvme_storage/download e crea un RDD, ogni elemento è una riga del file
-        val data = sc.textFile("file:///mnt/nvme_storage/download/bigbasket_products.csv")
+        // Legge il file CSV da /home/riccardo/datasets e crea un RDD, ogni elemento è una riga del file
+        val data = sc.textFile("file:///home/riccardo/datasets/bigbasket_products.csv")
 
         // Filtra le righe che contengono "Beauty"
         val fil_category = data.filter(x => x.contains("Beauty"))
@@ -22,6 +22,6 @@ object rdd_Oggetto {
         // Stampa le prime 10 righe filtrate
         fil_subcategory.take(10).foreach(println)
         // Salva tutte le righe filtrate in un file di testo (2 partizioni)
-        fil_subcategory.coalesce(2).saveAsTextFile("file:///mnt/nvme_storage/download/bigbasket")
+        fil_subcategory.coalesce(2).saveAsTextFile("user/cloudera/bigbasket")
     }
 }

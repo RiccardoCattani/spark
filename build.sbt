@@ -11,9 +11,3 @@ libraryDependencies ++= Seq(
 
 // Opzioni JVM per compatibilità con Java 17
 fork := true
-javaOptions ++= Seq(
-  "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
-  "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
-  "--add-opens=java.base/java.nio=ALL-UNNAMED",
-  "--add-opens=java.base/java.lang=ALL-UNNAMED"
-)
