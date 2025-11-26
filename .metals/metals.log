@@ -181,3 +181,5 @@ AVVERTENZA: Unmatched cancel notification for request id 5
 2025.11.26 10:46:58 INFO  time: compiled spark in 0.53s
 nov 26, 2025 10:49:26 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFORMAZIONI: Unsupported notification method: $/setTrace
+2025.11.26 10:49:47 INFO  compiling spark (1 scala source)
+2025.11.26 10:49:47 INFO  time: compiled spark in 0.44s
