@@ -1,7 +1,8 @@
 # Copia il file nella tua home sul server remoto
 scp /mnt/nvme_storage/download/bigbasket_products.csv riccardo@192.168.1.229:~/tmp
 
-# lanciare 
+# lanciare in bash sul server remoto (Né in hive né in spark-shell funziona il caricamento del file csv)
+# Questo comando esegue un programma scala che usa spark per leggere il file csv
 sbt run
 
 # Spostamento file
@@ -10,3 +11,64 @@ mv /home/riccardo/tmp/bigbasket_products.csv /home/riccardo/datasets/bigbasket_p
 # inserimento variabili d'ambiente in maniera permanente
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 export PATH=$JAVA_HOME/bin:$PATH
+
+# rimuovi le modifiche alla cartella target
+git checkout -- target/
+
+# ignora la cartella target con tutti i suoi contenuti in git (è la cartella di output di sbt, dove vengono messi i file compilati)
+echo "target/" >> .gitignore
+git rm -r --cached target/
+git add .gitignore
+git commit -m "Ignora la cartella target"
+
+# Comando per eseguire il jar  serve per eseguire il tuo programma Spark (compilato nel file JAR) fuori da spark-shell o da SBT, direttamente tramite Spark 
+# Va eseguito con spark-submit nella bash fuori da spark o sbt
+# Consente di lanciare spak come applicazione standalone (Indipendentemente da SBT o spark-shell)
+spark-submit --class sparkPratica.rdd_Oggetto --master local[*] /home/riccardo/Documenti/spark/target/scala-2.12/sparkpractice_2.12-0.1.jar
+
+# Verifica che il file sia stato caricato correttamente in HDFS
+hdfs dfs -ls user/cloudera/bigbasket
+
+# Differenza tra sbt run e spark-submit
+La differenza principale tra sbt run e spark-submit è:
+
+- sbt run
+Compila ed esegue il programma Scala direttamente dal progetto SBT.
+Utile in fase di sviluppo e test locale.
+Gestisce automaticamente le dipendenze definite in build.sbt.
+Non richiede la creazione di un file JAR separato.
+Va usato dalla cartella del progetto dove c’è build.sbt.
+
+- spark-submit
+Esegue un file JAR già compilato come applicazione Spark indipendente.
+È il modo standard per lanciare job Spark in produzione o su cluster.
+Può essere usato su qualsiasi nodo Spark (anche senza SBT installato).
+Richiede che tu abbia già creato il JAR (sbt package).
+
+In sintesi:
+
+sbt run: sviluppo locale, esecuzione diretta dal codice sorgente.
+spark-submit: esecuzione di un'applicazione Spark già compilata, usato in produzione o su cluster.
+
+# creo ora questo src/main/scala/sparkPractise/obj_Logs.scala
+
+package sparkPractise
+import org.apache.spark.SparkConf
+import org.apache.spark.SparkContext
+
+object obj_Logs {
+
+    def main(arg:Array[String]):Unit=
+    {
+        val conf=new SparkConf().setAppName("TestLog").setMaster("local[*]")
+        val sc=new SparkContext(conf)
+        sc.setLogLevel("Error")
+
+        val inputRDD=sc.textFile("file:///C:/data/test_log.txt")
+        inputRDD.foreach(println)
+
+    }
+}
+
+
+
