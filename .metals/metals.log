@@ -185,3 +185,5 @@ INFORMAZIONI: Unsupported notification method: $/setTrace
 2025.11.26 10:49:47 INFO  time: compiled spark in 0.44s
 2025.11.26 11:04:24 INFO  compiling spark (1 scala source)
 2025.11.26 11:04:24 INFO  time: compiled spark in 0.5s
+2025.11.26 11:06:44 INFO  compiling spark (1 scala source)
+2025.11.26 11:06:44 INFO  time: compiled spark in 0.41s
