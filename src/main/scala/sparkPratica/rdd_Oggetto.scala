@@ -21,7 +21,7 @@ object rdd_Oggetto {
         val fil_subcategory = fil_category.filter(x => x.contains("Skin Care"))
         // Stampa le prime 10 righe filtrate
         fil_subcategory.take(10).foreach(println)
-        // Salva tutte le righe filtrate in un file di testo (1 partizione)
+        // Salva tutte le righe filtrate in un file di testo (2 partizioni)
         fil_subcategory.coalesce(2).saveAsTextFile("file:///mnt/nvme_storage/download/bigbasket")
     }
 }
