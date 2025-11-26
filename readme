@@ -70,5 +70,17 @@ object obj_Logs {
     }
 }
 
+# verificare sempre quale versione di java è in uso e quale è richiesta 
 
+java -version
+
+# per metterla temporaneamente a livello di sessione bash
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+
+# per metterla in maniera fissa
+
+echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> ~/.bashrc
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
 

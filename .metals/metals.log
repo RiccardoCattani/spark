@@ -682,3 +682,123 @@ java.nio.file.FileSystemNotFoundException: Provider "vscode-chat-code-block" not
 2025.11.26 18:47:52 INFO  no build target found for /home/riccardo/Documenti/spark/obj_logs.scala. Using presentation compiler with project's scala-library version: 2.12.20
 2025.11.26 18:47:52 INFO  compiling spark (1 scala source)
 2025.11.26 18:47:52 INFO  time: compiled spark in 0.45s
+2025.11.26 18:49:31 INFO  compiling spark (1 scala source)
+2025.11.26 18:49:31 INFO  time: compiled spark in 0.37s
+2025.11.26 18:52:29 INFO  compiling spark (1 scala source)
+2025.11.26 18:52:29 INFO  time: compiled spark in 0.4s
+2025.11.26 19:01:31 INFO  compiling spark (1 scala source)
+2025.11.26 19:01:31 INFO  time: compiled spark in 0.35s
+nov 26, 2025 7:05:08 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleNotification
+AVVERTENZA: Notification threw an exception: {
+  "jsonrpc": "2.0",
+  "method": "metals/didFocusTextDocument",
+  "params": [
+    "vscode-chat-code-block://dnnjb2rllwnoyxqtc2vzc2lvbjovl2xvy2fsl1kysmlzakk0wvdjdflutmxpuzawwvrzd0xuz3pzamn0wvroall6tmxav00ywmpbmg/response_53de9a05-4b8a-474b-bd29-51a0c3ca4e42/0#%7B%22references%22%3A%5B%5D%7D"
+  ]
+}
+java.nio.file.FileSystemNotFoundException: Provider "vscode-chat-code-block" not installed
+	at java.base/java.nio.file.Path.of(Path.java:212)
+	at java.base/java.nio.file.Paths.get(Paths.java:98)
+	at scala.meta.internal.mtags.MtagsEnrichments$XtensionURIMtags.toAbsolutePath(MtagsEnrichments.scala:149)
+	at scala.meta.internal.mtags.MtagsEnrichments$XtensionStringMtags.toAbsolutePath(MtagsEnrichments.scala:209)
+	at scala.meta.internal.metals.MetalsEnrichments$XtensionString.toAbsolutePath(MetalsEnrichments.scala:796)
+	at scala.meta.internal.metals.MetalsEnrichments$XtensionString.toAbsolutePath(MetalsEnrichments.scala:793)
+	at scala.meta.internal.metals.WorkspaceLspService.didFocus(WorkspaceLspService.scala:786)
+	at scala.meta.metals.lsp.DelegatingScalaService.didFocus(DelegatingScalaService.scala:42)
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$recursiveFindRpcMethods$0(GenericEndpoint.java:65)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.notify(GenericEndpoint.java:160)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleNotification(RemoteEndpoint.java:231)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:198)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:185)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:114)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+nov 26, 2025 7:05:08 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleNotification
+AVVERTENZA: Notification threw an exception: {
+  "jsonrpc": "2.0",
+  "method": "metals/didFocusTextDocument",
+  "params": [
+    "vscode-chat-code-block://dnnjb2rllwnoyxqtc2vzc2lvbjovl2xvy2fsl1kysmlzakk0wvdjdflutmxpuzawwvrzd0xuz3pzamn0wvroall6tmxav00ywmpbmg/response_53de9a05-4b8a-474b-bd29-51a0c3ca4e42/1#%7B%22references%22%3A%5B%5D%7D"
+  ]
+}
+java.nio.file.FileSystemNotFoundException: Provider "vscode-chat-code-block" not installed
+	at java.base/java.nio.file.Path.of(Path.java:212)
+	at java.base/java.nio.file.Paths.get(Paths.java:98)
+	at scala.meta.internal.mtags.MtagsEnrichments$XtensionURIMtags.toAbsolutePath(MtagsEnrichments.scala:149)
+	at scala.meta.internal.mtags.MtagsEnrichments$XtensionStringMtags.toAbsolutePath(MtagsEnrichments.scala:209)
+	at scala.meta.internal.metals.MetalsEnrichments$XtensionString.toAbsolutePath(MetalsEnrichments.scala:796)
+	at scala.meta.internal.metals.MetalsEnrichments$XtensionString.toAbsolutePath(MetalsEnrichments.scala:793)
+	at scala.meta.internal.metals.WorkspaceLspService.didFocus(WorkspaceLspService.scala:786)
+	at scala.meta.metals.lsp.DelegatingScalaService.didFocus(DelegatingScalaService.scala:42)
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$recursiveFindRpcMethods$0(GenericEndpoint.java:65)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.notify(GenericEndpoint.java:160)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleNotification(RemoteEndpoint.java:231)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:198)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:185)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:114)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+2025.11.26 19:20:36 INFO  compiling spark (1 scala source)
+2025.11.26 19:20:36 INFO  time: compiled spark in 0.37s
+2025.11.26 19:26:11 INFO  compiling spark (1 scala source)
+2025.11.26 19:26:11 INFO  time: compiled spark in 0.37s
+nov 26, 2025 7:28:56 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 1141
+2025.11.26 19:30:46 INFO  compiling spark (1 scala source)
+2025.11.26 19:30:46 INFO  time: compiled spark in 0.45s
+2025.11.26 19:33:04 INFO  compiling spark (1 scala source)
+2025.11.26 19:33:04 INFO  time: compiled spark in 0.41s
+2025.11.26 19:37:54 INFO  compiling spark (1 scala source)
+2025.11.26 19:37:54 INFO  time: compiled spark in 0.18s
+2025.11.26 19:38:15 INFO  compiling spark (1 scala source)
+2025.11.26 19:38:15 INFO  time: compiled spark in 0.38s
+2025.11.26 19:41:49 INFO  compiling spark (1 scala source)
+2025.11.26 19:41:49 INFO  time: compiled spark in 0.4s
+2025.11.26 19:43:57 INFO  compiling spark (1 scala source)
+2025.11.26 19:43:57 INFO  time: compiled spark in 0.43s
+2025.11.26 19:47:38 INFO  compiling spark (1 scala source)
+2025.11.26 19:47:38 INFO  time: compiled spark in 0.43s
+2025.11.26 19:50:12 INFO  compiling spark (1 scala source)
+2025.11.26 19:50:12 INFO  time: compiled spark in 0.45s
+2025.11.26 19:50:57 INFO  compiling spark (1 scala source)
+2025.11.26 19:50:57 INFO  time: compiled spark in 0.42s
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2650
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2651
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2652
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2654
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2653
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2655
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2656
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2660
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2657
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2658
+nov 26, 2025 7:52:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+AVVERTENZA: Unmatched cancel notification for request id 2661
+2025.11.26 19:55:03 INFO  compiling spark (1 scala source)
+2025.11.26 19:55:03 INFO  time: compiled spark in 0.44s
