@@ -11,3 +11,6 @@ libraryDependencies ++= Seq(
 
 // Opzioni JVM per compatibilità con Java 17
 fork := true
+
+addCompilerPlugin("org.scalameta" % "semanticdb-scalac" % "4.8.13" cross CrossVersion.full)
+scalacOptions += "-Yrangepos"
