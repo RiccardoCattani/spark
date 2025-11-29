@@ -10,3 +10,5 @@ object obj_logs {
       sc.setLogLevel("Error")
 
       val inputRDD = sc.textFile("C:/SparkScala/SparkScalaPractise/src/main/scala/sparkPractise/logs/logs.txt")
+  }
+}
