@@ -1,3 +1,4 @@
-[0m[[0m[0mdebug[0m] [0m[0mnot up to date. inChanged = true, force = false[0m
-[0m[[0m[0mdebug[0m] [0m[0mUpdating ...[0m
-[0m[[0m[0mdebug[0m] [0m[0mDone updating [0m
+[warn] semanticdb-scalac_2.12.18-4.8.13.jar no longer exists at /home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.18/4.8.13/semanticdb-scalac_2.12.18-4.8.13.jar
+[debug] not up to date. inChanged = false, force = false
+[debug] Updating ...
+[debug] Done updating 

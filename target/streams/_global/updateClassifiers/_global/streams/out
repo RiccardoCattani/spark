@@ -1,0 +1,4 @@
+[warn] semanticdb-scalac_2.12.18-4.8.13-sources.jar no longer exists at /home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.18/4.8.13/semanticdb-scalac_2.12.18-4.8.13-sources.jar
+[debug] not up to date. inChanged = false, force = false
+[debug] Updating ProjectRef(uri("file:/home/riccardo/Documenti/spark/"), "spark")...
+[debug] Done updating ProjectRef(uri("file:/home/riccardo/Documenti/spark/"), "spark")

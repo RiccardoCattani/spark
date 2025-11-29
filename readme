@@ -84,3 +84,18 @@ echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> ~/.bashrc
 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 
+# Common RDD actions and transformations
+
+Le "common RDD actions" in Apache Spark sono operazioni che, quando invocate su un RDD (Resilient Distributed Dataset), fanno sì che Spark esegua effettivamente il calcolo e restituisca un risultato al driver o produca un output esterno. Le azioni sono diverse dalle "transformations", che invece creano nuovi RDD senza eseguire subito il calcolo.
+
+Ecco alcune delle azioni più comuni sugli RDD:
+
+collect(): restituisce tutti gli elementi dell’RDD come array al driver.
+count(): restituisce il numero di elementi nell’RDD.
+take(n): restituisce i primi n elementi dell’RDD.
+reduce(func): aggrega gli elementi dell’RDD usando una funzione binaria.
+first(): restituisce il primo elemento dell’RDD.
+countByValue(): restituisce una mappa con la frequenza di ciascun valore.
+saveAsTextFile(path): salva il contenuto dell’RDD come file di testo.
+foreach(func): applica una funzione a ciascun elemento dell’RDD (effetto collaterale).
+Queste azioni sono fondamentali per ottenere risultati concreti dal calcolo distribuito di Spark.

@@ -18,7 +18,7 @@
         "classpath": [
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/sbt/1.11.7/sbt-1.11.7.jar",
             "/home/riccardo/.sbt/boot/scala-2.12.20/lib/scala-library.jar",
-            "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.16/sbt-bloop_2.12_1.0-2.0.16.jar",
+            "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.17/sbt-bloop_2.12_1.0-2.0.17.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/main_2.12/1.11.7/main_2.12-1.11.7.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/io_2.12/1.10.5/io_2.12-1.10.5.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/bloop-config_2.12/2.3.3/bloop-config_2.12-2.3.3.jar",
@@ -213,7 +213,7 @@
         "platform": {
             "name": "jvm",
             "config": {
-                "home": "/usr/lib/jvm/java-11-openjdk-amd64",
+                "home": "/usr/lib/jvm/java-17-openjdk-amd64",
                 "options": [
                     "-Duser.dir=/home/riccardo/Documenti/spark/project"
                 ]
@@ -222,14 +222,14 @@
                 
             ],
             "runtimeConfig": {
-                "home": "/usr/lib/jvm/java-11-openjdk-amd64",
+                "home": "/usr/lib/jvm/java-17-openjdk-amd64",
                 "options": [
                     "-Duser.dir=/home/riccardo/Documenti/spark/project"
                 ]
             },
             "classpath": [
                 "/home/riccardo/Documenti/spark/project/.bloop/spark-build/scala-2.12/sbt-1.0/classes",
-                "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.16/sbt-bloop_2.12_1.0-2.0.16.jar",
+                "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.17/sbt-bloop_2.12_1.0-2.0.17.jar",
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/bloop-config_2.12/2.3.3/bloop-config_2.12-2.3.3.jar",
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/github/plokhotnyuk/jsoniter-scala/jsoniter-scala-core_2.12/2.13.5.2/jsoniter-scala-core_2.12-2.13.5.2.jar",
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/unroll-annotation_2.12/0.1.12/unroll-annotation_2.12-0.1.12.jar",
@@ -241,17 +241,17 @@
                 {
                     "organization": "ch.epfl.scala",
                     "name": "sbt-bloop",
-                    "version": "2.0.16",
+                    "version": "2.0.17",
                     "configurations": "default",
                     "artifacts": [
                         {
                             "name": "sbt-bloop",
-                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.16/sbt-bloop_2.12_1.0-2.0.16.jar"
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.17/sbt-bloop_2.12_1.0-2.0.17.jar"
                         },
                         {
                             "name": "sbt-bloop",
                             "classifier": "sources",
-                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.16/sbt-bloop_2.12_1.0-2.0.16-sources.jar"
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.17/sbt-bloop_2.12_1.0-2.0.17-sources.jar"
                         }
                     ]
                 },

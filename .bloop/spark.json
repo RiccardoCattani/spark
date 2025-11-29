@@ -173,7 +173,8 @@
             "name": "scala-compiler",
             "version": "2.12.18",
             "options": [
-                
+                "-Yrangepos",
+                "-Xplugin:/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.18/4.8.13/semanticdb-scalac_2.12.18-4.8.13.jar"
             ],
             "jars": [
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar",
@@ -260,11 +261,7 @@
             "config": {
                 "home": "/usr/lib/jvm/java-17-openjdk-amd64",
                 "options": [
-                    "-Duser.dir=/home/riccardo/Documenti/spark",
-                    "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
-                    "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
-                    "--add-opens=java.base/java.nio=ALL-UNNAMED",
-                    "--add-opens=java.base/java.lang=ALL-UNNAMED"
+                    "-Duser.dir=/home/riccardo/Documenti/spark"
                 ]
             },
             "mainClass": [
@@ -273,11 +270,7 @@
             "runtimeConfig": {
                 "home": "/usr/lib/jvm/java-17-openjdk-amd64",
                 "options": [
-                    "-Duser.dir=/home/riccardo/Documenti/spark",
-                    "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
-                    "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
-                    "--add-opens=java.base/java.nio=ALL-UNNAMED",
-                    "--add-opens=java.base/java.lang=ALL-UNNAMED"
+                    "-Duser.dir=/home/riccardo/Documenti/spark"
                 ]
             },
             "classpath": [
