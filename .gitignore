@@ -20,3 +20,6 @@ project/project/
 .vscode/
 # WireGuard keys (se usi WireGuard qui)
 *.key
+out/
+output/
+*.out
