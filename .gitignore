@@ -8,7 +8,7 @@ project/project/
 *.log
 *.lock.db
 *.mv.db
-*.semanticdb
+**/*.semanticdb
 .idea/
 .DS_Store
 *.iml
