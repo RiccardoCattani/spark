@@ -21,7 +21,13 @@ object obj_PairRDD {
 
     // Carica il file di testo come RDD da un percorso specificato
     val inputRDD = sc.textFile("file:///C:/data/sales.txt")
-    // Applica una trasformazione map per suddividere ogni riga in un array di stringhe
-    val pairRDD = inputRDD.map(x => (x.split(" ")))
+    // Crea una Pair RDD (chiave, valore) dove chiave è il primo campo e valore il secondo
+    val pairRDD = inputRDD.map(x => (x.split(" ")(0), x.split(" ")(1)))
+    // Colleziona gli elementi della Pair RDD in un array locale
+    val co=pairRDD.collect()
+    // Stampa ogni elemento della collezione
+    for (i <- co) {
+      println(i)
+    }
   }
 }
