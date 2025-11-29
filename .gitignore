@@ -1,0 +1,22 @@
+# Scala/Spark/Metals/Bloop
+.bloop/
+.metals/
+target/
+project/target/
+project/project/
+*.class
+*.log
+*.lock.db
+*.mv.db
+*.semanticdb
+.idea/
+.DS_Store
+*.iml
+*.swp
+*.swo
+*.bak
+*.tmp
+# VSCode
+.vscode/
+# WireGuard keys (se usi WireGuard qui)
+*.key
