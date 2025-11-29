@@ -2,7 +2,7 @@ package sparkPractise
 
 import org.apache.spark.sql.SparkSession
 
-object obj_IndiaDF {
+object obj_IndiaDF2 {
   def main(args: Array[String]): Unit = {
     // Crea la SparkSession (necessaria per DataFrame API)
     val spark = SparkSession.builder()

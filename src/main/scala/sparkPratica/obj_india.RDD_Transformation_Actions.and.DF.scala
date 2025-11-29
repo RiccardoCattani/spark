@@ -16,8 +16,10 @@ object obj_India {
     // Imposta il livello di log su Error per meno output
     sc.setLogLevel("Error")
 
+
     // Legge il file di testo e crea un RDD, ogni elemento è una riga del file
     val inputRDD = sc.textFile("India.txt")
+
     // Esempio 1: Filtra e stampa solo gli stati dove la lingua è Hindi (con RDD)
     val hindiStatesRDD = inputRDD.filter { line =>
       val fields = line.split(",")
@@ -25,6 +27,29 @@ object obj_India {
     }
     println("\n--- Stati con lingua Hindi (RDD) ---")
     hindiStatesRDD.collect().foreach(println)
+
+    // Filtro e stampa i record che contengono "English"
+    println("\n************ Filter English Records ************")
+    val filEnglish = inputRDD.filter(_.contains("English"))
+    filEnglish.collect().foreach(println)
+
+    // Filtro e stampa i record che contengono "Andhra Pradesh"
+    println("\n************ Filter Andhra Pradesh ************")
+    val filAndhra = inputRDD.filter(_.contains("Andhra Pradesh"))
+    filAndhra.collect().foreach(println)
+
+    // Unione dei due RDD filtrati
+    val rddUnion = filEnglish.union(filAndhra)
+
+    // Filtro parametrico sull'unione: cambia qui la parola chiave per filtrare
+    val keyword = "English" // Cambia qui la parola chiave per altri filtri
+    val filteredUnion = rddUnion.filter(_.contains(keyword))
+
+    println(s"\n************ Count (union filtrata per '$keyword') ************")
+    println(filteredUnion.count())
+
+    println("Take************")
+    filteredUnion.take(2).foreach(println)
 
     // Esempio 2: Stessa operazione con DataFrame
     import org.apache.spark.sql.SparkSession

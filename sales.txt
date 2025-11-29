@@ -1,0 +1,6 @@
+1 apple 10
+2 banana 5
+3 orange 8
+4 apple 7
+5 banana 3
+6 orange 6
