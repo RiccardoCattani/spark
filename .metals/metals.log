@@ -8429,3 +8429,36 @@ INFORMAZIONI: Unsupported notification method: $/setTrace
 nov 27, 2025 5:19:39 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 >>>>>>> 7265c063ff030a195166a76960724f2114d40be9
 INFORMAZIONI: Unsupported notification method: $/setTrace
+2025.11.30 10:21:59 INFO  Started: Metals version 1.6.4 in folders '/home/riccardo/Documenti/spark' for client Visual Studio Code 1.106.2.
+2025.11.30 10:21:59 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2025.11.30 10:22:00 INFO  Attempting to connect to the build server...
+2025.11.30 10:22:00 INFO  No running Bloop server found, starting one.
+2025.11.30 10:22:00 INFO  Starting compilation server
+2025.11.30 10:22:01 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/spark/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.11.30 10:22:01 INFO  Attempting to connect to the build server...
+2025.11.30 10:22:01 INFO  Found a Bloop server running
+2025.11.30 10:22:01 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/spark/project/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.11.30 10:22:01 INFO  time: Connected to build server in 1.61s
+2025.11.30 10:22:01 INFO  Connected to Build server: Bloop v2.0.17
+2025.11.30 10:22:03 WARN  Could not find java sources in /usr/lib/jvm/src.zip, /usr/lib/jvm/lib/src.zip, /usr/lib/jvm/java-17-openjdk-amd64/src.zip, /usr/lib/jvm/java-17-openjdk-amd64/lib/src.zip. Java symbols will not be available.
+2025.11.30 10:22:03 INFO  time: indexed workspace in 2.52s
+2025.11.30 10:23:34 INFO  Shutting down server
+2025.11.30 10:23:34 INFO  shutting down Metals
+2025.11.30 10:23:34 INFO  Shut down connection with build server.
+2025.11.30 10:23:34 INFO  Shut down connection with build server.
+2025.11.30 10:23:34 INFO  Exiting server
+2025.12.03 12:15:45 INFO  Started: Metals version 1.6.4 in folders '/home/riccardo/Documenti/spark' for client Visual Studio Code 1.106.3.
+2025.12.03 12:15:45 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2025.12.03 12:15:46 INFO  Attempting to connect to the build server...
+2025.12.03 12:15:46 INFO  No running Bloop server found, starting one.
+2025.12.03 12:15:46 INFO  Starting compilation server
+2025.12.03 12:15:47 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/spark/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.12.03 12:15:47 INFO  Attempting to connect to the build server...
+2025.12.03 12:15:47 INFO  Found a Bloop server running
+2025.12.03 12:15:47 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/spark/project/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.12.03 12:15:47 INFO  time: Connected to build server in 1.79s
+2025.12.03 12:15:47 INFO  Connected to Build server: Bloop v2.0.17
+2025.12.03 12:15:50 WARN  Could not find java sources in /usr/lib/jvm/src.zip, /usr/lib/jvm/lib/src.zip, /usr/lib/jvm/java-17-openjdk-amd64/src.zip, /usr/lib/jvm/java-17-openjdk-amd64/lib/src.zip. Java symbols will not be available.
+2025.12.03 12:15:50 INFO  time: indexed workspace in 2.92s
+dic 03, 2025 12:15:55 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFORMAZIONI: Unsupported notification method: $/setTrace
