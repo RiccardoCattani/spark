@@ -8,6 +8,9 @@ import org.apache.spark.SparkContext
 
 // Oggetto principale che contiene il metodo main
 object obj_PairRDD {
+    // Stampa le chiavi distinte della PairRDD
+    println("**********Keys**********")
+    pairRDD.keys.distinct.collect().foreach(println)
   // Metodo main, punto di ingresso del programma
   def main(arg: Array[String]): Unit = {
     // Crea una configurazione Spark con nome applicazione e master locale
