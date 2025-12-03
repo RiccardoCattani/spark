@@ -9,7 +9,8 @@ object obj_WordCount {
     val sc   = new SparkContext(conf)
     sc.setLogLevel("Error")
 
-    val inputRDD = sc.textFile("file:///C:/data/words.txt")
+    // Usa un path locale Linux; aggiorna se necessario
+    val inputRDD = sc.textFile("words.txt")
     val word_count = inputRDD
       .flatMap(s => s.split(" "))
       .map(word => (word, 1))
