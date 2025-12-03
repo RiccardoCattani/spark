@@ -8,12 +8,6 @@ import org.apache.spark.SparkContext
 
 // Oggetto principale che contiene il metodo main
 object obj_PairRDD {
-      // MapValues: raddoppia ogni valore associato alla chiave
-      println("**********Map Values**********")
-      val map_val = pairRDD.mapValues(a => a * 2).collect()
-      for (i <- map_val) {
-        println(i)
-      }
   // Metodo main, punto di ingresso del programma
   def main(arg: Array[String]): Unit = {
     // Crea una configurazione Spark con nome applicazione e master locale
@@ -33,6 +27,13 @@ object obj_PairRDD {
     val co = pairRDD.collect()
     // Stampa ogni elemento della collezione
     for (i <- co) {
+      println(i)
+    }
+
+    // MapValues: raddoppia ogni valore associato alla chiave
+    println("**********Map Values**********")
+    val map_val = pairRDD.mapValues(a => a * 2).collect()
+    for (i <- map_val) {
       println(i)
     }
 
