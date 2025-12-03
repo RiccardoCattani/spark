@@ -1,4 +1,19 @@
-[0m[[0m[31merror[0m] [0m[0m/home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala:13:5: not found: value pairRDD[0m
-[0m[[0m[31merror[0m] [0m[0m    pairRDD.keys.distinct.collect().foreach(println)[0m
-[0m[[0m[31merror[0m] [0m[0m    ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[31merror[0m] [0m[0m/home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_SchemaRDD.scala:3:1: empty quoted identifier[0m
+[0m[[0m[31merror[0m] [0m[0m```scala[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_SchemaRDD.scala:3:3: unclosed quoted identifier[0m
+[0m[[0m[31merror[0m] [0m[0m```scala[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_SchemaRDD.scala:31:1: empty quoted identifier[0m
+[0m[[0m[31merror[0m] [0m[0m```[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_SchemaRDD.scala:31:3: unclosed quoted identifier[0m
+[0m[[0m[31merror[0m] [0m[0m```[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_SchemaRDD.scala:1:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0m## Esempio Schema RDD in Spark (come da screenshot)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_SchemaRDD.scala:36:39: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0m- `textFile` carica il file di input; cambia il percorso se lavori in Linux o con un'altra cartella.[0m
+[0m[[0m[31merror[0m] [0m[0m                                      ^[0m
+[0m[[0m[31merror[0m] [0m[0m6 errors found[0m
