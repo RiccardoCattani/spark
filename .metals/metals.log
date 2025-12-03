@@ -8509,3 +8509,35 @@ INFORMAZIONI: compiler crashed due to an error in the Scala compiler, retrying w
 2025.12.03 13:01:17 INFO  Created report: Optional[file:///home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala]
 2025.12.03 13:01:17 INFO  scala.reflect.internal.FatalError: no context found for source-file:///home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala,line-1,offset=24 (full report at: "/home/riccardo/Documenti/spark/.metals/.reports/metals-full/2025-12-03/r_compiler-error_(spark)_13-01-17-303.md")
 2025.12.03 13:01:17 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+dic 03, 2025 1:01:26 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFORMAZIONI: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+dic 03, 2025 1:01:39 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFORMAZIONI: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+dic 03, 2025 1:01:41 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFORMAZIONI: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+dic 03, 2025 1:01:49 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFORMAZIONI: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2025.12.03 14:43:13 INFO  compiling spark (1 scala source)
+2025.12.03 14:43:13 INFO  time: compiled spark in 0.19s
+2025.12.03 14:43:14 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+2025.12.03 14:43:18 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+dic 03, 2025 2:44:00 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFORMAZIONI: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2025.12.03 14:44:00 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+2025.12.03 14:46:54 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+2025.12.03 14:47:24 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+dic 03, 2025 2:47:24 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFORMAZIONI: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2025.12.03 14:47:25 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+2025.12.03 14:47:24 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+2025.12.03 14:47:25 INFO  compiling spark (1 scala source)
+2025.12.03 14:47:25 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+2025.12.03 14:47:25 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+2025.12.03 14:47:25 WARN  Could not load snapshot text for /home/riccardo/Documenti/spark/src/main/scala/sparkPratica/obj_PairRDD.scala
+2025.12.03 14:47:25 INFO  time: compiled spark in 0.54s
+2025.12.03 14:56:36 INFO  compiling spark (1 scala source)
+2025.12.03 14:56:36 INFO  time: compiled spark in 0.5s
+2025.12.03 15:13:55 INFO  compiling spark (1 scala source)
+2025.12.03 15:13:55 INFO  time: compiled spark in 0.53s
+dic 03, 2025 3:14:55 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFORMAZIONI: Unsupported notification method: $/setTrace

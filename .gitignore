@@ -1,3 +1,5 @@
+# Ignora la cartella streams e tutto il suo contenuto
+streams/
 # Ignora il file obj_PairRDD.scala
 src/main/scala/sparkPratica/obj_PairRDD.scala
 # Scala/Spark/Metals/Bloop
