@@ -8,10 +8,10 @@ import org.apache.spark.SparkContext
 
 // Oggetto principale che contiene il metodo main
 object obj_PairRDD {
-      // ReduceByKey: somma le quantità per ogni prodotto
-      println("**********ReduceByKey**********")
-      val red_by = pairRDD.reduceByKey(_ + _).collect()
-      for (i <- red_by) {
+      // MapValues: raddoppia ogni valore associato alla chiave
+      println("**********Map Values**********")
+      val map_val = pairRDD.mapValues(a => a * 2).collect()
+      for (i <- map_val) {
         println(i)
       }
   // Metodo main, punto di ingresso del programma
@@ -36,11 +36,21 @@ object obj_PairRDD {
       println(i)
     }
 
+    // ReduceByKey: somma le quantità per ogni prodotto
+    println("**********ReduceByKey**********")
+    val red_by = pairRDD.reduceByKey(_ + _).collect()
+    for (i <- red_by) {
+      println(i)
+    }
+
     // Raggruppa per chiave e stampa il risultato
     println("**********GroupByKey**********")
     val gr = pairRDD.groupByKey().collect()
     for (i <- gr) {
       println(i)
     }
+
+    // Chiude lo SparkContext per rilasciare le risorse
+    sc.stop()
   }
 }
