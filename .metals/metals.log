@@ -8541,3 +8541,60 @@ INFORMAZIONI: compiler crashed due to an error in the Scala compiler, retrying w
 2025.12.03 15:13:55 INFO  time: compiled spark in 0.53s
 dic 03, 2025 3:14:55 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFORMAZIONI: Unsupported notification method: $/setTrace
+2025.12.03 15:24:26 INFO  running '/usr/bin/sbt -Dbloop.export-jar-classifiers=sources bloopInstall'
+2025.12.03 15:24:26 INFO  [info] welcome to sbt 1.11.7 (Ubuntu Java 17.0.17)
+2025.12.03 15:24:26 INFO  [info] loading settings for project spark-build-build from metals.sbt...
+2025.12.03 15:24:26 INFO  [info] loading project definition from /home/riccardo/Documenti/spark/project/project
+2025.12.03 15:24:26 INFO  [info] loading settings for project spark-build from metals.sbt...
+2025.12.03 15:24:26 INFO  [info] loading project definition from /home/riccardo/Documenti/spark/project
+2025.12.03 15:24:28 INFO  [success] Generated .bloop/spark-build.json
+2025.12.03 15:24:28 INFO  [success] Total time: 1 s, completed 3 dic 2025, 15:24:28
+2025.12.03 15:24:28 INFO  [info] loading settings for project spark from build.sbt...
+2025.12.03 15:24:28 INFO  [info] set current project to SparkPractice (in build file:/home/riccardo/Documenti/spark/)
+2025.12.03 15:24:29 INFO  [success] Generated .bloop/spark.json
+2025.12.03 15:24:29 INFO  [success] Generated .bloop/spark-test.json
+2025.12.03 15:24:29 INFO  [success] Total time: 0 s, completed 3 dic 2025, 15:24:29
+2025.12.03 15:24:30 INFO  time: ran 'sbt bloopInstall' in 3.91s
+2025.12.03 15:24:30 INFO  Disconnecting from Bloop session...
+2025.12.03 15:24:30 INFO  Shut down connection with build server.
+2025.12.03 15:24:30 INFO  Shut down connection with build server.
+2025.12.03 15:24:30 INFO  Attempting to connect to the build server...
+2025.12.03 15:24:30 INFO  Found a Bloop server running
+2025.12.03 15:24:30 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/spark/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.12.03 15:24:30 INFO  Attempting to connect to the build server...
+2025.12.03 15:24:30 INFO  Found a Bloop server running
+2025.12.03 15:24:30 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/spark/project/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.12.03 15:24:30 INFO  time: Connected to build server in 0.21s
+2025.12.03 15:24:30 INFO  Connected to Build server: Bloop v2.0.17
+2025.12.03 15:24:32 WARN  Could not find java sources in /usr/lib/jvm/src.zip, /usr/lib/jvm/lib/src.zip, /usr/lib/jvm/java-17-openjdk-amd64/src.zip, /usr/lib/jvm/java-17-openjdk-amd64/lib/src.zip. Java symbols will not be available.
+2025.12.03 15:24:32 INFO  time: indexed workspace in 1.96s
+2025.12.03 15:28:23 INFO  running '/usr/bin/sbt -Dbloop.export-jar-classifiers=sources bloopInstall'
+2025.12.03 15:28:23 INFO  [info] welcome to sbt 1.11.7 (Ubuntu Java 17.0.17)
+2025.12.03 15:28:23 INFO  [info] loading settings for project spark-build-build from metals.sbt...
+2025.12.03 15:28:23 INFO  [info] loading project definition from /home/riccardo/Documenti/spark/project/project
+2025.12.03 15:28:23 INFO  [info] loading settings for project spark-build from metals.sbt...
+2025.12.03 15:28:23 INFO  [info] loading project definition from /home/riccardo/Documenti/spark/project
+2025.12.03 15:28:25 INFO  [success] Generated .bloop/spark-build.json
+2025.12.03 15:28:25 INFO  [success] Total time: 1 s, completed 3 dic 2025, 15:28:25
+2025.12.03 15:28:25 INFO  [info] loading settings for project spark from build.sbt...
+2025.12.03 15:28:25 INFO  [info] set current project to SparkPractice (in build file:/home/riccardo/Documenti/spark/)
+2025.12.03 15:28:25 INFO  [success] Generated .bloop/spark.json
+2025.12.03 15:28:25 INFO  [success] Generated .bloop/spark-test.json
+2025.12.03 15:28:25 INFO  [success] Total time: 0 s, completed 3 dic 2025, 15:28:25
+2025.12.03 15:28:26 INFO  time: ran 'sbt bloopInstall' in 3.22s
+2025.12.03 15:28:26 INFO  Disconnecting from Bloop session...
+2025.12.03 15:28:26 INFO  Shut down connection with build server.
+2025.12.03 15:28:26 INFO  Shut down connection with build server.
+2025.12.03 15:28:26 INFO  Attempting to connect to the build server...
+2025.12.03 15:28:26 INFO  Found a Bloop server running
+2025.12.03 15:28:26 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/spark/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.12.03 15:28:26 INFO  Attempting to connect to the build server...
+2025.12.03 15:28:26 INFO  Found a Bloop server running
+2025.12.03 15:28:26 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/spark/project/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.12.03 15:28:26 INFO  time: Connected to build server in 0.21s
+2025.12.03 15:28:26 INFO  Connected to Build server: Bloop v2.0.17
+2025.12.03 15:28:26 INFO  compiling spark (1 scala source)
+2025.12.03 15:28:26 INFO  time: compiled spark in 0.45s
+2025.12.03 15:28:28 WARN  Could not find java sources in /usr/lib/jvm/src.zip, /usr/lib/jvm/lib/src.zip, /usr/lib/jvm/java-17-openjdk-amd64/src.zip, /usr/lib/jvm/java-17-openjdk-amd64/lib/src.zip. Java symbols will not be available.
+2025.12.03 15:28:28 INFO  time: indexed workspace in 1.82s
+2025.12.03 15:28:28 INFO  skipping build import with status 'Installed'

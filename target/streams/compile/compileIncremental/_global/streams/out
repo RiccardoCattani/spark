@@ -1,6 +1,6 @@
 [0m[[0m[0mdebug[0m] [0m[0m[zinc] IncrementalCompile -----------[0m
 [0m[[0m[0mdebug[0m] [0m[0mIncrementalCompile.incrementalCompile[0m
-[0m[[0m[0mdebug[0m] [0m[0mprevious = Stamps for: 12 products, 6 sources, 4 libraries[0m
-[0m[[0m[0mdebug[0m] [0m[0mcurrent source = Set(${BASE}/src/main/scala/sparkPratica/obj_india.RDD_Transformation_Actions.and.DF.scala, ${BASE}/src/main/scala/sparkPratica/object obj_IndiaDF.scala, ${BASE}/src/main/scala/sparkPratica/rdd_Oggetto.scala, ${BASE}/src/main/scala/sparkPratica/obj_logs.scala, ${BASE}/src/main/scala/sparkPratica/obj_India.DFonly.scala, ${BASE}/src/main/scala/sparkPratica/obj_PairRDD.scala)[0m
+[0m[[0m[0mdebug[0m] [0m[0mprevious = Stamps for: 14 products, 7 sources, 4 libraries[0m
+[0m[[0m[0mdebug[0m] [0m[0mcurrent source = Set(${BASE}/src/main/scala/sparkPratica/obj_india.RDD_Transformation_Actions.and.DF.scala, ${BASE}/src/main/scala/sparkPratica/object obj_IndiaDF.scala, ${BASE}/src/main/scala/sparkPratica/rdd_Oggetto.scala, ${BASE}/src/main/scala/sparkPratica/obj_logs.scala, ${BASE}/src/main/scala/sparkPratica/obj_India.DFonly.scala, ${BASE}/src/main/scala/sparkPratica/obj_WordCount.scala, ${BASE}/src/main/scala/sparkPratica/obj_PairRDD.scala)[0m
 [0m[[0m[0mdebug[0m] [0m[0m> initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(), unmodified = ...),Set(),Set(),API Changes: Set())[0m
 [0m[[0m[0mdebug[0m] [0m[0mNo changes[0m

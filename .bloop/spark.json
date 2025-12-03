@@ -261,7 +261,10 @@
             "config": {
                 "home": "/usr/lib/jvm/java-17-openjdk-amd64",
                 "options": [
-                    "-Duser.dir=/home/riccardo/Documenti/spark"
+                    "-Duser.dir=/home/riccardo/Documenti/spark",
+                    "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+                    "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                    "--add-opens=java.base/java.nio=ALL-UNNAMED"
                 ]
             },
             "mainClass": [
