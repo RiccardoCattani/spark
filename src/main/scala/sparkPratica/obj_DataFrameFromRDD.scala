@@ -1,45 +1,33 @@
 package sparkPractise
 
-import org.apache.spark.sql.{Row, SparkSession}
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.SparkSession
+
+case class filedml(state: String, capital: String, language: String, country: String)
 
 object obj_DataFrameFromRDD {
   def main(arg: Array[String]): Unit = {
-    val spark = SparkSession.builder()
-      .appName("DataFrameFromRDD")
-      .master("local[*]")
-      .getOrCreate()
-    spark.sparkContext.setLogLevel("Error")
+    val conf = new SparkConf().setAppName("Job1").setMaster("local[*]")
+    val sc   = new SparkContext(conf)
+    sc.setLogLevel("Error")
+
+    // invoke a SparkSession
+    val spark = SparkSession.builder().getOrCreate()
     import spark.implicits._
 
     // Percorso di input; aggiorna se il file si trova altrove
-    val inputRDD = spark.sparkContext.textFile("/home/riccardo/Documenti/spark/countries.txt")
+    val inputFile  = sc.textFile("file:///C:/data/countries.txt")
+    val inputSplit = inputFile.map(x => x.split(","))
 
-    // Split per colonna e mapping in Row
-    val rowRDD = inputRDD.map(_.split(",")).map(arr => Row(arr(0), arr(1), arr(2), arr(3)))
+    println("=========== schema rdd ============")
+    val inputColumns = inputSplit.map(x => filedml(x(0), x(1), x(2), x(3)))
 
-    // Schema esplicito per creare il DataFrame dal Row RDD
-    val schema = StructType(Seq(
-      StructField("state", StringType, nullable = true),
-      StructField("capital", StringType, nullable = true),
-      StructField("language", StringType, nullable = true),
-      StructField("country", StringType, nullable = true)
-    ))
-
-    val df = spark.createDataFrame(rowRDD, schema)
-    df.show(false)
-
-    // Filtra le righe dove la lingua contiene "English"
-    val englishDf = df.filter($"language".contains("English"))
-    englishDf.show(false)
-
-    // Salva i risultati; overwrite evita l'errore di directory esistente
-    englishDf.coalesce(1)
-      .write
-      .mode("overwrite")
-      .option("header", "false")
-      .csv("/home/riccardo/Documenti/spark/output/English_df")
+    val dataframe_schema = inputColumns.toDF()
+    dataframe_schema.printSchema()
+    dataframe_schema.show(false)
+    // val sel_col = dataframe_schema.select("", "")
 
     spark.stop()
+    sc.stop()
   }
 }
