@@ -1,0 +1,5 @@
+# Ignora cartelle di database e log
+db/
+log/
+/.db/
+log/
