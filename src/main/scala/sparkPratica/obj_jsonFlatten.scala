@@ -27,12 +27,12 @@ object obj_jsonFlatten {
     println("\n🟨 [FASE 3] Seleziono alcune colonne annidate come esempio:")
     val selectedDf = flatDf.select(
       col("nationality"),
-      col("result.gender"),
-      col("result.email"),
-      col("result.name.first").alias("first_name"),
-      col("result.name.last").alias("last_name"),
-      col("result.location.city").alias("city"),
-      col("result.location.state").alias("state")
+      col("result.user.gender"),
+      col("result.user.email"),
+      col("result.user.name.first").alias("first_name"),
+      col("result.user.name.last").alias("last_name"),
+      col("result.user.location.city").alias("city"),
+      col("result.user.location.state").alias("state")
     )
 
     selectedDf.show(false)
