@@ -213,7 +213,7 @@
         "platform": {
             "name": "jvm",
             "config": {
-                "home": "/usr/lib/jvm/java-17-openjdk-17.0.17.0.10-1.el9.x86_64",
+                "home": "/usr/lib/jvm/java-11-openjdk-11.0.25.0.9-7.el9.x86_64",
                 "options": [
                     "-Duser.dir=/home/riccardo/Documenti/repository/spark/spark/project"
                 ]
@@ -222,7 +222,7 @@
                 
             ],
             "runtimeConfig": {
-                "home": "/usr/lib/jvm/java-17-openjdk-17.0.17.0.10-1.el9.x86_64",
+                "home": "/usr/lib/jvm/java-11-openjdk-11.0.25.0.9-7.el9.x86_64",
                 "options": [
                     "-Duser.dir=/home/riccardo/Documenti/repository/spark/spark/project"
                 ]
