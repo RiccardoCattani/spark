@@ -8,6 +8,7 @@ import org.apache.spark.sql.SparkSession
 // Importa la classe per creare una sessione Spark SQL (necessaria per DataFrame e SQL).
 
 import org.apache.spark.SparkContext
+import com.databricks.spark.xml._ // Importa il supporto per XML
 // Importa la classe principale per lavorare con RDD e il core di Spark.
 
 object obj_Avro_File {
@@ -47,6 +48,13 @@ object obj_Avro_File {
 
     // Puoi aggiungere qui altre operazioni sul DataFrame
     read_df.show(5)
+        // Lettura di un file XML (esempio: India_xml.xml nella stessa cartella)
+        val xml_df = spark.read
+            .format("xml")
+            .option("rowTag", "record") // Cambia 'record' con il tag principale del tuo XML
+            .load("/home/riccardo/Documenti/repository/spark/spark/India_xml.xml")
+        xml_df.printSchema()
+        xml_df.show(5)
 // Mostra i primi 5 record del DataFrame (puoi sostituire o aggiungere altre operazioni qui).
   }
 }
