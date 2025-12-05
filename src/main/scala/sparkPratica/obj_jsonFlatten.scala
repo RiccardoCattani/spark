@@ -10,8 +10,8 @@ object obj_jsonFlatten {
       .master("local[*]")
       .getOrCreate()
 
-    // Lettura JSON complesso
-    println("Leggo il file JSON complesso e lo appiattisco:")
+    // ===== 🟦 FASE 1: Lettura JSON complesso =====
+    println("\n🟦 [FASE 1] Leggo il file JSON complesso:")
     val complexDf = spark.read
       .format("json")
       .option("multiLine", true)
@@ -19,10 +19,12 @@ object obj_jsonFlatten {
 
     complexDf.printSchema()
 
-    // Appiattisci l'array 'results' (explode)
+    // ===== 🟩 FASE 2: Appiattimento array 'results' =====
+    println("\n🟩 [FASE 2] Appiattisco l'array 'results'...")
     val flatDf = complexDf.withColumn("result", explode(col("results")))
 
-    // Seleziona alcune colonne annidate come esempio
+    // ===== 🟨 FASE 3: Selezione colonne annidate =====
+    println("\n🟨 [FASE 3] Seleziono alcune colonne annidate come esempio:")
     val selectedDf = flatDf.select(
       col("nationality"),
       col("result.gender"),
