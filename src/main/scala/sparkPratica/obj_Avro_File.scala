@@ -55,6 +55,18 @@ object obj_Avro_File {
             .load("/home/riccardo/Documenti/repository/spark/spark/India_xml.xml")
         xml_df.printSchema()
         xml_df.show(5)
+
+        // Scrittura di un DataFrame in formato XML
+        // Scrive i primi 100 record del DataFrame CSV in un file XML
+        read_df.limit(100)
+            .write
+            .format("xml")
+            .option("rootTag", "records") // Tag radice
+            .option("rowTag", "record")   // Tag per ogni riga
+            .mode("overwrite")
+            .save("/home/riccardo/Documenti/repository/spark/spark/output_xml")
 // Mostra i primi 5 record del DataFrame (puoi sostituire o aggiungere altre operazioni qui).
+
+
   }
 }
