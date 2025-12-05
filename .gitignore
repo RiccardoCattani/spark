@@ -1,5 +1,6 @@
 # Ignora cartelle di database e log
 db/
 log/
-/.db/
+*.db
+*.log
 log/
