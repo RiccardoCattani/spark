@@ -8741,3 +8741,131 @@ dic 04, 2025 3:30:34 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notif
 INFORMAZIONI: Unsupported notification method: $/setTrace
 2025.12.04 15:30:36 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
 2025.12.04 15:30:37 INFO  time: indexed workspace in 3.48s
+2025.12.05 10:32:01 INFO  Started: Metals version 1.6.4 in folders '/home/riccardo/Documenti/repository/spark/spark' for client Visual Studio Code 1.106.3.
+2025.12.05 10:32:04 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2025.12.05 10:32:04 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:32:05 INFO  Attempting to connect to the build server...
+2025.12.05 10:32:05 INFO  Found a Bloop server running
+2025.12.05 10:32:05 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/repository/spark/spark/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.12.05 10:32:05 INFO  Attempting to connect to the build server...
+2025.12.05 10:32:05 INFO  Found a Bloop server running
+2025.12.05 10:32:05 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/riccardo/Documenti/repository/spark/spark/project/.metals/bsp.trace.json or /home/riccardo/.cache/metals/bsp.trace.json
+2025.12.05 10:32:05 ERROR Bloop server PID: 11327
+Ignoring SIGINT
+Will truncate output file /home/riccardo/.local/share/scalacli/bloop/daemon/output every 5 minutes
+Unable to load nailgun-version.properties.
+NGServer [UNKNOWN] started on local socket /home/riccardo/.local/share/scalacli/bloop/daemon/socket.
+/home/riccardo/.local/share/scalacli/bloop
+/home/riccardo/.local/share/scalacli/bloop
+/home/riccardo/.local/share/scalacli/bloop
+/home/riccardo/.local/share/scalacli/bloop
+/home/riccardo/.local/share/scalacli/bloop
+/home/riccardo/.local/share/scalacli/bloop
+/home/riccardo/.local/share/scalacli/bloop
+/home/riccardo/.local/share/scalacli/bloop
+
+2025.12.05 10:32:05 ERROR Failed to connect with build server, no functionality will work.
+java.util.concurrent.ExecutionException: org.eclipse.lsp4j.jsonrpc.ResponseErrorException: bloop.data.Project$ProjectReadException: Failed to load project from /home/riccardo/Documenti/repository/spark/spark/project/.bloop/spark-build.json
+	at bloop.data.Project$.fromBytesAndOrigin(Project.scala:257)
+	at bloop.engine.BuildLoader$.loadProject(BuildLoader.scala:264)
+	at bloop.engine.BuildLoader$.$anonfun$loadBuildIncrementally$3(BuildLoader.scala:59)
+	at monix.eval.internal.TaskRunLoop$.startFull(TaskRunLoop.scala:81)
+	at monix.eval.internal.TaskRestartCallback.syncOnSuccess(TaskRestartCallback.scala:101)
+	at monix.eval.internal.TaskRestartCallback.onSuccess(TaskRestartCallback.scala:74)
+	at monix.eval.internal.TaskShift$Register$$anon$1.run(TaskShift.scala:65)
+	at monix.execution.internal.InterceptRunnable.run(InterceptRunnable.scala:27)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: com.github.plokhotnyuk.jsoniter_scala.core.JsonReaderException: expected '"', offset: 0x0000442a, buf:
++----------+-------------------------------------------------+------------------+
+|          |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f | 0123456789abcdef |
++----------+-------------------------------------------------+------------------+
+| 00004400 | 20 20 20 22 6e 61 6d 65 22 3a 20 22 6a 76 6d 22 |    "name": "jvm" |
+| 00004410 | 2c 0a 20 20 20 20 20 20 20 20 20 20 20 20 22 63 | ,.            "c |
+| 00004420 | 6f 6e 66 69 67 22 3a 20 7b 0a 3c 3c 3c 3c 3c 3c | onfig": {.<<<<<< |
+| 00004430 | 3c 20 48 45 41 44 0a 20 20 20 20 20 20 20 20 20 | < HEAD.          |
+| 00004440 | 20 20 20 20 20 20 20 22 68 6f 6d 65 22 3a 20 22 |        "home": " |
++----------+-------------------------------------------------+------------------+
+
+	at java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:396)
+	at java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2096)
+	at scala.meta.internal.metals.BuildServerConnection$.initialize(BuildServerConnection.scala:785)
+	at scala.meta.internal.metals.BuildServerConnection$.$anonfun$fromSockets$1(BuildServerConnection.scala:658)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:500)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.lang.Thread.run(Thread.java:840)
+Caused by: org.eclipse.lsp4j.jsonrpc.ResponseErrorException: bloop.data.Project$ProjectReadException: Failed to load project from /home/riccardo/Documenti/repository/spark/spark/project/.bloop/spark-build.json
+	at bloop.data.Project$.fromBytesAndOrigin(Project.scala:257)
+	at bloop.engine.BuildLoader$.loadProject(BuildLoader.scala:264)
+	at bloop.engine.BuildLoader$.$anonfun$loadBuildIncrementally$3(BuildLoader.scala:59)
+	at monix.eval.internal.TaskRunLoop$.startFull(TaskRunLoop.scala:81)
+	at monix.eval.internal.TaskRestartCallback.syncOnSuccess(TaskRestartCallback.scala:101)
+	at monix.eval.internal.TaskRestartCallback.onSuccess(TaskRestartCallback.scala:74)
+	at monix.eval.internal.TaskShift$Register$$anon$1.run(TaskShift.scala:65)
+	at monix.execution.internal.InterceptRunnable.run(InterceptRunnable.scala:27)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: com.github.plokhotnyuk.jsoniter_scala.core.JsonReaderException: expected '"', offset: 0x0000442a, buf:
++----------+-------------------------------------------------+------------------+
+|          |  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f | 0123456789abcdef |
++----------+-------------------------------------------------+------------------+
+| 00004400 | 20 20 20 22 6e 61 6d 65 22 3a 20 22 6a 76 6d 22 |    "name": "jvm" |
+| 00004410 | 2c 0a 20 20 20 20 20 20 20 20 20 20 20 20 22 63 | ,.            "c |
+| 00004420 | 6f 6e 66 69 67 22 3a 20 7b 0a 3c 3c 3c 3c 3c 3c | onfig": {.<<<<<< |
+| 00004430 | 3c 20 48 45 41 44 0a 20 20 20 20 20 20 20 20 20 | < HEAD.          |
+| 00004440 | 20 20 20 20 20 20 20 22 68 6f 6d 65 22 3a 20 22 |        "home": " |
++----------+-------------------------------------------------+------------------+
+
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:220)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:204)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:185)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:114)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.lang.Thread.run(Thread.java:840)
+
+2025.12.05 10:32:05 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:32:05 WARN  no build target for: /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala
+2025.12.05 10:32:05 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+dic 05, 2025 10:32:05 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFORMAZIONI: Unsupported notification method: $/setTrace
+2025.12.05 10:32:06 INFO  time: code lens generation in 1.13s
+2025.12.05 10:32:08 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:28 WARN  no build target for: /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala
+2025.12.05 10:34:28 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:28 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:28 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:28 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:29 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:31 WARN  no build target for: /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala
+2025.12.05 10:34:31 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:31 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:31 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:31 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:31 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:32 WARN  no build target for: /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala
+2025.12.05 10:34:32 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:31 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:49 WARN  no build target for: /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala
+2025.12.05 10:34:49 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:49 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:34:49 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:35:06 WARN  no build target for: /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala
+2025.12.05 10:35:06 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:36:11 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:36:11 WARN  no build target for: /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala
+2025.12.05 10:36:11 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:36:11 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:36:11 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:37:36 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:38:02 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:38:06 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:38:22 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_RDD_Transformation_Actions.scala. Using presentation compiler with project's scala-library version: 3.3.6
+2025.12.05 10:38:45 WARN  no build target for: /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala
+2025.12.05 10:38:45 INFO  no build target found for /home/riccardo/Documenti/repository/spark/spark/src/main/scala/sparkPratica/obj_seamless.scala. Using presentation compiler with project's scala-library version: 3.3.6

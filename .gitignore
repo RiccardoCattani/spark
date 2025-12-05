@@ -18,6 +18,8 @@ project/project/
 *.iml
 *.swp
 *.swo
+*.bin
+*.db
 *.bak
 *.tmp
 # VSCode
@@ -27,6 +29,7 @@ project/project/
 out/
 output/
 *.out
+*.bin
 
 # Ignora cartelle di database e log
 db/
