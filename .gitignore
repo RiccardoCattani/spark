@@ -1,3 +1,4 @@
+*.json
 # Ignora la cartella streams e tutto il suo contenuto
 streams/
 # Ignora il file obj_PairRDD.scala
@@ -18,6 +19,8 @@ project/project/
 *.iml
 *.swp
 *.swo
+*.xml
+output_xml/
 project/target/streams/**/out
 project/project/target/streams/**/out
 target/streams/**/out

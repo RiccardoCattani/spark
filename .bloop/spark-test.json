@@ -19,6 +19,7 @@
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/spark/spark-core_2.12/3.5.0/spark-core_2.12-3.5.0.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/spark/spark-sql_2.12/3.5.0/spark-sql_2.12-3.5.0.jar",
+            "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/databricks/spark-xml_2.12/0.17.0/spark-xml_2.12-0.17.0.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/avro/avro/1.11.2/avro-1.11.2.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/avro/avro-mapred/1.11.2/avro-mapred-1.11.2.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/twitter/chill_2.12/0.10.0/chill_2.12-0.10.0.jar",
@@ -87,6 +88,9 @@
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/hive/hive-storage-api/2.8.1/hive-storage-api-2.8.1.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/parquet/parquet-column/1.13.1/parquet-column-1.13.1.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/parquet/parquet-hadoop/1.13.1/parquet-hadoop-1.13.1.jar",
+            "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/glassfish/jaxb/txw2/3.0.2/txw2-3.0.2.jar",
+            "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/ws/xmlschema/xmlschema-core/2.3.0/xmlschema-core-2.3.0.jar",
+            "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.9.0/scala-collection-compat_2.12-2.9.0.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.15.2/jackson-core-2.15.2.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.7/slf4j-api-2.0.7.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/avro/avro-ipc/1.11.2/avro-ipc-1.11.2.jar",
@@ -319,6 +323,23 @@
                             "name": "spark-sql_2.12",
                             "classifier": "sources",
                             "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/spark/spark-sql_2.12/3.5.0/spark-sql_2.12-3.5.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.databricks",
+                    "name": "spark-xml_2.12",
+                    "version": "0.17.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "spark-xml_2.12",
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/databricks/spark-xml_2.12/0.17.0/spark-xml_2.12-0.17.0.jar"
+                        },
+                        {
+                            "name": "spark-xml_2.12",
+                            "classifier": "sources",
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/databricks/spark-xml_2.12/0.17.0/spark-xml_2.12-0.17.0-sources.jar"
                         }
                     ]
                 },
@@ -1363,6 +1384,57 @@
                             "name": "parquet-hadoop",
                             "classifier": "sources",
                             "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/parquet/parquet-hadoop/1.13.1/parquet-hadoop-1.13.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.glassfish.jaxb",
+                    "name": "txw2",
+                    "version": "3.0.2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "txw2",
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/glassfish/jaxb/txw2/3.0.2/txw2-3.0.2.jar"
+                        },
+                        {
+                            "name": "txw2",
+                            "classifier": "sources",
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/glassfish/jaxb/txw2/3.0.2/txw2-3.0.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.ws.xmlschema",
+                    "name": "xmlschema-core",
+                    "version": "2.3.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "xmlschema-core",
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/ws/xmlschema/xmlschema-core/2.3.0/xmlschema-core-2.3.0.jar"
+                        },
+                        {
+                            "name": "xmlschema-core",
+                            "classifier": "sources",
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/ws/xmlschema/xmlschema-core/2.3.0/xmlschema-core-2.3.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang.modules",
+                    "name": "scala-collection-compat_2.12",
+                    "version": "2.9.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-collection-compat_2.12",
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.9.0/scala-collection-compat_2.12-2.9.0.jar"
+                        },
+                        {
+                            "name": "scala-collection-compat_2.12",
+                            "classifier": "sources",
+                            "path": "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.9.0/scala-collection-compat_2.12-2.9.0-sources.jar"
                         }
                     ]
                 },
