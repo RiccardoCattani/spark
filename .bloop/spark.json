@@ -2,14 +2,14 @@
     "version": "1.4.0",
     "project": {
         "name": "spark",
-        "directory": "/home/riccardo/Documenti/repository/spark/spark",
-        "workspaceDir": "/home/riccardo/Documenti/repository/spark/spark",
+        "directory": "/home/riccardo/Documenti/spark",
+        "workspaceDir": "/home/riccardo/Documenti/spark",
         "sources": [
-            "/home/riccardo/Documenti/repository/spark/spark/src/main/scala",
-            "/home/riccardo/Documenti/repository/spark/spark/src/main/scala-2.12",
-            "/home/riccardo/Documenti/repository/spark/spark/src/main/scala-2",
-            "/home/riccardo/Documenti/repository/spark/spark/src/main/java",
-            "/home/riccardo/Documenti/repository/spark/spark/target/scala-2.12/src_managed/main"
+            "/home/riccardo/Documenti/spark/src/main/scala",
+            "/home/riccardo/Documenti/spark/src/main/scala-2.12",
+            "/home/riccardo/Documenti/spark/src/main/scala-2",
+            "/home/riccardo/Documenti/spark/src/main/java",
+            "/home/riccardo/Documenti/spark/target/scala-2.12/src_managed/main"
         ],
         "dependencies": [
             
@@ -162,11 +162,11 @@
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/google/flatbuffers/flatbuffers-java/1.12.0/flatbuffers-java-1.12.0.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/io/netty/netty-transport-native-epoll/4.1.96.Final/netty-transport-native-epoll-4.1.96.Final.jar"
         ],
-        "out": "/home/riccardo/Documenti/repository/spark/spark/.bloop/spark",
-        "classesDir": "/home/riccardo/Documenti/repository/spark/spark/.bloop/spark/scala-2.12/classes",
+        "out": "/home/riccardo/Documenti/spark/.bloop/spark",
+        "classesDir": "/home/riccardo/Documenti/spark/.bloop/spark/scala-2.12/classes",
         "resources": [
-            "/home/riccardo/Documenti/repository/spark/spark/src/main/resources",
-            "/home/riccardo/Documenti/repository/spark/spark/target/scala-2.12/resource_managed/main"
+            "/home/riccardo/Documenti/spark/src/main/resources",
+            "/home/riccardo/Documenti/spark/target/scala-2.12/resource_managed/main"
         ],
         "scala": {
             "organization": "org.scala-lang",
@@ -259,22 +259,25 @@
         "platform": {
             "name": "jvm",
             "config": {
-                "home": "/usr/lib/jvm/java-17-openjdk-17.0.17.0.10-1.el9.x86_64",
+                "home": "/usr/lib/jvm/java-17-openjdk-amd64",
                 "options": [
-                    "-Duser.dir=/home/riccardo/Documenti/repository/spark/spark"
+                    "-Duser.dir=/home/riccardo/Documenti/spark",
+                    "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+                    "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                    "--add-opens=java.base/java.nio=ALL-UNNAMED"
                 ]
             },
             "mainClass": [
                 
             ],
             "runtimeConfig": {
-                "home": "/usr/lib/jvm/java-17-openjdk-17.0.17.0.10-1.el9.x86_64",
+                "home": "/usr/lib/jvm/java-17-openjdk-amd64",
                 "options": [
-                    "-Duser.dir=/home/riccardo/Documenti/repository/spark/spark"
+                    "-Duser.dir=/home/riccardo/Documenti/spark"
                 ]
             },
             "classpath": [
-                "/home/riccardo/Documenti/repository/spark/spark/.bloop/spark/scala-2.12/classes",
+                "/home/riccardo/Documenti/spark/.bloop/spark/scala-2.12/classes",
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar",
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/spark/spark-core_2.12/3.5.0/spark-core_2.12-3.5.0.jar",
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/spark/spark-sql_2.12/3.5.0/spark-sql_2.12-3.5.0.jar",

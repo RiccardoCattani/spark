@@ -2,15 +2,15 @@
     "version": "1.4.0",
     "project": {
         "name": "spark-build",
-        "directory": "/home/riccardo/Documenti/repository/spark/spark/project",
-        "workspaceDir": "/home/riccardo/Documenti/repository/spark/spark/project",
+        "directory": "/home/riccardo/Documenti/spark/project",
+        "workspaceDir": "/home/riccardo/Documenti/spark/project",
         "sources": [
-            "/home/riccardo/Documenti/repository/spark/spark/project/src/main/scala",
-            "/home/riccardo/Documenti/repository/spark/spark/project/src/main/scala-2.12",
-            "/home/riccardo/Documenti/repository/spark/spark/project/src/main/scala-2",
-            "/home/riccardo/Documenti/repository/spark/spark/project/src/main/java",
-            "/home/riccardo/Documenti/repository/spark/spark/project/src/main/scala-sbt-1.0",
-            "/home/riccardo/Documenti/repository/spark/spark/project/target/scala-2.12/sbt-1.0/src_managed/main"
+            "/home/riccardo/Documenti/spark/project/src/main/scala",
+            "/home/riccardo/Documenti/spark/project/src/main/scala-2.12",
+            "/home/riccardo/Documenti/spark/project/src/main/scala-2",
+            "/home/riccardo/Documenti/spark/project/src/main/java",
+            "/home/riccardo/Documenti/spark/project/src/main/scala-sbt-1.0",
+            "/home/riccardo/Documenti/spark/project/target/scala-2.12/sbt-1.0/src_managed/main"
         ],
         "dependencies": [
             
@@ -104,11 +104,11 @@
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.0/jna-platform-5.12.0.jar",
             "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/typesafe/config/1.4.2/config-1.4.2.jar"
         ],
-        "out": "/home/riccardo/Documenti/repository/spark/spark/project/.bloop/spark-build",
-        "classesDir": "/home/riccardo/Documenti/repository/spark/spark/project/.bloop/spark-build/scala-2.12/sbt-1.0/classes",
+        "out": "/home/riccardo/Documenti/spark/project/.bloop/spark-build",
+        "classesDir": "/home/riccardo/Documenti/spark/project/.bloop/spark-build/scala-2.12/sbt-1.0/classes",
         "resources": [
-            "/home/riccardo/Documenti/repository/spark/spark/project/src/main/resources",
-            "/home/riccardo/Documenti/repository/spark/spark/project/target/scala-2.12/sbt-1.0/resource_managed/main"
+            "/home/riccardo/Documenti/spark/project/src/main/resources",
+            "/home/riccardo/Documenti/spark/project/target/scala-2.12/sbt-1.0/resource_managed/main"
         ],
         "scala": {
             "organization": "org.scala-lang",
@@ -122,9 +122,9 @@
             ],
             "jars": [
                 "/home/riccardo/.sbt/boot/scala-2.12.20/lib/scala-library.jar",
-                "/home/riccardo/.sbt/boot/scala-2.12.20/lib/scala-compiler.jar",
+                "/home/riccardo/.sbt/boot/scala-2.12.20/lib/scala-xml_2.12-2.3.0.jar",
                 "/home/riccardo/.sbt/boot/scala-2.12.20/lib/scala-reflect.jar",
-                "/home/riccardo/.sbt/boot/scala-2.12.20/lib/scala-xml_2.12-2.3.0.jar"
+                "/home/riccardo/.sbt/boot/scala-2.12.20/lib/scala-compiler.jar"
             ],
             "setup": {
                 "order": "mixed",
@@ -213,22 +213,22 @@
         "platform": {
             "name": "jvm",
             "config": {
-                "home": "/usr/lib/jvm/java-11-openjdk-11.0.25.0.9-7.el9.x86_64",
+                "home": "/usr/lib/jvm/java-17-openjdk-17.0.17.0.10-1.el9.x86_64",
                 "options": [
-                    "-Duser.dir=/home/riccardo/Documenti/repository/spark/spark/project"
+                    "-Duser.dir=/home/riccardo/Documenti/spark/project"
                 ]
             },
             "mainClass": [
                 
             ],
             "runtimeConfig": {
-                "home": "/usr/lib/jvm/java-11-openjdk-11.0.25.0.9-7.el9.x86_64",
+                "home": "/usr/lib/jvm/java-17-openjdk-17.0.17.0.10-1.el9.x86_64",
                 "options": [
-                    "-Duser.dir=/home/riccardo/Documenti/repository/spark/spark/project"
+                    "-Duser.dir=/home/riccardo/Documenti/spark/project"
                 ]
             },
             "classpath": [
-                "/home/riccardo/Documenti/repository/spark/spark/project/.bloop/spark-build/scala-2.12/sbt-1.0/classes",
+                "/home/riccardo/Documenti/spark/project/.bloop/spark-build/scala-2.12/sbt-1.0/classes",
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.17/sbt-bloop_2.12_1.0-2.0.17.jar",
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/bloop-config_2.12/2.3.3/bloop-config_2.12-2.3.3.jar",
                 "/home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/com/github/plokhotnyuk/jsoniter-scala/jsoniter-scala-core_2.12/2.13.5.2/jsoniter-scala-core_2.12-2.13.5.2.jar",

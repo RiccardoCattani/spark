@@ -1,3 +1,33 @@
+# Ignora la cartella streams e tutto il suo contenuto
+streams/
+# Ignora il file obj_PairRDD.scala
+src/main/scala/sparkPratica/obj_PairRDD.scala
+# Scala/Spark/Metals/Bloop
+.bloop/
+.metals/
+target/
+project/target/
+project/project/
+*.class
+*.log
+*.lock.db
+*.mv.db
+**/*.semanticdb
+.idea/
+.DS_Store
+*.iml
+*.swp
+*.swo
+*.bak
+*.tmp
+# VSCode
+.vscode/
+# WireGuard keys (se usi WireGuard qui)
+*.key
+out/
+output/
+*.out
+
 # Ignora cartelle di database e log
 db/
 log/

@@ -98,4 +98,39 @@ first(): restituisce il primo elemento dell’RDD.
 countByValue(): restituisce una mappa con la frequenza di ciascun valore.
 saveAsTextFile(path): salva il contenuto dell’RDD come file di testo.
 foreach(func): applica una funzione a ciascun elemento dell’RDD (effetto collaterale).
+
 Queste azioni sono fondamentali per ottenere risultati concreti dal calcolo distribuito di Spark.
+
+# Differenza tra DataFrame e RDD
+
+**RDD (Resilient Distributed Dataset):**
+- Collezione distribuita di oggetti, immutabile e tipizzata, su cui si possono applicare trasformazioni (map, filter, flatMap, ecc.) e azioni (count, collect, foreach, ecc.).
+- Offre controllo di basso livello su partizionamento, caching e operazioni custom.
+- Non ha schema: ogni elemento è un oggetto Scala/Java (es. String, Array, case class).
+- Meno ottimizzato: non sfrutta il motore Catalyst e le ottimizzazioni SQL di Spark.
+- Utile per operazioni non tabellari, manipolazioni complesse o dati non strutturati.
+
+**DataFrame:**
+- Collezione distribuita di dati organizzati in colonne (simile a una tabella SQL o a un DataFrame Pandas).
+- Ha uno schema (nomi e tipi delle colonne) e supporta operazioni SQL-like (select, filter, groupBy, join, ecc.).
+- Più ottimizzato: sfrutta il motore Catalyst per ottimizzazioni query e Tungsten per la gestione efficiente della memoria.
+- Supporta API SQL, DataFrame e Dataset, e può essere usato con Spark SQL.
+- Consigliato per analisi tabellari, aggregazioni, join e quando serve performance.
+
+**In sintesi:**
+- Usa RDD per operazioni di basso livello, dati non strutturati o manipolazioni custom.
+- Usa DataFrame per analisi tabellari, query SQL, aggregazioni e performance migliori.
+
+**Esempio pratico:**
+
+// RDD
+val rdd = sc.textFile("India.txt")
+val hindiStates = rdd.filter(line => line.split(",").last.trim == "Hindi")
+hindiStates.collect().foreach(println)
+
+// DataFrame
+import spark.implicits._
+val df = spark.read.option("delimiter", ",").csv("India.txt").toDF("Stato", "Capitale", "Lingua")
+df.filter($"Lingua" === "Hindi").show()
+
+

@@ -1,3 +1,4 @@
-[debug] not up to date. inChanged = true, force = false
-[debug] Updating ProjectRef(uri("file:/home/riccardo/Documenti/repository/spark/spark/project/"), "spark-build")...
-[debug] Done updating ProjectRef(uri("file:/home/riccardo/Documenti/repository/spark/spark/project/"), "spark-build")
+[warn] sbt-bloop_2.12_1.0-2.0.17-sources.jar no longer exists at /home/riccardo/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/2.0.17/sbt-bloop_2.12_1.0-2.0.17-sources.jar
+[debug] not up to date. inChanged = false, force = false
+[debug] Updating ProjectRef(uri("file:/home/riccardo/Documenti/spark/project/"), "spark-build")...
+[debug] Done updating ProjectRef(uri("file:/home/riccardo/Documenti/spark/project/"), "spark-build")
