@@ -11,7 +11,7 @@ object ReadJsonExample {
 
     // Lettura JSON semplice
     println("Leggo il file JSON semplice:")
-    val simpleDf = spark.read.format("json").load("/home/riccardo/Documenti/repository/spark/sparkuser.json")
+    val simpleDf = spark.read.format("json").load("/home/riccardo/Documenti/repository/spark/spark/user.json")
     simpleDf.printSchema()
     simpleDf.show(false)
 
@@ -20,7 +20,7 @@ object ReadJsonExample {
     val complexDf = spark.read
       .format("json")
       .option("multiLine", true)
-      .load("/home/riccardo/Documenti/repository/spark/sparkrandom_user.json")
+      .load("/home/riccardo/Documenti/repository/spark/spark/random_user.json")
     complexDf.printSchema()
     complexDf.show(false)
 
