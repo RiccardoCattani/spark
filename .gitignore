@@ -18,6 +18,9 @@ project/project/
 *.iml
 *.swp
 *.swo
+project/target/streams/**/out
+project/project/target/streams/**/out
+target/streams/**/out
 *.bin
 *.db
 *.bak

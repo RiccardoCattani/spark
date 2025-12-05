@@ -15,7 +15,10 @@ object obj_Avro_File {
     val read_df = spark.read.format("csv")
       .option("header", "true")
       .option("delimiter", "|")
-      .load("file:///C:/data/India_pipe.txt")
+      .load("/home/riccardo/Documenti/repository/spark/spark/" +
+        "India_pipe.txt")
+    read_df.printSchema()
+    read_df.show(10)
 
     // Puoi aggiungere qui altre operazioni sul DataFrame
     read_df.show(5)
