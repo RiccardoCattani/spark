@@ -1,7 +1,6 @@
 # DIFFERENZA TRA HIVE, IMPALA E SQOOP
 (E TRA DATA WAREHOUSE E MOTORE SQL)
 
-
 1) DATA WAREHOUSE VS MOTORE SQL
 
 Data Warehouse
@@ -12,6 +11,13 @@ b) Gestisce metadati, sicurezza e processi batch / ETL
 Tra i quali: Hive, Snowflake, BigQuery
 Attenzione: Hive è sia un data warehouse che un motore SQL
 
+**Differenza tra File System (es. HDFS) e Data Warehouse**
+- Un file system come HDFS si occupa solo di memorizzare file e cartelle, senza struttura o regole sui dati.
+- Un data warehouse, invece, organizza i dati in tabelle, schemi e partizioni, gestisce metadati, sicurezza, storico e processi di caricamento/analisi. Fornisce strumenti per interrogare e governare i dati.
+
+**Significato letterale di “warehouse”**
+- “Warehouse” in inglese significa “magazzino”. Un data warehouse è quindi un “magazzino di dati”, cioè un sistema che raccoglie, organizza e conserva grandi quantità di dati per analisi e reportistica.
+
 Motore SQL
 - Esegue query SQL
 - Calcola e restituisce risultati
@@ -21,7 +27,6 @@ Impala, Spark SQL, Trino
 
 One-liner:
 Il Data Warehouse governa i dati, il motore SQL li interroga.
-
 
 --------------------------------------------------
 
