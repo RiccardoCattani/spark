@@ -10,13 +10,14 @@ a) Definisce schemi, tabelle, partizioni e storico
 b) Gestisce metadati, sicurezza e processi batch / ETL
 - Può utilizzare uno o più motori SQL:
 Tra i quali: Hive, Snowflake, BigQuery
+Attenzione: Hive è sia un data warehouse che un motore SQL
 
 Motore SQL
 - Esegue query SQL
 - Calcola e restituisce risultati
 - Non governa i dati
 - Dipende da uno storage o da un Data Warehouse, come tra gli altri:
-Tra i quali Impala, Spark SQL, Trino
+Impala, Spark SQL, Trino
 
 One-liner:
 Il Data Warehouse governa i dati, il motore SQL li interroga.
