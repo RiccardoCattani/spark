@@ -15,6 +15,11 @@ Attenzione: Hive è sia un data warehouse che un motore SQL
 - Un file system come HDFS si occupa solo di memorizzare file e cartelle, senza struttura o regole sui dati.
 - Un data warehouse, invece, organizza i dati in tabelle, schemi e partizioni, gestisce metadati, sicurezza, storico e processi di caricamento/analisi. Fornisce strumenti per interrogare e governare i dati.
 
+**Schema rapido (cosa fa chi)**
+- HDFS: memorizza i file che contengono le righe.
+- Data Warehouse (Hive Metastore + layer SQL batch di Hive): definisce schemi, tabelle, partizioni, governa metadati, sicurezza e processi ETL/batch.
+- Motore SQL (es. Impala): interroga i dati già memorizzati, restituisce risultati; non governa i metadati.
+
 **Significato letterale di “warehouse”**
 - “Warehouse” in inglese significa “magazzino”. Un data warehouse è quindi un “magazzino di dati”, cioè un sistema che raccoglie, organizza e conserva grandi quantità di dati per analisi e reportistica.
 
