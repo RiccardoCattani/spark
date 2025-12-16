@@ -4,7 +4,7 @@
 1) DATA WAREHOUSE VS MOTORE SQL
 
 Data Warehouse
-- Governa e organizza i dati analitici
+- Governa (Ma non possiede) e organizza i dati analitici (Le righe, ossia i dati fisici, risiedono nei file su HDFS/S3/ADLS. Hive/Impala leggono e scrivono quei file, e il metastore tiene il catalogo (tabelle, schemi, partizioni, permessi) 
 a) Definisce schemi, tabelle, partizioni e storico
 b) Gestisce metadati, sicurezza e processi batch / ETL
 - Può utilizzare uno o più motori SQL:
@@ -14,11 +14,18 @@ Attenzione: Hive è sia un data warehouse che un motore SQL
 **Differenza tra File System (es. HDFS) e Data Warehouse**
 - Un file system come HDFS si occupa solo di memorizzare file e cartelle, senza struttura o regole sui dati.
 - Un data warehouse, invece, organizza i dati in tabelle, schemi e partizioni, gestisce metadati, sicurezza, storico e processi di caricamento/analisi. Fornisce strumenti per interrogare e governare i dati.
+Per essere precisi, nel mondo Hive/Impala: il “warehouse” governa (schemi, tabelle, partizioni, metadati, sicurezza) ma le righe vivono nei file su HDFS/S3/ADLS. Il catalogo dice dove sono i file e come interpretarli; i motori SQL leggono/scrivono file nuovi, non tengono le righe “dentro” il metastore.
+Eccezione: alcuni data warehouse cloud (Snowflake, BigQuery) integrano anche lo storage fisico, ma la logica resta la stessa: catalogo/metadati + motore; i dati stanno comunque in uno storage sottostante.
 
 **Schema rapido (cosa fa chi)**
 - HDFS: memorizza i file che contengono le righe.
 - Data Warehouse (Hive Metastore + layer SQL batch di Hive): definisce schemi, tabelle, partizioni, governa metadati, sicurezza e processi ETL/batch.
 - Motore SQL (es. Impala): interroga i dati già memorizzati, restituisce risultati; non governa i metadati.
+**Box rapido: tabelle vs metadati vs dati**
+- Tabelle: entita logiche nel Hive Metastore.
+- Metadati: schema, colonne, partizioni, permessi nel catalogo.
+- Dati (righe): file fisici su HDFS/S3/ADLS.
+
 
 **Significato letterale di “warehouse”**
 - “Warehouse” in inglese significa “magazzino”. Un data warehouse è quindi un “magazzino di dati”, cioè un sistema che raccoglie, organizza e conserva grandi quantità di dati per analisi e reportistica.
@@ -234,3 +241,4 @@ Motivo:
 Soluzione moderna:
 - utilizzo di formati di tabella come Iceberg, Hudi o Delta Lake
 - gestione di snapshot, versioni e storico
+
