@@ -1,6 +1,38 @@
 # DIFFERENZA TRA HIVE, IMPALA E SQOOP
 (E TRA DATA WAREHOUSE E MOTORE SQL)
 
+## DATA LAKE VS DATA WAREHOUSE
+
+**Data Lake**
+- Un data lake è un sistema di archiviazione che raccoglie grandi quantità di dati grezzi, strutturati e non strutturati, provenienti da fonti diverse.
+- I dati vengono memorizzati così come sono (schema-on-read), senza una struttura predefinita.
+- È pensato per la scalabilità, la flessibilità e l’analisi di dati eterogenei (log, immagini, file, dati IoT, ecc.).
+- Tipicamente utilizza storage distribuito come HDFS, S3, ADLS.
+- Esempi: Hadoop, Amazon S3, Azure Data Lake Storage.
+
+**Data Warehouse**
+- Un data warehouse è un sistema che organizza, struttura e governa i dati per analisi e reportistica.
+- I dati sono strutturati in tabelle e schemi (schema-on-write), con qualità e coerenza garantite.
+- il data warehouse non possiede fisicamente i dati: governa, organizza e cataloga i dati, ma questi risiedono nello storage sottostante (come HDFS, S3, ADLS). Il data warehouse gestisce metadati, schemi, tabelle e processi ETL, mentre i file con le righe dei dati sono nello storage. Alcuni data warehouse cloud integrano anche lo storage, ma la logica resta: il data warehouse governa, lo storage possiede i dati.
+- Ottimizzato per query analitiche, BI e reporting.
+- Gestisce metadati, sicurezza, storico e processi ETL.
+- Esempi: Hive, Snowflake, BigQuery, Redshift.
+
+### Differenze principali
+
+| Caratteristica         | Data Lake                        | Data Warehouse                  |
+|------------------------|----------------------------------|---------------------------------|
+| Tipo di dati           | Grezzi, strutturati e non        | Strutturati                     |
+| Schema                 | On-read (al momento della query) | On-write (alla scrittura)       |
+| Governance             | Limitata                         | Elevata                         |
+| Performance query      | Variabile                        | Ottimizzata per analisi         |
+| Costo                  | Basso (storage scalabile)        | Più alto (ottimizzato, gestito) |
+| Utenti tipici          | Data scientist, ingegneri dati   | Analisti, business, BI          |
+| Esempi                 | Hadoop, S3, ADLS                 | Hive, Snowflake, BigQuery       |
+
+**In sintesi:**
+Il data lake è un “lago” di dati grezzi e flessibili, il data warehouse è un “magazzino” di dati strutturati e governati per analisi.
+
 1) DATA WAREHOUSE VS MOTORE SQL
 
 Data Warehouse
