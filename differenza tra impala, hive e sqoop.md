@@ -17,9 +17,8 @@
 - I dati sono strutturati in tabelle e schemi (schema-on-write), con qualità e coerenza garantite.
 - il data warehouse non possiede fisicamente i dati: governa, organizza e cataloga i dati, ma questi risiedono nello storage sottostante (come HDFS, S3, ADLS). Il data warehouse gestisce metadati, schemi, tabelle e processi ETL, mentre i file con le righe dei dati sono nello storage. Alcuni data warehouse cloud integrano anche lo storage, ma la logica resta: il data warehouse governa, lo storage possiede i dati.
 - Ottimizzato per query analitiche, BI e reporting.
-- Gestisce metadati, sicurezza, storico e processi ETL, n
-
-el dettaglio:
+- Gestisce metadati, sicurezza, storico e processi ETL
+Nel dettaglio:
 a) Gestione dei metadati: Tiene traccia delle informazioni che descrivono i dati (schema delle tabelle, tipi di colonne, partizioni, permessi, ecc.), facilitando la comprensione, la ricerca e l’utilizzo dei dati stessi. Si ricorda che i dati sono le informazioni che vuoi analizzare o conservee (es. le righe di una tabella: nomi, numeri, date, transazioni, ecc.), mentre i metadati sono sono le informazioni che descrivono i dati stessi (es. schema della tabella, nomi e tipi delle colonne, partizioni, permessi, percorso dei file, definizioni dei campi).
 b) Sicurezza: Permette di definire chi può accedere a quali dati, impostando permessi e ruoli per utenti e gruppi, garantendo la protezione delle informazioni sensibili.
 c) Storico: Consente di mantenere versioni storiche dei dati, tracciare le modifiche e gestire lo storico delle tabelle, utile per audit, analisi temporali e ripristino.
@@ -38,7 +37,7 @@ Processi ETL (Extract, Transform, Load): Supporta e governa i processi di estraz
 | Esempi                 | Hadoop, S3, ADLS                 | Hive, Snowflake, BigQuery       |
 
 **In sintesi:**
-Il data lake è un “lago” di dati grezzi e flessibili, il data warehouse è un “magazzino” di dati strutturati e governati per analisi.
+Il data warehouse governa i dati (schema, tabelle, partizioni, sicurezza, qualità) e li rende interrogabili, ma i file fisici stanno nello storage sottostante (es. HDFS/S3/ADLS). Il metastore/catalogo sa dove sono i file e come interpretarli; il motore SQL legge/scrive quei file. Eccezione: alcuni DW cloud (Snowflake, BigQuery) integrano anche lo storage, ma il concetto resta: il layer warehouse organizza e governa, lo storage contiene fisicamente i dati.
 
 1) DATA WAREHOUSE VS MOTORE SQL
 
