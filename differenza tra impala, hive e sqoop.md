@@ -56,14 +56,15 @@ Per essere precisi, nel mondo Hive/Impala: il “warehouse” governa (schemi, t
 Eccezione: alcuni data warehouse cloud (Snowflake, BigQuery) integrano anche lo storage fisico, ma la logica resta la stessa: catalogo/metadati + motore; i dati stanno comunque in uno storage sottostante.
 
 **Schema rapido (cosa fa chi)**
-- HDFS: memorizza i file che contengono le righe.
-- Data Warehouse (Hive Metastore + layer SQL batch di Hive): definisce schemi, tabelle, partizioni, governa metadati, sicurezza e processi ETL/batch.
+- HDFS: memorizza i file/blocchi, i byte che contengono le righe ma senza conoscere schema o concetto di riga
+- Data Warehouse (Hive Metastore + layer SQL batch di Hive): contiene i metadati e puntatori, definisce schemi, tabelle, partizioni, governa metadati, sicurezza e processi ETL/batch.
 - Motore SQL (es. Impala): interroga i dati già memorizzati, restituisce risultati; non governa i metadati.
-**Box rapido: tabelle vs metadati vs dati**
-- Tabelle: entita logiche nel Hive Metastore.
-- Metadati: schema, colonne, partizioni, permessi nel catalogo.
-- Dati (righe): file fisici su HDFS/S3/ADLS.
 
+**Box rapido: tabelle vs metadati vs dati**
+- Tabelle: oggetti logici nel metastore; nome, colonne/tipi, partizioni, formato, path, ma non le righe.
+- Metadati: informazioni descrittive (schema, tipi, partizioni, permessi, path, formato, statistiche) usate dai motori per trovare e interpretare i file.
+- Dati (righe): contenuto reale nei file (Parquet/ORC/CSV...) su HDFS/S3/ADLS; HDFS vede solo byte, non conosce le righe.
+Aggiunto esempio pratico per la tabella Hive “vendite”.
 
 **Significato letterale di “warehouse”**
 - “Warehouse” in inglese significa “magazzino”. Un data warehouse è quindi un “magazzino di dati”, cioè un sistema che raccoglie, organizza e conserva grandi quantità di dati per analisi e reportistica.
