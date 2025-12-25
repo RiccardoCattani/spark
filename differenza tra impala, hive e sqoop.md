@@ -3,7 +3,8 @@
 
 ## DATA LAKE VS DATA WAREHOUSE
 
-**Data Lake**
+**Data Lake** 
+- Brevemente: Possiede fisicamente i dati (Grezzi, strutturati e non strutturati)
 - Un data lake è un sistema di archiviazione che raccoglie grandi quantità di dati grezzi, strutturati e non strutturati, provenienti da fonti diverse.
 - I dati vengono memorizzati così come sono (schema-on-read), senza una struttura predefinita.
 - È pensato per la scalabilità, la flessibilità e l’analisi di dati eterogenei (log, immagini, file, dati IoT, ecc.).
@@ -11,7 +12,8 @@
 - Esempi: Hadoop, Amazon S3, Azure Data Lake Storage.
 
 **Data Warehouse**
-- Un data warehouse è un sistema che organizza, struttura e governa i dati per analisi e reportistica.
+- Brevemente: governa, organizza e cataloga i dati
+- Un data warehouse è un sistema che organizza, struttura e governa i dati ma non li possiede
 - I dati sono strutturati in tabelle e schemi (schema-on-write), con qualità e coerenza garantite.
 - il data warehouse non possiede fisicamente i dati: governa, organizza e cataloga i dati, ma questi risiedono nello storage sottostante (come HDFS, S3, ADLS). Il data warehouse gestisce metadati, schemi, tabelle e processi ETL, mentre i file con le righe dei dati sono nello storage. Alcuni data warehouse cloud integrano anche lo storage, ma la logica resta: il data warehouse governa, lo storage possiede i dati.
 - Ottimizzato per query analitiche, BI e reporting.
