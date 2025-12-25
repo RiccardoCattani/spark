@@ -3,22 +3,27 @@
 
 ## DATA LAKE VS DATA WAREHOUSE
 
-**Data Lake** 
+**Data Lake**  (Es.Hadoop, Amazon S3, Azure Data Lake Storage)
 - Brevemente: Possiede fisicamente i dati (Grezzi, strutturati e non strutturati)
 - Un data lake è un sistema di archiviazione che raccoglie grandi quantità di dati grezzi, strutturati e non strutturati, provenienti da fonti diverse.
 - I dati vengono memorizzati così come sono (schema-on-read), senza una struttura predefinita.
 - È pensato per la scalabilità, la flessibilità e l’analisi di dati eterogenei (log, immagini, file, dati IoT, ecc.).
 - Tipicamente utilizza storage distribuito come HDFS, S3, ADLS.
-- Esempi: Hadoop, Amazon S3, Azure Data Lake Storage.
+- Esempi: Hadoop, Amazon S3, Azure Data Lake Storage
 
-**Data Warehouse**
+**Data Warehouse** (Es. Hive, Snowflake, BigQuery, Redshift)
 - Brevemente: governa, organizza e cataloga i dati
 - Un data warehouse è un sistema che organizza, struttura e governa i dati ma non li possiede
 - I dati sono strutturati in tabelle e schemi (schema-on-write), con qualità e coerenza garantite.
 - il data warehouse non possiede fisicamente i dati: governa, organizza e cataloga i dati, ma questi risiedono nello storage sottostante (come HDFS, S3, ADLS). Il data warehouse gestisce metadati, schemi, tabelle e processi ETL, mentre i file con le righe dei dati sono nello storage. Alcuni data warehouse cloud integrano anche lo storage, ma la logica resta: il data warehouse governa, lo storage possiede i dati.
 - Ottimizzato per query analitiche, BI e reporting.
-- Gestisce metadati, sicurezza, storico e processi ETL.
-- Esempi: Hive, Snowflake, BigQuery, Redshift.
+- Gestisce metadati, sicurezza, storico e processi ETL, n
+
+el dettaglio:
+a) Gestione dei metadati: Tiene traccia delle informazioni che descrivono i dati (schema delle tabelle, tipi di colonne, partizioni, permessi, ecc.), facilitando la comprensione, la ricerca e l’utilizzo dei dati stessi. Si ricorda che i dati sono le informazioni che vuoi analizzare o conservee (es. le righe di una tabella: nomi, numeri, date, transazioni, ecc.), mentre i metadati sono sono le informazioni che descrivono i dati stessi (es. schema della tabella, nomi e tipi delle colonne, partizioni, permessi, percorso dei file, definizioni dei campi).
+b) Sicurezza: Permette di definire chi può accedere a quali dati, impostando permessi e ruoli per utenti e gruppi, garantendo la protezione delle informazioni sensibili.
+c) Storico: Consente di mantenere versioni storiche dei dati, tracciare le modifiche e gestire lo storico delle tabelle, utile per audit, analisi temporali e ripristino.
+Processi ETL (Extract, Transform, Load): Supporta e governa i processi di estrazione, trasformazione e caricamento dei dati, assicurando che i dati siano puliti, coerenti e pronti per l’analisi.
 
 ### Differenze principali
 
