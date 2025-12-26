@@ -52,7 +52,7 @@ Attenzione: Hive Ã¨ sia un data warehouse che un motore SQL
 **Differenza tra File System (es. HDFS) e Data Warehouse**
 - Un file system come HDFS si occupa solo di memorizzare file e cartelle, senza struttura o regole sui dati.
 - Un data warehouse, invece, organizza i dati in tabelle, schemi e partizioni, gestisce metadati, sicurezza, storico e processi di caricamento/analisi. Fornisce strumenti per interrogare e governare i dati.
-Per essere precisi, nel mondo Hive/Impala: il â€œwarehouseâ€ governa (schemi, tabelle, partizioni, metadati, sicurezza) ma le righe vivono nei file su HDFS/S3/ADLS. Il catalogo dice dove sono i file e come interpretarli; i motori SQL leggono/scrivono file nuovi, non tengono le righe â€œdentroâ€ il metastore.
+Per essere precisi, nel mondo Hive/Impala: il datawharehouse governa (schemi, tabelle, partizioni, metadati, sicurezza) ma le righe vivono nei file su HDFS/S3/ADLS. Il catalogo dice dove sono i file e come interpretarli; i motori SQL leggono/scrivono file nuovi, non tengono le righe dentro il metastore.
 Eccezione: alcuni data warehouse cloud (Snowflake, BigQuery) integrano anche lo storage fisico, ma la logica resta la stessa: catalogo/metadati + motore; i dati stanno comunque in uno storage sottostante.
 
 **Schema rapido (cosa fa chi)**
@@ -84,8 +84,8 @@ Il Data Warehouse governa i dati, il motore SQL li interroga.
 
 2) APACHE HIVE
 
-Cosâ€™Ã¨:
-Hive Ã¨ un Data Warehouse SQL-on-Hadoop.
+Cosa è ?
+Hive è un Data Warehouse SQL-on-Hadoop.
 
 Cosa fa:
 - Definisce e governa tabelle, schemi e partizioni
@@ -99,9 +99,17 @@ Caratteristiche:
 - Query generalmente lente (minuti), ma altamente scalabili
 - Adatto a ETL, preparazione dati e analisi storiche
 
+Come esegue le query (batch MapReduce/Tez/Spark):
+- Ogni query scatena piu' fasi (map/shuffle/reduce) con avvio di container YARN, allocazione risorse e pianificazione: solo lo startup pesa secondi o decine di secondi per fase.
+- I dati sono letti da HDFS in blocchi e spesso riscritti su disco tra una fase e l'altra (spill/shuffle), quindi molta I/O e serializzazione/deserializzazione.
+- L'esecuzione e' pensata per throughput e fault tolerance: se un task fallisce si riavvia; questo aggiunge overhead ma consente di sfruttare cluster grandi.
+- La parallelizzazione avviene distribuendo scansioni e shuffle su molti nodi: piu' nodi significano piu' throughput su dati massivi, ma la latenza per singola query resta alta.
+- Con formati colonnari, partizionamento e predicate pushdown la latenza migliora, ma il modello resta batch e non low-latency ("Batch e non low-latency" significa che ogni query ha startup e shuffle su piu' fasi, quindi tempi tipicamente di secondi/minuti; per latenza bassa servono motori MPP in-memory o modalita' Hive LLAP).
+- Confronto rapido: Impala/Presto/Trino sono motori MPP in-memory e long-running con latenze di secondi, meno robusti per job lunghi; Hive e' piu' lento ma molto scalabile e resistente su volumi enormi.
+   
 Quando usarlo:
-- Elaborazioni pesanti
-- ETL complessi
+- Elaborazioni pesanti (grandi join/aggregazioni/dedupliche con shuffle massivi, molti task e possibili spill su disco; serve throughput e tolleranza ai fault piu' che latenza)
+- ETL complessi (pipeline con molte fasi: join/aggregazioni/dedupliche/arricchimenti/controlli qualita'/partizionamento su grandi volumi, dove contano throughput e scalabilita' piu' della latenza)
 - Analisi su grandi volumi di dati
 - Non per interrogazioni real-time
 
@@ -111,8 +119,8 @@ Quando usarlo:
 
 3) APACHE IMPALA
 
-Cosâ€™Ã¨:
-Impala Ã¨ un motore SQL MPP (Massively Parallel Processing).
+Cosa è:
+Impala è un motore SQL MPP (Massively Parallel Processing).
 
 Cosa fa:
 - Interroga gli stessi dati di Hive
@@ -132,8 +140,8 @@ Quando usarlo:
 - Non per ETL complessi o batch notturni
 
 Punto chiave:
-Hive Ã¨ la â€œcasa dei datiâ€
-Impala Ã¨ il â€œmotore di interrogazioneâ€
+Hive e' la "casa dei dati" e un motore SQL batch (MapReduce/Tez/Spark): interroga ma con latenza di secondi/minuti.
+Impala e' il "motore di interrogazione" low-latency MPP in-memory.
 
 Esempio:
 CREATE TABLE vendite (...);   -- Hive
