@@ -85,7 +85,7 @@ Il Data Warehouse governa i dati, il motore SQL li interroga.
 2) APACHE HIVE
 
 Cosa è ?
-Hive è un Data Warehouse SQL-on-Hadoop.
+Hive è un Data Warehouse e un motore SQLlike(HiveQL)-on-Hadoop.
 
 Cosa fa:
 - Definisce e governa tabelle, schemi e partizioni
@@ -137,7 +137,10 @@ Quando usarlo:
 - BI
 - Dashboard
 - Analisi esplorativa
-- Non per ETL complessi o batch notturni
+- Non per ETL complessi o batch notturni: Impala è un motore in-memoria con esecuzione interattiva, ottimizzato per query veloci e puntuali. Non è adatto per:
+  a)ETL complessi**: richiedono elaborazioni pesanti con join massicci, aggregazioni, dedupliche, spill su disco e fault tolerance. Impala ha limiti di memoria per nodo e non gestisce bene i dati che non stanno in RAM; Hive con MapReduce/Tez gestisce meglio volumi enormi spillando su disco e riprovando task falliti.
+  b)Batch notturni**: sono job lunghi che girano offline; l'architettura in-memoria di Impala non è pensata per processi prolungati, e i dati devono stare in RAM. Hive, invece, è progettato per batch: scalabile, distribuito, resistente a fallimenti e capace di sfruttare il cluster intero per throughput massimo.
+  - In sintesi: usa **Hive per trasformazioni pesanti e ripetute (ETL/batch)**, usa **Impala per letture puntuali e veloci (BI/analisi)**.
 
 Punto chiave:
 Hive e' la "casa dei dati" e un motore SQL batch (MapReduce/Tez/Spark): interroga ma con latenza di secondi/minuti.
