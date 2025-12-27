@@ -140,7 +140,10 @@ Quando usarlo:
 - Non per ETL complessi o batch notturni: Impala è un motore in-memoria con esecuzione interattiva, ottimizzato per query veloci e puntuali. Non è adatto per:
   a)ETL complessi**: richiedono elaborazioni pesanti con join massicci, aggregazioni, dedupliche, spill su disco e fault tolerance. Impala ha limiti di memoria per nodo e non gestisce bene i dati che non stanno in RAM; Hive con MapReduce/Tez gestisce meglio volumi enormi spillando su disco e riprovando task falliti.
   b)Batch notturni**: sono job lunghi che girano offline; l'architettura in-memoria di Impala non è pensata per processi prolungati, e i dati devono stare in RAM. Hive, invece, è progettato per batch: scalabile, distribuito, resistente a fallimenti e capace di sfruttare il cluster intero per throughput massimo.
-  - In sintesi: usa **Hive per trasformazioni pesanti e ripetute (ETL/batch)**, usa **Impala per letture puntuali e veloci (BI/analisi)**.
+
+- In sintesi: 
+a) usa **Hive per trasformazioni pesanti e ripetute (ETL/batch)**, 
+b) usa **Impala per letture puntuali e veloci (BI/analisi)**.
 
 Punto chiave:
 Hive e' la "casa dei dati" e un motore SQL batch (MapReduce/Tez/Spark): interroga ma con latenza di secondi/minuti.
@@ -156,13 +159,22 @@ SELECT * FROM vendite;        -- Impala
 
 4) APACHE SQOOP
 
-Cosâ€™Ã¨:
-Sqoop Ã¨ uno strumento di data transfer, non un motore SQL.
+Cosa è:
+Sqoop è uno strumento di data transfer, non un motore SQL.
 
 Cosa fa:
 - Importa dati da database relazionali verso Hadoop (HDFS/Hive)
-- Esporta dati da Hadoop verso database relazionali
-- Ãˆ basato su MapReduce
+- Esporta dati da Hadoop verso database relazionali (Sono quelli basati su tabelle, schema fisso, SQL e transazioni ACID: Esempi diffusi:
+
+Oracle Database
+Microsoft SQL Server
+PostgreSQL
+MySQL e MariaDB
+IBM Db2
+SQLite (embedded)
+Varianti cloud compatibili: Amazon RDS/Aurora (MySQL/PostgreSQL/SQL Server/Oracle), Google Cloud SQL/AlloyDB (PostgreSQL), Azure SQL Database (SQL Server) etc.
+
+- è basato su MapReduce
 
 Quando usarlo:
 - Ingestione dati da DB a Hadoop
@@ -182,7 +194,7 @@ Le righe delle tabelle:
 
 Storage (HDFS / S3 / ADLS):
 - Gestisce i file fisici che contengono le righe
-- Garantisce durabilitÃ , replica e permessi
+- Garantisce durabilità , replica e permessi
 
 Hive Metastore:
 - Gestisce i metadati (schema, tabelle, partizioni, path)
@@ -222,13 +234,38 @@ Metadati di business:
 
 7) COSA SI TROVA IN SQL
 
-In SQL trovi:
-- I dati (SELECT dalle tabelle)
-- I metadati tecnici (cataloghi di sistema, information_schema)
+Precisazione: **SQL è un linguaggio di query, non un contenitore di dati**. I dati risiedono nel **database** sottostante; SQL è il motore che li interroga.
 
-In genere NON trovi:
-- Metadati di business
-- Governance e regole di qualitÃ 
+Con SQL (eseguito su un database) trovi:
+
+**I dati** (memorizzati nel database, interrogabili via SQL)
+- Contenuto delle tabelle (righe e colonne) accessibili con SELECT
+- Esempio: `SELECT nome, importo FROM vendite WHERE anno = 2024;` interroga il database e restituisce le righe
+- Nota: i dati stanno nel database (HDFS, filesystem, storage relazionale, ecc.); SQL li legge
+
+**I metadati tecnici**
+- Informazioni su schema, tabelle, colonne, tipi, indici, vincoli
+- Memorizzati in cataloghi di sistema (es. `information_schema` in SQL standard, `sys.*` in SQL Server, `pg_*` in PostgreSQL)
+- Esempio: `SELECT * FROM information_schema.tables;` mostra tutte le tabelle del database
+- Includono: nomi colonne, tipi di dato, dimensioni, statistiche, chiavi primarie/esterne
+
+In genere NON trovi in SQL:
+
+**Metadati di business**
+- Significato dei dati (es. "questo campo rappresenta il reddito lordo annuale")
+- Proprietari dei dati (data owner)
+- Definizioni KPI, glossario aziendale
+- Regole di validazione personalizzate
+- Catalogazione semantica
+
+**Governance e regole di qualità**
+- Policy di sicurezza e accesso
+- Regole di conformità GDPR, audit trail
+- Metriche di qualità e anomalie
+- Ciclo di vita dei dati (retention, archivio)
+- Lineage (provenienza e trasformazioni dei dati)
+
+Questi si trovano in strumenti specifici: **data catalog** (es. Alation, Collibra), **metadata repository** (es. Apache Atlas), **data governance platform**
 
 
 --------------------------------------------------
@@ -258,15 +295,128 @@ STORAGE
 
 9) CONFRONTO CON DATABASE RELAZIONALI CLASSICI
 
-Database relazionali (Oracle, PostgreSQL, MySQL):
-- Storage, SQL e gestione delle righe sono un unico sistema
-- Supportano UPDATE e DELETE a livello riga
-- Garantiscono transazioni ACID
+**Database relazionali classici (Oracle, PostgreSQL, MySQL):**
 
-Hadoop / Hive / Impala:
-- Storage separato dai motori SQL
-- Aggiornare una riga implica riscrivere file
-- ACID non nativo
+*Architettura integrata (Storage + SQL + Transazioni = unico sistema)*
+- Storage fisico (tabelle, indici), motore SQL e gestore di transazioni sono strettamente integrati e comunicano continuamente
+- Il database sa sempre dove sta ogni riga e può localizzarla in millisecondi
+- Esempio: Oracle memorizza le righe di una tabella, gli indici, e il log delle transazioni nello stesso database, controllato da un unico motore
+
+*UPDATE e DELETE a livello riga*
+- Puoi localizzare una riga specifica (es. `UPDATE vendite SET importo = 100 WHERE id = 5;`)
+- Il database trova la riga, la modifica in-place e aggiorna gli indici
+- Se il server crasha durante l'UPDATE, il log di transazione consente il rollback
+
+*Transazioni ACID*
+- **Atomicity**: l'UPDATE intera o non accade mai (no stati parziali)
+- **Consistency**: il database rimane in uno stato valido
+- **Isolation**: UPDATE di utenti diversi non si interferiscono
+- **Durability**: una volta committed, i dati sono persistiti e sicuri anche se il server crasha
+- Esempio: `BEGIN; UPDATE conto SET saldo = saldo - 100 WHERE id = 1; UPDATE conto SET saldo = saldo + 100 WHERE id = 2; COMMIT;` garantisce che o entrambi gli UPDATE succedon o nessuno
+
+**Hadoop / Hive / Impala:**
+
+*Architettura separata (Storage vs Motori SQL)*
+- Storage (HDFS/S3) contiene i file; il metastore descrive come leggerli; i motori SQL leggono/scrivono creando nuovi file
+- Non esiste un'integrazione stretta: non puoi localizzare una singola riga rapidamente
+- Esempio: per modificare una riga in un file Parquet su HDFS, devi leggere l'intero file, modificare la riga in memoria, e riscrivere il file completo (oppure usare formati transazionali come Delta/Iceberg)
+
+*UPDATE e DELETE implicano riscrivere file interi*
+- `UPDATE vendite SET importo = 100 WHERE id = 5;` non localizza la riga: Hive legge il blocco (o il file intero), modifica in memoria, riscrive
+- Per grandi file (GB/TB), riscrivere l'intero file è costoso e lento
+- Per questo Hadoop è pensato per INSERT massivi o riscritture complete, non aggiornamenti puntuali
+- Nota: Delta Lake e Iceberg aggiungono log transazionali e snapshot, migliorando UPDATE/DELETE, ma il concetto rimane: dati su storage distribuito
+
+*ACID non nativo*
+- Hadoop non garantisce natively ACID per UPDATE/DELETE riga-per-riga
+- Se due utenti scrivono contemporaneamente, Hadoop non serializza: risultato imprevedibile
+- Se Hive crasha durante una scrittura, i dati parziali rimangono nel file
+- Soluzione moderna: **Delta Lake**, **Iceberg**, **Hudi** aggiungono log di transazioni e snapshot per simulare ACID
+- Esempio: Delta Lake su Hadoop può fare `UPDATE tabella SET colonna = valore WHERE condizione;` in modo ACID, usando log transazionali
+
+**Confronto rapido:**
+
+| Aspetto                  | Database relazionali      | Hadoop/Hive/Impala                  |
+|--------------------------|---------------------------|----------------------------------   |
+| Architettura             | Integrata (1 sistema)     | Separata (storage + motori)         |
+| Localizzazione riga      | Veloce (indici, pointer)  | Lenta (leggi file/blocco)           |
+| UPDATE riga singola      | Veloce, ACID              | Lento, riscrive file/blocco         |
+| Scalabilità              | Verticale (server potente)| Orizzontale (molti nodi)            | 
+| Volume dati tipico       | Gigabyte/Terabyte         | Terabyte/Petabyte                   |
+| Caso d'uso               | Transazioni, BI operazionale | ETL batch, big data analytics    |
+| ACID nativo              | Sì                        | No (ma Delta/Iceberg lo aggiungono) |
+
+**Quando usare Database relazionali (MySQL, PostgreSQL, Oracle):**
+
+- **Transazioni online** (OLTP - Online Transaction Processing): applicazioni bancarie, e-commerce, sistemi di ordini dove servono UPDATE/DELETE puntuali e ACID
+- **Dati con aggiornamenti frequenti**: CRM, ERP, sistemi amministrativi dove le righe cambiano continuamente
+- **Basse latenze critiche**: applicazioni web, mobile, real-time che richiedono risposta in millisecondi
+- **Volume dati moderato**: centinaia di gigabyte/pochi terabyte (scalabili verticalmente con server potenti)
+- **Concorrenza alta**: molti utenti che leggono/scrivono contemporaneamente su stesse righe
+- **Integrità garantita**: dati finanziari, medici, legali dove gli errori costano molto
+
+Esempi pratici:
+- Banca: quando un cliente preleva 100€, aggiornare il saldo deve essere atomico (ACID)
+- E-commerce: gestire inventario, ordini, pagamenti in tempo reale
+- Sistema CRM: aggiornare contatti, note, follow-up continuamente
+
+**Quando usare Hadoop/Hive/Impala:**
+
+- **Big Data Analytics** (OLAP - Online Analytical Processing): analisi storiche, BI, data science su enormi volumi
+- **ETL batch notturni**: processare gigabyte/terabyte di dati una volta al giorno, senza necessità di aggiornamenti puntuali
+- **Dati inseriti una volta e letti molte volte**: log, sensori IoT, events che non cambiano
+- **Scalabilità orizzontale necessaria**: dati che non entrano in un server, servono cluster di 100+ nodi
+- **Latenza accettabile**: risposte in secondi/minuti vanno bene (non millisecondi)
+- **Varietà di dati**: CSV, JSON, immagini, log, file non strutturati
+
+Esempi pratici:
+- Analista dati: analizzare 1 TB di transazioni del 2024 per trovare trend di vendita (una query, non UPDATE)
+- Data lake aziendale: raccogliere log da 1000 server e analizzarli con Hive
+- Machine learning: leggere terabyte di dati storici per addestrare modelli
+- Reporting notturno: ogni notte ricalcolare report aggregati su milioni di righe
+
+**Ibrido (Conviene a volte?)**
+
+Alcune aziende usano **entrambi**:
+- **Database relazionale**: sistema operativo in tempo reale (e-commerce, CRM, transazioni)
+- **Hadoop**: data warehouse e analytics su copia storica dei dati (estratti via Sqoop di notte)
+- Esempio: MySQL per il sito e-commerce (aggiornamenti continui), Hive per analytics su vendite storiche (una volta al giorno)
+
+**CASO REALE: AMAZON**
+
+Amazon è l'esempio perfetto di architettura ibrida che usa entrambi i sistemi:
+
+**MySQL/Aurora (database relazionale) per transazioni in tempo reale:**
+- **Carrello acquisti**: quando aggiungi un prodotto, UPDATE immediato del carrello (ACID)
+- **Ordini**: quando compri, INSERT dell'ordine e UPDATE dello stock (transazione atomica)
+- **Pagamenti**: addebito carta, aggiornamento saldo, conferma ordine (tutto ACID o rollback)
+- **Gestione account**: login, password, indirizzi, preferenze (UPDATE puntuali e veloci)
+- **Inventario in tempo reale**: decremento quantità disponibile quando qualcuno ordina
+- Latenza: millisecondi (se non è veloce, il cliente abbandona)
+- Volume per singolo database: gigabyte/terabyte
+- Motivo: servono transazioni ACID, UPDATE/DELETE riga-per-riga, concorrenza alta
+
+**Hadoop/EMR/S3 (data lake e analytics) per big data:**
+- **Raccomandazioni prodotti** ("Chi ha comprato questo ha comprato anche..."): analisi di miliardi di transazioni storiche con algoritmi ML
+- **Analytics e BI**: report su vendite, trend, performance categorie, previsioni inventario
+- **Click-stream analysis**: analizzare miliardi di click, pageview, navigazioni per ottimizzare il sito
+- **Data lake**: raccogliere log da milioni di server, sensori, dispositivi IoT (Alexa, Kindle, etc.)
+- **Machine learning**: addestrare modelli su petabyte di dati (classificazione immagini, NLP, fraud detection)
+- **Data science**: esperimenti A/B, test pricing, segmentazione clienti
+- Latenza: secondi/minuti/ore (batch notturni, report giornalieri)
+- Volume: petabyte distribuiti su migliaia di nodi
+- Motivo: volumi enormi, elaborazioni batch complesse, non servono UPDATE puntuali
+
+**Flusso tipico:**
+1. Cliente ordina su Amazon → **MySQL/Aurora** registra transazione (tempo reale, ACID)
+2. Di notte, **Sqoop o AWS DMS** esportano ordini da MySQL a **S3/Hadoop**
+3. **EMR (Hadoop/Spark)** elabora milioni di ordini e calcola raccomandazioni/analytics
+4. Risultati salvati in **Redshift** (data warehouse) o **S3** (data lake)
+5. Dashboard BI, algoritmi ML, data scientist leggono da Redshift/S3
+
+**In sintesi:**
+- **MySQL = sistema operativo** (transazioni live, bassa latenza, ACID)
+- **Hadoop/S3/EMR = sistema analitico** (big data, ML, BI su dati storici)
 
 
 --------------------------------------------------
