@@ -3,7 +3,7 @@
 
 1) DATA WAREHOUSE VS MOTORE SQL
 
-Data Warehouse
+a) Data Warehouse
 - Governa (Ma non possiede) e organizza i dati analitici (Le righe, ossia i dati fisici, risiedono nei file su HDFS/S3/ADLS. Hive/Impala leggono e scrivono quei file, e il metastore tiene il catalogo (tabelle, schemi, partizioni, permessi) 
 a) Definisce schemi, tabelle, partizioni e storico
 b) Gestisce metadati, sicurezza e processi batch / ETL
@@ -30,7 +30,7 @@ Eccezione: alcuni data warehouse cloud (Snowflake, BigQuery) integrano anche lo 
 **Significato letterale di “warehouse”**
 - “Warehouse” in inglese significa “magazzino”. Un data warehouse è quindi un “magazzino di dati”, cioè un sistema che raccoglie, organizza e conserva grandi quantità di dati per analisi e reportistica.
 
-Motore SQL
+b) Motore SQL
 - Esegue query SQL
 - Calcola e restituisce risultati
 - Non governa i dati
@@ -46,7 +46,7 @@ Il Data Warehouse governa i dati, il motore SQL li interroga.
 2) APACHE HIVE
 
 Cos’è:
-Hive è un Data Warehouse SQL-on-Hadoop.
+Hive è un Data Warehouse SQL-on-Hadoop
 
 Cosa fa:
 - Definisce e governa tabelle, schemi e partizioni
@@ -73,7 +73,7 @@ Quando usarlo:
 3) APACHE IMPALA
 
 Cos’è:
-Impala è un motore SQL MPP (Massively Parallel Processing).
+Impala è un motore SQL MPP (Massively Parallel Processing)
 
 Cosa fa:
 - Interroga gli stessi dati di Hive
