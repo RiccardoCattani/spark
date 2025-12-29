@@ -5,21 +5,21 @@
 
 **Data Lake**  (Es.Hadoop, Amazon S3, Azure Data Lake Storage)
 - Brevemente: Possiede fisicamente i dati (Grezzi, strutturati e non strutturati)
-- Un data lake Ã¨ un sistema di archiviazione che raccoglie grandi quantitÃ  di dati grezzi, strutturati e non strutturati, provenienti da fonti diverse.
+- Un data lake è un sistema di archiviazione che raccoglie grandi quantitÃ  di dati grezzi, strutturati e non strutturati, provenienti da fonti diverse.
 - I dati vengono memorizzati cosÃ¬ come sono (schema-on-read), senza una struttura predefinita.
 - Ãˆ pensato per la scalabilitÃ , la flessibilitÃ  e lâ€™analisi di dati eterogenei (log, immagini, file, dati IoT, ecc.).
 - Tipicamente utilizza storage distribuito come HDFS, S3, ADLS.
-- Esempi: Hadoop, Amazon S3, Azure Data Lake Storage
 
 **Data Warehouse** (Es. Hive, Snowflake, BigQuery, Redshift)
-- Brevemente: governa, organizza e cataloga i dati
+- Brevemente: governa, organizza, cataloga e struttura i dati
 - Un data warehouse Ã¨ un sistema che organizza, struttura e governa i dati ma non li possiede
 - I dati sono strutturati in tabelle e schemi (schema-on-write), con qualitÃ  e coerenza garantite.
-- il data warehouse non possiede fisicamente i dati: governa, organizza e cataloga i dati, ma questi risiedono nello storage sottostante (come HDFS, S3, ADLS). Il data warehouse gestisce metadati, schemi, tabelle e processi ETL, mentre i file con le righe dei dati sono nello storage. Alcuni data warehouse cloud integrano anche lo storage, ma la logica resta: il data warehouse governa, lo storage possiede i dati.
+- il data warehouse non possiede fisicamente i dati: governa, organizza, cataloga e struttura i dati, ma questi risiedono nello storage sottostante (come HDFS, S3, ADLS). Il data warehouse gestisce metadati, schemi, tabelle e processi ETL, mentre i file con le righe dei dati sono nello storage. Alcuni data warehouse cloud integrano anche lo storage, ma la logica resta: il data warehouse governa, lo storage possiede i dati.
 - Ottimizzato per query analitiche, BI e reporting.
 - Gestisce metadati, sicurezza, storico e processi ETL
+
 Nel dettaglio:
-a) Gestione dei metadati: Tiene traccia delle informazioni che descrivono i dati (schema delle tabelle, tipi di colonne, partizioni, permessi, ecc.), facilitando la comprensione, la ricerca e lâ€™utilizzo dei dati stessi. Si ricorda che i dati sono le informazioni che vuoi analizzare o conservee (es. le righe di una tabella: nomi, numeri, date, transazioni, ecc.), mentre i metadati sono sono le informazioni che descrivono i dati stessi (es. schema della tabella, nomi e tipi delle colonne, partizioni, permessi, percorso dei file, definizioni dei campi).
+a) Gestione dei metadati: Tiene traccia delle informazioni che descrivono i dati (schema delle tabelle, tipi di colonne, partizioni, permessi, ecc.), facilitando la comprensione, la ricerca e lâ€™utilizzo dei dati stessi. Si ricorda che i dati sono le informazioni che vuoi analizzare o conservare (es. le righe di una tabella: nomi, numeri, date, transazioni, ecc.), mentre i metadati sono sono le informazioni che descrivono i dati stessi (es. schema della tabella, nomi e tipi delle colonne, partizioni, permessi, percorso dei file, definizioni dei campi).
 b) Sicurezza: Permette di definire chi puÃ² accedere a quali dati, impostando permessi e ruoli per utenti e gruppi, garantendo la protezione delle informazioni sensibili.
 c) Storico: Consente di mantenere versioni storiche dei dati, tracciare le modifiche e gestire lo storico delle tabelle, utile per audit, analisi temporali e ripristino.
 Processi ETL (Extract, Transform, Load): Supporta e governa i processi di estrazione, trasformazione e caricamento dei dati, assicurando che i dati siano puliti, coerenti e pronti per lâ€™analisi.
@@ -85,7 +85,7 @@ Il Data Warehouse governa i dati, il motore SQL li interroga.
 2) APACHE HIVE
 
 Cos’è:
-Hive è un Data Warehouse SQL-on-Hadoop.
+Hive è un Data Warehouse e un SQL-on-Hadoop.
 
 Cosa fa:
 - Definisce e governa tabelle, schemi e partizioni
@@ -93,9 +93,10 @@ Cosa fa:
 - Permette di interrogare dati su HDFS e object storage (S3, ADLS)
 - Usa HiveQL (simile a SQL)
 - Traduce le query in MapReduce, Tez o Spark
+- Non fornisce query "interattive" nel senso di bassa latenza 
 
 Caratteristiche:
-- Orientato a elaborazioni batch
+- Orientato a elaborazioni batch (significa che il sistema è progettato per eseguire lavorazioni in lotti: carica ed elabora grandi volumi di dati in job programmati (es. notturni), con più fasi sequenziali e tempi di avvio non istantanei. È ottimizzato per throughput e scalabilità, non per risposte a bassa latenza in tempo reale.)
 - Query generalmente lente (minuti), ma altamente scalabili
 - Adatto a ETL, preparazione dati e analisi storiche
 
@@ -422,11 +423,11 @@ Amazon è l'esempio perfetto di architettura ibrida che usa entrambi i sistemi:
 --------------------------------------------------
 
 
-10) PERCHÃ‰ HADOOP NON Ãˆ ACID DI DEFAULT
+10) PERCHè HADOOP NON è ACID DI DEFAULT
 
 Hadoop nasce per:
 - grandi volumi di dati
-- elaborazioni batch
+- elaborazioni batch: si intende eseguire lavorazioni su grandi volumi di dati in lotti programmati (spesso notturni), con pipeline composte da più fasi sequenziali. Sono ottimizzate per throughput e scalabilità, non per risposte immediate: tempi di avvio non istantanei, latenza in secondi/minuti, ma capacità di processare molti dati in modo robusto.
 - scalabilitÃ  orizzontale
 
 Non nasce per:
