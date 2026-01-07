@@ -446,7 +446,7 @@ NEL DATA CATALOG (Alation/Collibra):
 
 ## APACHE IMPALA
 
-**Cos'è**: Motore SQL MPP in-memory
+**Cos'è**: Motore SQL MPP in-memory (Quindi non ha la parte wharehouse)
 
 **Cosa fa**
 - Interroga gli stessi dati di Hive (su HDFS/S3)
@@ -504,6 +504,20 @@ NEL DATA CATALOG (Alation/Collibra):
   - Esempi: banca (prelievi atomici), e-commerce (ordini), CRM (contatti aggiornati)
 - **Hadoop**: big data, elaborazioni batch, dati immutabili (insert-once), latenza accettabile, volume enorme (TB/PB)
   - Esempi: analytics, ML su terabyte di dati, log analysis, reporting notturni
+
+
+# Perché non si usa ACID non nativo nelle transazioni bancarie?
+Le transazioni bancarie richiedono la massima affidabilità: ogni operazione (es. bonifico, prelievo) deve essere completata interamente o non avvenire affatto, senza possibilità di errori o dati parziali.
+Un sistema “ACID non nativo” (come Hadoop/Impala/Hive senza Delta/Iceberg/Hudi) non garantisce atomicità, isolamento e durabilità in modo rigoroso: in caso di crash, scritture concorrenti o errori, i dati potrebbero risultare incompleti o corrotti.
+Per questo, in ambito bancario si usano solo database relazionali classici (Oracle, PostgreSQL, MySQL, ecc.) che implementano ACID in modo nativo e robusto.
+Impala ha delle somiglianze con i database relazionali classici?
+Sì, Impala offre un’interfaccia SQL molto simile (SELECT, JOIN, GROUP BY, ecc.) e permette di interrogare dati strutturati come un database relazionale.
+Tuttavia, a differenza dei DB classici:
+Non gestisce transazioni ACID su singole righe (no UPDATE/DELETE atomici)
+Non ha indici o constraint come PK/FK
+I dati sono su file distribuiti (HDFS/S3), non su storage integrato
+Ottimizzato per analisi su grandi volumi, non per OLTP
+In sintesi: Impala “sembra” un database relazionale per chi scrive SQL, ma sotto è progettato per analisi big data, non per transazioni critiche. Vuoi aggiungere queste spiegazioni al documento?
 
 ---
 
@@ -572,7 +586,7 @@ Amazon usa entrambi i sistemi:
 | Componente    | Ruolo                                | Possiede/Governa Dati | Latenza           |
 |---------------|--------------------------------------|----------------------|-------------------|
 | **Storage**   | Memorizza file fisici                | Possiede              | N/A               |
-| **Metastore** | Catalogo e governance                | Governa metadati      | N/A               |
+| **Metastore** | Catalogo e governance (tecnica?)     | Governa metadati      | N/A               |
 | **Hive**      | DW + query batch                     | Governa (non possiede) | Secondi/minuti   |
 | **Impala**    | Query interattivo MPP in-memory      | Governa (non possiede) | Secondi/milli    |
 | **Sqoop**     | Data transfer DB ↔ Hadoop            | Trasporta (non governa) | Batch            |
