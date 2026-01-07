@@ -36,7 +36,120 @@
 | Utenti                 | Data scientist, ingegneri dati | Analisti, BI, business      |
 | Esempi                 | Hadoop, S3, ADLS               | Hive, Snowflake, BigQuery   |
 
----
+**⚠️ Attenzione: Data Lake ≠ Data Catalog**
+
+| Aspetto              | Data Lake                                    | Data Catalog                                   |
+|----------------------|----------------------------------------------|------------------------------------------------|
+| **Cosa è**           | Storage system (memorizza dati fisicamente)   | Metadata/Governance platform (documenta dati)  |
+| **Possiede/Governa** | Possiede (memorizza file)                    | Governa (non possiede)                         |
+| **Contiene**         | Dati grezzi, strutturati e misti             | Definizioni business, ownership, policy, lineage |
+| **Esempi**           | Hadoop/HDFS, S3, ADLS                        | Alation, Collibra, Apache Atlas                |
+| **Funzione**         | Memorizzare dati durevolmente                | Catalogare dove stanno i dati e cosa significano |
+| **Conosce schemi**   | No (on-read)                                 | Sì (documenta schemi e strutture)              |
+| **Esegue query**     | No (solo storage)                            | No (cataloga, non esegue query)                |
+
+**Rapporto pratico:**
+- **Data Lake** = magazzino fisico (storage, possiede i dati)
+- **Data Warehouse** = responsabile della lettura e della struttura (governa tabelle, schemi, permessi SQL)
+- **Data Catalog** = bibliotecario (sa cosa c'è e cosa significa, non memorizza dati)
+
+**⚠️ Data Catalog NON è un contenitore**
+
+Il Data Catalog **non memorizza dati**, non è un contenitore:
+- **Non contiene** dati effettivi (righe, file, tabelle)
+- **Non contiene** metadati tecnici (se non come riferimenti/indici)
+- **Documenta e cataloga** i dati/tabelle che vivono in altri sistemi (Data Warehouse, Storage, Database)
+- **Punta a** e aggrega informazioni da altre piattaforme
+
+**Esempio pratico:**
+```
+┌─────────────────────────────┐
+│ Storage (S3, HDFS)          │
+├─ file_vendite.parquet (1GB) │
+└─────────────────────────────┘
+           ↑ contiene dati
+           │
+┌─────────────────────────────┐
+│ Data Warehouse (Hive)       │
+├─ TABLE vendite (schema)     │
+└─────────────────────────────┘
+           ↑ governa tabelle
+           │
+┌─────────────────────────────┐
+│ Data Catalog (Alation)      │
+├─ "vendite = reddito lordo"  │
+├─ "owner: Mario Rossi"       │
+├─ "sensibile GDPR"           │
+├─ "usata in 5 report"        │
+└─ "lineage: Salesforce→Hive" │
+└─────────────────────────────┘
+     documenta e cataloga
+     (NON memorizza dati)
+```
+
+È come la **Biblioteca Nazionale**: 
+- Non contiene i libri fisici (come il magazzino di Amazon)
+- Non esegue transazioni sui libri (come un sistema di gestione di biblioteca)
+- Contiene catalogo, indici, e metadati su chi scrive libri, quando sono stati pubblicati, quale argomento trattano
+- Punta ai libri che vivono in altre biblioteche
+
+**⚠️ Data Catalog ≠ Data Warehouse**
+
+| Aspetto              | Data Warehouse (Hive, Snowflake, BigQuery) | Data Catalog (Alation, Collibra, Atlas) |
+|----------------------|--------------------------------------------|-----------------------------------------|
+| **Esegue query SQL** | Sì: SELECT, INSERT, UPDATE, DELETE         | No: non esegue query                    |
+| **Governa dati**     | Sì: schemi, tabelle, partizioni, permessi  | No: cataloga informazioni da altri sistemi |
+| **Memorizza dati**   | No (governa, non possiede); dati in storage | No (non memorizza dati, solo metadati business) |
+| **Controlla accesso**| Sì: RBAC/ABAC, masking, filtri riga/colonna | No: eventuali preview passano per il motore |
+| **Metadati**         | Tecnici: information_schema, statistiche, indici | Business: significato, ownership, policy, lineage |
+| **Utenti**           | Ingegneri, analisti, BI (query e trasformazioni) | Data steward, governance, business (ricerca significato) |
+| **Esempio di query** | `SELECT * FROM vendite WHERE anno=2024` → righe reali | `search("vendite", filter="PII")` → metadati business |
+
+**In una frase:**
+- **Data Warehouse** = motore che esegue query e governa la struttura tecnica (schemi, permessi SQL)
+- **Data Catalog** = libreria che documenta il significato business e la governance (non possiede né interroga dati)
+
+**Dove vivono fisicamente i metadati?**
+
+I metadati del Data Catalog si trovano **nel database interno del Catalog stesso**, non nei sistemi che cataloga:
+
+```
+┌─────────────────────────┐
+│ Storage (S3, HDFS)      │
+│ file_vendite.parquet    │
+└─────────────────────────┘
+           ↑
+           
+┌──────────────────────────────┐
+│ Data Warehouse (Hive)        │
+│ TABLE vendite (schema)       │
+│ Hive Metastore (metadati)    │
+└──────────────────────────────┘
+           ↑
+           
+┌────────────────────────────────────────┐
+│ Data Catalog (Alation/Collibra/Atlas)  │
+│ ┌──────────────────────────────────┐   │
+│ │ Database interno del Catalog:    │   │
+│ │ - "vendite = reddito lordo"      │   │
+│ │ - "owner: Mario Rossi"           │   │
+│ │ - "sensibile GDPR"               │   │
+│ │ - "usata in 5 report"            │   │
+│ │ - "lineage: Salesforce→Hive"     │   │
+│ └──────────────────────────────────┘   │
+└────────────────────────────────────────┘
+```
+
+**Dove vivono fisicamente:**
+- **Alation**: database interno (PostgreSQL, MySQL, Oracle) + storage per documenti/descrizioni
+- **Collibra**: database interno (PostgreSQL) + metadata repository centralizzato
+- **Apache Atlas**: HBase (per metadati) + Elasticsearch (per ricerca) nel cluster Hadoop
+
+**Caratteristica importante: indipendenza**
+- Se il Data Warehouse (Hive) cade, il Data Catalog rimane online (documenta comunque cosa c'era)
+- Se il Data Catalog cade, i dati rimangono intatti nel Storage/DW (il Catalog non li controlla, solo li documenta)
+- I metadati del Catalog sono **completamente separati** e indipendenti dall'architettura dati
+
 
 ## DATI, METADATI E GOVERNANCE
 
@@ -50,6 +163,20 @@
 - Schema, tabelle, colonne, tipi, partizioni, percorsi, permessi, statistiche
 - Nota: la "tabella" come oggetto (nome, schema, proprietà, location, formati) è metadato; le righe contenute sono dati
 - Gestiti da: Hive Metastore (per Hive/Impala)
+
+### SQL vs Data Catalog (Riassunto veloce)
+
+| Aspetto         | SQL (motore)                                               | Data Catalog (Alation/Collibra/Atlas)                          |
+|-----------------|-------------------------------------------------------------|-----------------------------------------------------------------|
+| Scopo           | Leggere/scrivere dati, eseguire query, gestire schema       | Documentare significato, ownership, policy, lineage             |
+| Gestisce        | Tabelle, colonne, tipi, DDL/DML, permessi (GRANT/REVOKE)    | Definizioni business, KPI, classificazioni (PII), qualità, glossario |
+| Enforcement     | Sì: controlli d’accesso, masking, filtri a livello riga/colonna | No: non esegue query; eventuali preview rispettano i permessi della sorgente |
+| Preview dati    | Nativo (via query)                                          | Facoltativo; passa tramite la connessione al motore             |
+| Dove vive       | Motore dati (Hive/Impala/Snowflake/PostgreSQL/…)            | Piattaforma separata                                            |
+| Utenti          | Ingegneri, analisti, BI                                     | Data steward, governance, business                              |
+| Esempi          | Hive, Impala, Spark SQL, Snowflake, BigQuery                | Alation, Collibra, Apache Atlas                                 |
+
+In una frase: SQL governa struttura e accesso; il Catalog governa significato e regole.
 
 **Gerarchia organizzativa: Database > Schema > Tabella**
 
@@ -128,7 +255,55 @@ GRANT SELECT ON vendite TO utente_finance;
 -- ✅ Sa: significato, policy, ownership
 ```
 
-**Cosa SI trova in SQL** (il database conosce)
+**Accesso a dati sensibili (GDPR): Alation vs SQL**
+- **Alation** è un Data Catalog: non memorizza né elabora i dati; mostra metadati e, se configurato, può offrire un "data preview".
+- Qualsiasi **preview** in Alation esegue query sulla sorgente tramite una connessione/account e **rispetta i permessi** del motore sottostante: non è un bypass dei controlli.
+- L’accesso ai dati sensibili si **controlla nel motore** (Hive/Impala/DB) e nello storage: RBAC/ABAC, column-level masking, row-level filtering, encryption, auditing.
+- In Hadoop (Hive/Impala) usare **Apache Ranger** per:
+  - Column masking (es. mascherare `email` o offuscare parzialmente `codice_fiscale`)
+  - Row filter (limitare righe visibili per reparto/paese)
+  - Audit centralizzato delle query
+- Alternative/varianti: **Sentry** (legacy), **Lake Formation** (AWS), **Unity Catalog** (Databricks) con tag/policy.
+- Per GDPR (diritto all’oblio/retention): usare **Delta/Iceberg/Hudi** per `DELETE` e gestione snapshot/`VACUUM`.
+
+**Esempi pratici: masking e filtri (GDPR)**
+- **Ranger – Column Masking**: imposta una policy sulla colonna `email` di `finance.vendite` (azione SELECT) con mascheramento parziale (es. mostra solo i primi 3 caratteri e il dominio) o totale (NULL/hash). La maschera si applica a tutte le query, viste incluse.
+- **Ranger – Row-level Filter**: definisci un filtro di riga, ad es. `cntry_cd = 'IT'` per il ruolo `FINANCE_IT`, oppure usa attributi utente (es. `${USER.country}`) per filtri dinamici per paese/reparto.
+- **Ranger + Atlas (Tag-based)**: tagga in Atlas le colonne PII (es. `email`, `codice_fiscale`) e crea in Ranger una policy “per tag” che applica maschere/filtri automaticamente a tutte le tabelle con quel tag.
+
+*Pattern SQL-only (viste sicure), se non hai Ranger:*
+```sql
+-- Mascheramento colonna email tramite vista (Hive/Impala)
+CREATE SCHEMA IF NOT EXISTS secure;
+CREATE OR REPLACE VIEW secure.vendite_masked AS
+SELECT
+  id,
+  CONCAT(SUBSTR(email, 1, 3), '***', SUBSTR(email, LOCATE('@', email))) AS email_mascherata,
+  data,
+  cntry_cd
+FROM finance.vendite;
+
+-- Filtro per righe (versione statica)
+CREATE OR REPLACE VIEW secure.vendite_it AS
+SELECT * FROM finance.vendite WHERE cntry_cd = 'IT';
+
+-- Filtro per righe basato sull'utente (mappa utente→paese)
+-- Nota: in Hive usa CURRENT_USER(); in Impala la funzione è USER()
+CREATE TABLE IF NOT EXISTS security.user_country (utente STRING, cntry_cd STRING);
+CREATE OR REPLACE VIEW secure.vendite_per_utente AS
+SELECT v.*
+FROM finance.vendite v
+JOIN security.user_country m
+  ON m.utente = CURRENT_USER()
+ AND v.cntry_cd = m.cntry_cd;
+```
+
+Suggerimenti operativi:
+- Preferisci policy centralizzate (Ranger/Lake Formation/Unity Catalog) a logica applicativa nelle viste: sono auditate e coerenti.
+- Abilita audit di query e usa cifratura a riposo/in transito (HDFS Transparent Encryption, S3/KMS, TLS).
+- Per GDPR “right to be forgotten”, combina `DELETE` su formati transazionali (Delta/Iceberg/Hudi) con procedure di compattazione/`VACUUM` secondo le policy di retention.
+
+**Cosa SI trova con SQL** (il database conosce)
 
 *I dati effettivi*
 ```sql
@@ -153,7 +328,7 @@ SELECT * FROM information_schema.table_constraints WHERE table_name = 'vendite';
 -- Risultato: Primary Key, Foreign Key, vincoli UNIQUE, ecc.
 ```
 
-**Cosa NON si trova in SQL** (serve un Data Catalog esterno)
+**Cosa NON si trova con SQL** (serve un Data Catalog esterno)
 
 *Metadati di business* (il significato aziendale dei dati)
 - "La colonna `importo` rappresenta il **reddito lordo annuale** (comprende bonus e incentivi)"
