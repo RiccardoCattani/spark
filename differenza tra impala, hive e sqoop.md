@@ -47,8 +47,54 @@
 
 **Metadati**
 - Informazioni che descrivono i dati
-- Schema, colonne, tipi, partizioni, percorsi, permessi, statistiche
+- Schema, tabelle, colonne, tipi, partizioni, percorsi, permessi, statistiche
+- Nota: la "tabella" come oggetto (nome, schema, proprietà, location, formati) è metadato; le righe contenute sono dati
 - Gestiti da: Hive Metastore (per Hive/Impala)
+
+**Gerarchia organizzativa: Database > Schema > Tabella**
+
+```
+DATABASE (contenitore generale)
+│
+├── SCHEMA (gruppo logico / namespace)
+│   │
+│   └── TABELLA (struttura dati con righe/colonne)
+│       │
+│       ├── COLONNA (campo: nome + tipo)
+│       └── RIGA (record singolo)
+```
+
+**Schema (o Database in Hive)** = Contenitore/Namespace
+- Raggruppa tabelle correlate logicamente
+- Evita conflitti di nome (es. `finance.vendite` vs `marketing.vendite`)
+- Gestisce permessi a livello di gruppo
+
+**Tabella** = Struttura dati effettiva
+- Contiene righe (record) e colonne (campi)
+- Ha schema definito (nomi colonne + tipi di dato)
+
+**Esempio pratico:**
+```sql
+-- Creare uno schema (in Hive si chiama DATABASE)
+CREATE DATABASE finance;
+CREATE DATABASE marketing;
+
+-- Creare tabelle in schemi diversi
+CREATE TABLE finance.vendite (id INT, importo DECIMAL, data DATE);
+CREATE TABLE marketing.vendite (id INT, prodotto VARCHAR, campagna VARCHAR);
+-- ↑ Stesso nome "vendite", ma tabelle diverse!
+
+-- Accedere alle tabelle
+SELECT * FROM finance.vendite;      -- Tabella del team Finance
+SELECT * FROM marketing.vendite;    -- Tabella diversa del team Marketing
+```
+
+**Analogia rapida:**
+```
+Database = Biblioteca intera
+Schema = Piano della biblioteca (es. Piano 1: Narrativa, Piano 2: Tecnica)
+Tabella = Scaffale con libri (es. Romanzi, Poesia, Informatica)
+```
 
 **Governance del Data Warehouse** (governance TECNICA)
 
