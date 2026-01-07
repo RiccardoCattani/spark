@@ -27,9 +27,12 @@
 | Aspetto                | Data Lake                      | Data Warehouse              |
 |------------------------|--------------------------------|-----------------------------|
 | Possiede/Governa       | Possiede i dati fisicamente    | Governa (non possiede)      |
+| Funzione principale    | Storage (memorizza)            | Query + Governance          |
+| Esegue query SQL       | No (solo storage)              | Sì (SELECT, JOIN, ecc.)     |
 | Tipo dati              | Grezzi, strutturati e misti    | Strutturati                 |
 | Schema                 | On-read (al momento della query) | On-write (alla scrittura) |
-| Governance             | Limitata                       | Elevata                     |
+| Governance tecnica     | Limitata o assente             | Elevata (schemi, permessi, ETL) |
+| Governance business    | Richiede Data Catalog          | Richiede Data Catalog       |
 | Utenti                 | Data scientist, ingegneri dati | Analisti, BI, business      |
 | Esempi                 | Hadoop, S3, ADLS               | Hive, Snowflake, BigQuery   |
 
@@ -38,7 +41,7 @@
 ## DATI, METADATI E GOVERNANCE
 
 **Dati (Righe)**
-- Contenuto informativo vero: righe e colonne delle tabelle
+- Contenuto informativo vero: righe 
 - Memorizzati nei file (Parquet, ORC, CSV, ecc.) su storage
 - Vivono in: HDFS, S3, ADLS (mai in Hive Metastore né in Impala)
 
@@ -47,20 +50,118 @@
 - Schema, colonne, tipi, partizioni, percorsi, permessi, statistiche
 - Gestiti da: Hive Metastore (per Hive/Impala)
 
-**Governance del Data Warehouse**
-- Schemi e tabelle
-- Sicurezza: chi accede a quali dati
-- Storico: versioni e modifiche nel tempo
-- Processi ETL: estrazione, trasformazione e caricamento
+**Governance del Data Warehouse** (governance TECNICA)
 
-**Cosa SI trova in SQL** (tramite un database/warehouse)
-- I dati (interrogabili con SELECT)
-- Metadati tecnici (schema, tipi, indici tramite information_schema, ecc.)
+Il Data Warehouse gestisce la governance **tecnica**, ma non quella **di business**:
 
-**Cosa NON si trova in SQL** (serve un data catalog)
-- Metadati di business (significato, KPI, data owner)
-- Governance: policy di sicurezza, GDPR, lineage, qualità dei dati
+✅ **Governance TECNICA** (gestita dal Data Warehouse):
+- Schemi, tabelle, partizioni e tipi di dato
+- Sicurezza di accesso: permessi SQL (GRANT/REVOKE su tabelle)
+- Storico tecnico: versioni, snapshot (con Delta/Iceberg)
+- Processi ETL: orchestrazione di trasformazioni e caricamenti
+- Metadati tecnici: formati (Parquet/ORC), paths, statistiche
+
+❌ **Governance DI BUSINESS** (serve un Data Catalog esterno):
+- Significato aziendale: cosa rappresenta ogni campo per l'azienda
+- Ownership: chi è il data owner, chi è responsabile
+- Policy aziendali: GDPR, retention, classificazione (pubblico/riservato)
+- Lineage completo: provenienza e tutte le trasformazioni subite
+- Qualità: anomalie, duplicati, completezza, validità
 - Strumenti: Alation, Collibra, Apache Atlas
+
+**Esempio pratico:**
+```sql
+-- Data Warehouse gestisce (governance tecnica):
+CREATE TABLE vendite (id INT, importo DECIMAL, data DATE);
+GRANT SELECT ON vendite TO utente_finance;
+-- ✅ Sa: schema, permessi SQL
+
+-- Data Catalog gestisce (governance business):
+"vendite.importo = reddito lordo mensile (include bonus)"
+"Owner: Mario Rossi (CFO), sensibile GDPR, retention 7 anni"
+-- ✅ Sa: significato, policy, ownership
+```
+
+**Cosa SI trova in SQL** (il database conosce)
+
+*I dati effettivi*
+```sql
+SELECT nome, importo FROM vendite WHERE anno = 2024;
+-- Restituisce: Ana | 150€, Marco | 200€, Sofia | 300€, ...
+-- SQL accede ai dati fisici e li legge
+```
+
+*Metadati tecnici* (il database conosce la sua struttura)
+```sql
+-- Nome colonne e tipi
+SELECT column_name, data_type FROM information_schema.columns 
+WHERE table_name = 'vendite';
+-- Risultato: importo (DECIMAL), data (DATE), nome (VARCHAR), ecc.
+
+-- Indici e performance
+SELECT * FROM information_schema.statistics WHERE table_name = 'vendite';
+-- Risultato: quali colonne sono indicizzate, statistiche di cardinality
+
+-- Chiavi primarie
+SELECT * FROM information_schema.table_constraints WHERE table_name = 'vendite';
+-- Risultato: Primary Key, Foreign Key, vincoli UNIQUE, ecc.
+```
+
+**Cosa NON si trova in SQL** (serve un Data Catalog esterno)
+
+*Metadati di business* (il significato aziendale dei dati)
+- "La colonna `importo` rappresenta il **reddito lordo annuale** (comprende bonus e incentivi)"
+- "Il KPI `conversion_rate` è calcolato come **(ordini / visitatori) * 100**"
+- "La tabella `vendite` è **proprietà del team Finance** e curata da Mario Rossi (data owner)"
+- "Questo dato è **sensibile: GDPR**, accesso limitato al solo team Finance e Compliance"
+
+*Governance e compliance* (regole aziendali e tracciabilità)
+- **Lineage**: "Da dove viene questo dato? Salesforce → ETL → Hadoop → report finale (con 3 trasformazioni)"
+- **Qualità**: "Questo dato ha problemi? 5% di valori duplicati, 2% di null anomali, 1 outlier rilevato"
+- **Audit trail**: "Chi ha modificato questa colonna? (storico completo di cambiamenti e responsabili)"
+- **Retention policy**: "Quanto tempo conservo questi dati? Cancellare dopo 5 anni (GDPR 'right to be forgotten')"
+- **Classificazione**: "Questo è pubblico, ristretto, sensibile o strettamente confidenziale?"
+
+*Strumenti specializzati* (dove mettere questi metadati)
+- **Alation**: Catalogo di business - documenta significato, ownership, KPI, criticità
+- **Collibra**: Governance platform - policy complete, compliance, audit trail
+- **Apache Atlas**: Metadata repository - lineage, dipendenze, trasformazioni (open-source)
+
+**Perché SQL non può contenere questi dati?**
+- SQL è disegnato per dati strutturati (tabelle, righe, colonne) e query transazionali
+- I metadati di business sono semantica e regole: difficili da organizzare in tabelle SQL
+- Cambian frequentemente: le regole aziendali si aggiornano, ma il database rimane stabile
+- Gestiti da team diversi: DBA gestisce il DB, Data Governance gestisce le policy
+
+**Esempio completo: una colonna `email`**
+```
+NEL DATABASE (SQL):
+├─ Data type: VARCHAR(255)
+├─ Is nullable: YES
+├─ Primary Key: NO
+└─ Foreign Key: NO
+
+NEL DATA CATALOG (Alation/Collibra):
+├─ Proprietario (Data Owner): Antonio Bianchi (Marketing)
+├─ Significato: Email di contatto del cliente per comunicazioni di marketing
+├─ GDPR sensitivity: SENSIBILE (diritto all'oblio, consenso richiesto)
+├─ Qualità: 97% filled, 0.5% duplicati, valido come email
+├─ Lineage: Salesforce → Sqoop → HDFS → Hive table → Report BI
+├─ Retention: Cancellare dopo 3 anni di inattività (GDPR compliance)
+├─ Usato in: 12 report BI, 3 model ML, Dashboard Executive
+└─ Ultimo aggiornamento: 2 ore fa (batch notturno da Salesforce)
+```
+
+**Riassunto finale**
+
+| Aspetto | Dove | Chi lo gestisce |
+|---------|------|-----------------|
+| **Dati effettivi** | Database (SELECT) | Developers, analisti |
+| **Metadati tecnici** (schema, tipi, indici) | Database (information_schema) | DBA, SQL |
+| **Metadati di business** (significato, ownership) | Data Catalog | Data Steward, Domain Expert |
+| **Governance** (GDPR, lineage, audit, qualità) | Data Governance Platform | Compliance Officer, Data Governance |
+
+**In una frase**: SQL gestisce la **struttura e i contenuti**, il Data Catalog gestisce il **significato e le regole aziendali**.
 
 ---
 
@@ -254,4 +355,8 @@ Amazon usa entrambi i sistemi:
 - Lo **storage possiede** fisicamente i dati (file su HDFS/S3/ADLS)
 - Il **data warehouse governa** i dati (metadati, schemi, tabelle, sicurezza, processi)
 - I **motori SQL leggono/scrivono** i dati secondo il governo del warehouse
+
+**Nota importante:**
+- **Data Warehouse** (Hive, Snowflake) = esegue query SQL e governa tecnicamente
+- **Data Catalog** (Alation, Collibra) = documenta significato business (NON esegue query)
 
