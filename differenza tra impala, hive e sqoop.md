@@ -314,18 +314,23 @@ SELECT nome, importo FROM vendite WHERE anno = 2024;
 
 *Metadati tecnici* (il database conosce la sua struttura)
 ```sql
--- Nome colonne e tipi
-SELECT column_name, data_type FROM information_schema.columns 
-WHERE table_name = 'vendite';
--- Risultato: importo (DECIMAL), data (DATE), nome (VARCHAR), ecc.
+-- Nome colonne e tipi (Hive/Impala)
+DESCRIBE vendite;
+-- Oppure più dettagliato:
+DESCRIBE EXTENDED vendite;
+-- Risultato: nome_colonna | tipo_dato | commento
+-- importo (DECIMAL), data (DATE), nome (VARCHAR), ecc.
 
--- Indici e performance
-SELECT * FROM information_schema.statistics WHERE table_name = 'vendite';
--- Risultato: quali colonne sono indicizzate, statistiche di cardinality
+-- Elencare tutte le colonne con formato dettagliato
+SHOW COLUMNS FROM vendite;
+-- Risultato: column_name, data_type, comment
 
--- Chiavi primarie
-SELECT * FROM information_schema.table_constraints WHERE table_name = 'vendite';
--- Risultato: Primary Key, Foreign Key, vincoli UNIQUE, ecc.
+-- Struttura completa della tabella (DDL)
+SHOW CREATE TABLE vendite;
+-- Risultato: lo statement CREATE TABLE completo con location, formato, partizioni
+
+-- Nota: information_schema esiste in DB relazionali (MySQL, PostgreSQL)
+-- ma Hive/Impala usano DESCRIBE, SHOW COLUMNS, SHOW CREATE TABLE
 ```
 
 **Cosa NON si trova con SQL** (serve un Data Catalog esterno)
