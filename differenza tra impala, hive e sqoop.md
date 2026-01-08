@@ -22,19 +22,19 @@
 
 ---
 
-## DATA LAKE VS DATA WAREHOUSE
+## DATA LAKE VS DATA WAREHOUSE VS DATA CATALOG
 
-| Aspetto                | Data Lake                      | Data Warehouse              |
-|------------------------|--------------------------------|-----------------------------|
-| Possiede/Governa       | Possiede i dati fisicamente    | Governa (non possiede)      |
-| Funzione principale    | Storage (memorizza)            | Query + Governance          |
-| Esegue query SQL       | No (solo storage)              | Sì (SELECT, JOIN, ecc.)     |
-| Tipo dati              | Grezzi, strutturati e misti    | Strutturati                 |
-| Schema                 | On-read (al momento della query) | On-write (alla scrittura) |
-| Governance tecnica     | Limitata o assente             | Elevata (schemi, permessi, ETL) |
-| Governance business    | Richiede Data Catalog          | Richiede Data Catalog       |
-| Utenti                 | Data scientist, ingegneri dati | Analisti, BI, business      |
-| Esempi                 | Hadoop, S3, ADLS               | Hive, Snowflake, BigQuery   |
+| Aspetto                | Data Lake                      | Data Warehouse              | Data Catalog                           |
+|------------------------|--------------------------------|-----------------------------|----------------------------------------|
+| Possiede/Governa       | Possiede i dati fisicamente    | Governa (non possiede)      | Governa metadati (non possiede dati)   |
+| Funzione principale    | Storage (memorizza)            | Query + Governance tecnica  | Documenta + Governance business        |
+| Esegue query SQL       | No (solo storage)              | Sì (SELECT, JOIN, ecc.)     | No (non esegue query)                  |
+| Tipo dati              | Grezzi, strutturati e misti    | Strutturati                 | N/A (cataloga, non memorizza)          |
+| Schema                 | On-read (al momento della query) | On-write (alla scrittura) | Documenta schemi da altri sistemi      |
+| Governance tecnica     | Limitata o assente             | Elevata (schemi, permessi, ETL) | No (cataloga quella degli altri)   |
+| Governance business    | Assente (serve Catalog)        | Assente (serve Catalog)     | Sì (ownership, policy, lineage, qualità) |
+| Utenti                 | Data scientist, ingegneri dati | Analisti, BI, business      | Data steward, governance, business     |
+| Esempi                 | Hadoop, S3, ADLS               | Hive, Snowflake, BigQuery   | Alation, Collibra, Apache Atlas        |
 
 **⚠️ Attenzione: Data Lake ≠ Data Catalog**
 
@@ -87,11 +87,20 @@ Il Data Catalog **non memorizza dati**, non è un contenitore:
      (NON memorizza dati)
 ```
 
-È come la **Biblioteca Nazionale**: 
-- Non contiene i libri fisici (come il magazzino di Amazon)
-- Non esegue transazioni sui libri (come un sistema di gestione di biblioteca)
-- Contiene catalogo, indici, e metadati su chi scrive libri, quando sono stati pubblicati, quale argomento trattano
-- Punta ai libri che vivono in altre biblioteche
+Analogia con il Supermercato
+Storage (HDFS/S3) = Magazzino fisico dietro le quinte
+
+Possiede i prodotti effettivi (scatole su scaffali)
+Non conosce prezzi, promozioni, allergie: vede solo pacchi
+Data Warehouse (Hive) = Cassieri + Sistema POS + Gestione inventario
+
+Governa prezzi, promozioni, dove ogni prodotto è posizionato
+Controlla accesso (che tu possa comprare solo da cliente registrato)
+Non memorizza i prodotti fisici, governa come venderli
+Data Catalog (Alation) = Guida/Depliant del supermercato
+
+Documenta: "Il latte scade fra 5 giorni", "Made in Italy", "Contiene lattosio"
+Non vende prodotti, non governa i prezzi, solo descrive e cataloga
 
 **⚠️ Data Catalog ≠ Data Warehouse**
 
