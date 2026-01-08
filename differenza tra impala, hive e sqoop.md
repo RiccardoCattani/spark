@@ -162,6 +162,23 @@ I metadati del Data Catalog si trovano **nel database interno del Catalog stesso
 - I metadati del Catalog sono **completamente separati** e indipendenti dall'architettura dati
 
 
+## DATABASE RELAZIONALE VS NON RELAZIONALE VS TRANSAZIONALE (RIASSUNTO)
+
+| Aspetto            | Relazionale (RDBMS)                                 | Non relazionale (NoSQL)                                        | Transazionale (ACID)                                               |
+|--------------------|------------------------------------------------------|----------------------------------------------------------------|---------------------------------------------------------------------|
+| Modello dati       | Tabelle, righe, colonne                             | Documenti JSON, key-value, wide-column, grafo                  | Qualsiasi modello che offra ACID                                    |
+| Schema             | Rigoroso (schema-on-write)                          | Flessibile/schema-on-read, spesso denormalizzato               | Rigoroso dove serve coerenza transazionale                          |
+| Transazioni        | ACID native (commit/rollback)                       | Variabile: spesso eventual consistency; alcune piattaforme ACID | Focus su atomicità/isolamento/durabilità                            |
+| Scalabilità        | Tipicamente verticale (sharding possibile)          | Orizzontale nativa                                             | Dipende dal motore: RDBMS scalano meno orizzontalmente; alcuni NewSQL/NoSQL ACID scalano orizzontalmente |
+| Casi d’uso tipici  | OLTP classico: ordini, fatture, anagrafiche, ERP    | Contenuti web/mobile, log/IoT, cataloghi prodotti, time-series, grafi | Qualsiasi caso con requisiti di scrittura atomica (pagamenti, ordini, inventory) |
+| Esempi             | PostgreSQL, MySQL, Oracle, SQL Server               | MongoDB (documenti), Redis (KV), Cassandra/HBase (wide-column), Neo4j (grafo) | PostgreSQL/MySQL/Oracle/SQL Server; Google Spanner, CockroachDB, Yugabyte; MongoDB transazioni multi-doc |
+
+In sintesi:
+- **Relazionale** = schema rigido, JOIN forti, ACID nativo.
+- **Non relazionale** = schema flessibile, denormalizzazione, scala orizzontale facile, coerenza configurabile.
+- **Transazionale (ACID)** = requisito di atomicità e coerenza: può essere RDBMS o alcune piattaforme NoSQL/NewSQL che offrono transazioni.
+
+
 ## DATI, METADATI E GOVERNANCE
 
 **Dati (Righe)**
@@ -267,9 +284,8 @@ GRANT SELECT ON vendite TO utente_finance;
 ```
 
 **Accesso a dati sensibili (GDPR): Alation vs SQL**
-- **Alation** è un Data Catalog: non memorizza né elabora i dati; mostra metadati e, se configurato, può offrire un "data preview".
-- Qualsiasi **preview** in Alation esegue query sulla sorgente tramite una connessione/account e **rispetta i permessi** del motore sottostante: non è un bypass dei controlli.
-- L’accesso ai dati sensibili si **controlla nel motore** (Hive/Impala/DB) e nello storage: RBAC/ABAC, column-level masking, row-level filtering, encryption, auditing.
+- **Alation** è un Data Catalog: non memorizza né elabora i dati; mo
+
 - In Hadoop (Hive/Impala) usare **Apache Ranger** per:
   - Column masking (es. mascherare `email` o offuscare parzialmente `codice_fiscale`)
   - Row filter (limitare righe visibili per reparto/paese)
@@ -426,16 +442,14 @@ NEL DATA CATALOG (Alation/Collibra):
 |-------------------|---------------------------|------------------------------|
 | Esecuzione        | MapReduce/Tez/Spark       | In-memory MPP                |
 | Latenza           | Secondi/minuti            | Secondi/millisecondi         |
-| Startup YARN      | Sì, overhead               | No, daemon long-running      |
-| Throughput        | Massimo, altamente scalabile | Minore, limitato da RAM    |
+| Startup YARN      | Sì, overhead               | No, daemon long-running     |
+| Throughput        | Massimo, altamente scalabile | Minore, limitato da RAM   |
 | Fault tolerance   | Ottima (retry task)       | Scarsa (fine query)          |
 | Adatto per        | ETL, batch notturni       | BI, analisi interattiva      |
 | Non adatto per    | Query real-time / BI rapido | ETL pesanti, volumi enormi |
 
 **One-liner**: Usa **Hive per trasformazioni pesanti**, **Impala per letture veloci**.
-
 ---
-
 ## APACHE HIVE
 
 **Cos'è**: Data Warehouse + SQL-on-Hadoop
