@@ -24,30 +24,30 @@
 
 ## DATA LAKE VS DATA WAREHOUSE VS DATA CATALOG
 
-| Aspetto                | Data Lake                   | Data Warehouse              | Data Catalog                           |
-|------------------------|-----------------------------|-----------------------------|----------------------------------------|
+| Aspetto                | Data Lake                   | Data Warehouse              | Data Catalog                              |
+|------------------------|-----------------------------|-----------------------------|----------------------------------------   |
 | Possiede/Governa       | Possiede i dati fisicamente | Governa metadati tecnici (non possiede)| Governa metadati di business (non possiede dati)|
-| Funzione principale    | Storage (memorizza)         | Query + Governance tecnica  | Documenta + Governance business        |
-| Esegue query SQL       | No (solo storage)           | Sì (SELECT, JOIN, ecc.)     | No (non esegue query)                  |
+| Funzione principale    | Storage (memorizza)         | Query + Governance tecnica  | Documenta + Governance business           |
+| Esegue query SQL       | No (solo storage)           | Sì (SELECT, JOIN, ecc.)     | No (non esegue query)                     |
 | Tipo dati              | Grezzi, strutturati e misti | Strutturati                 | Non applicabile (cataloga, non memorizza) |
 | Schema                 | On-read (al momento della query)| On-write (alla scrittura)  | Documenta schemi da altri sistemi      |
-| Dove stanno i metadati | N/A: ha solo file fisici  | DB esterno: es. Postgres/MySQL| DB del Catalog (es. Postgres/MySQL/Atlas+ES) |
-| Governance tecnica     | Limitata o assente          | Elevata (schemi, permessi, ETL) | No (cataloga quella degli altri)   |
-| Governance business    | Assente (serve Catalog)     | Assente (serve Catalog)     | Sì (ownership, policy, lineage, qualità)|
+| Dove stanno i metadati | N/A: ha solo file fisici  |  database relazionali esterni tramite il servizio Hive Metastore | DB del Catalog (es. Postgres/MySQL/Atlas+ES) |
+| Governance tecnica     | Limitata o assente          | Elevata (schemi, permessi, ETL) | No (cataloga quella degli altri)      |
+| Governance business    | Assente (serve Catalog)     | Assente (serve Catalog)     | Sì (ownership, policy, lineage, qualità)  |
 | Utenti                 | Data scientist, ingegneri dati | Analisti, BI, business      | Data steward, governance, business     |
-| Esempi                 | Hadoop, S3, ADLS            | Hive, Snowflake, BigQuery   | Alation, Collibra, Apache Atlas        |
+| Esempi                 | Hadoop, S3, ADLS            | Hive, Snowflake, BigQuery   | Alation, Collibra, Apache Atlas           |
 
 **⚠️ Attenzione: Data Lake ≠ Data Catalog**
 
-| Aspetto              | Data Lake                                    | Data Catalog                                   |
-|----------------------|----------------------------------------------|------------------------------------------------|
-| **Cosa è**           | Storage system (memorizza dati fisicamente)   | Metadata/Governance platform (documenta dati)  |
-| **Possiede/Governa** | Possiede (memorizza file)                    | Governa (non possiede)                         |
-| **Contiene**         | Dati grezzi, strutturati e misti             | Definizioni business, ownership, policy, lineage |
-| **Esempi**           | Hadoop/HDFS, S3, ADLS                        | Alation, Collibra, Apache Atlas                |
-| **Funzione**         | Memorizzare dati durevolmente                | Catalogare dove stanno i dati e cosa significano |
-| **Conosce schemi**   | No (on-read)                                 | Sì (documenta schemi e strutture)              |
-| **Esegue query**     | No (solo storage)                            | No (cataloga, non esegue query)                |
+| Aspetto              | Data Lake                                    | Data Catalog                                      |
+|----------------------|--------------------------------------------|------------------------------------------------     |
+| **Cosa è**           | Storage system (memorizza dati fisicamente)| Metadata/Governance platform (documenta dati)       |
+| **Possiede/Governa** | Possiede (memorizza file)                  | Governa metadati (non possiede dati; conserva i propri metadati in un DB interno) |
+| **Contiene**         | Dati grezzi, strutturati e misti           | Definizioni business, ownership, policy, lineage    |
+| **Esempi**           | Hadoop/HDFS, S3, ADLS                      | Alation, Collibra, Apache Atlas                     |
+| **Funzione**         | Memorizzare dati durevolmente              | Catalogare dove stanno i dati e cosa significano    |
+| **Conosce schemi**   | No (on-read)                               | Sì (documenta schemi e strutture)                   |
+| **Esegue query**     | No (solo storage)                          | No (cataloga, non esegue query)                     |
 
 **Rapporto pratico:**
 - **Data Lake** = magazzino fisico (storage, possiede i dati)
