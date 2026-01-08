@@ -150,10 +150,11 @@ I metadati del Data Catalog si trovano **nel database interno del Catalog stesso
 └────────────────────────────────────────┘
 ```
 
-**Dove vivono fisicamente:**
-- **Alation**: database interno (PostgreSQL, MySQL, Oracle) + storage per documenti/descrizioni
-- **Collibra**: database interno (PostgreSQL) + metadata repository centralizzato
-- **Apache Atlas**: HBase (per metadati) + Elasticsearch (per ricerca) nel cluster Hadoop
+**Di seguito i Datacatalog/governance e relativo DB:**
+ 
+- **Alation (Data Catalog)**: usa database relazionale interno (tipicamente PostgreSQL; supporta MySQL/Oracle) + repository per documenti/descrizioni
+- **Collibra (Data Catalog)**: usa database interno (PostgreSQL) + repository metadati centralizzato
+- **Apache Atlas (Data Catalog)**: usa HBase (per metadati, NoSQL a colonne) + Elasticsearch (per ricerca) nel cluster Hadoop
 
 **Caratteristica importante: indipendenza**
 - Se il Data Warehouse (Hive) cade, il Data Catalog rimane online (documenta comunque cosa c'era)
