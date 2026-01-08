@@ -24,17 +24,18 @@
 
 ## DATA LAKE VS DATA WAREHOUSE VS DATA CATALOG
 
-| Aspetto                | Data Lake                      | Data Warehouse              | Data Catalog                           |
-|------------------------|--------------------------------|-----------------------------|----------------------------------------|
-| Possiede/Governa       | Possiede i dati fisicamente    | Governa (non possiede)      | Governa metadati (non possiede dati)   |
-| Funzione principale    | Storage (memorizza)            | Query + Governance tecnica  | Documenta + Governance business        |
-| Esegue query SQL       | No (solo storage)              | Sì (SELECT, JOIN, ecc.)     | No (non esegue query)                  |
-| Tipo dati              | Grezzi, strutturati e misti    | Strutturati                 | N/A (cataloga, non memorizza)          |
-| Schema                 | On-read (al momento della query) | On-write (alla scrittura) | Documenta schemi da altri sistemi      |
-| Governance tecnica     | Limitata o assente             | Elevata (schemi, permessi, ETL) | No (cataloga quella degli altri)   |
-| Governance business    | Assente (serve Catalog)        | Assente (serve Catalog)     | Sì (ownership, policy, lineage, qualità) |
+| Aspetto                | Data Lake                   | Data Warehouse              | Data Catalog                           |
+|------------------------|-----------------------------|-----------------------------|----------------------------------------|
+| Possiede/Governa       | Possiede i dati fisicamente | Governa metadati tecnici (non possiede)| Governa metadati di business (non possiede dati)|
+| Funzione principale    | Storage (memorizza)         | Query + Governance tecnica  | Documenta + Governance business        |
+| Esegue query SQL       | No (solo storage)           | Sì (SELECT, JOIN, ecc.)     | No (non esegue query)                  |
+| Tipo dati              | Grezzi, strutturati e misti | Strutturati                 | Non applicabile (cataloga, non memorizza) |
+| Schema                 | On-read (al momento della query)| On-write (alla scrittura)  | Documenta schemi da altri sistemi      |
+| Dove stanno i metadati | N/A: ha solo file fisici  | DB esterno: es. Postgres/MySQL| DB del Catalog (es. Postgres/MySQL/Atlas+ES) |
+| Governance tecnica     | Limitata o assente          | Elevata (schemi, permessi, ETL) | No (cataloga quella degli altri)   |
+| Governance business    | Assente (serve Catalog)     | Assente (serve Catalog)     | Sì (ownership, policy, lineage, qualità)|
 | Utenti                 | Data scientist, ingegneri dati | Analisti, BI, business      | Data steward, governance, business     |
-| Esempi                 | Hadoop, S3, ADLS               | Hive, Snowflake, BigQuery   | Alation, Collibra, Apache Atlas        |
+| Esempi                 | Hadoop, S3, ADLS            | Hive, Snowflake, BigQuery   | Alation, Collibra, Apache Atlas        |
 
 **⚠️ Attenzione: Data Lake ≠ Data Catalog**
 
