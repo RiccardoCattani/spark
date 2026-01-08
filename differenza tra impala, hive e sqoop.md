@@ -9,18 +9,22 @@
 - Non conosce schemi, tabelle, strutture: vede solo byte e blocchi
 
 **Data Warehouse** (Hive, Snowflake, BigQuery, Redshift)
-- Governa ma non possiede i dati
-- Organizza metadati, schemi, tabelle, partizioni, sicurezza e processi ETL
-- Cataloga dove stanno i dati e come interpretarli
-- I file fisici rimangono nello storage sottostante
+Governa i metadati:
+a) Organizza metadati: Ossia definisce schemi, tabelle, partizioni, sicurezza e processi ETL
+b) Cataloga dove stanno i dati e come interpretarli
+c) I file fisici rimangono nello storage sottostante
 - Nota: alcuni DW cloud (Snowflake, BigQuery) integrano anche lo storage, ma il principio resta
 
 **Motori SQL** (Impala, Hive, Spark SQL, Trino)
-- Leggono dati organizzati dal data warehouse
-- Eseguono query e scrivono nuovi file
-- Non aggiornano righe singole in modo transazionale (a meno di formati transazionali come Delta/Iceberg)
 
----
+Creano, modificano ed eliminano dati e strutture, tramite comandi SQL:
+
+CREATE: crea tabelle, schemi, database, viste, indici (es. CREATE TABLE ...)
+INSERT: aggiunge nuove righe (es. INSERT INTO ...)
+UPDATE: modifica dati esistenti (es. UPDATE ... SET ...)
+DELETE: elimina righe (es. DELETE FROM ...)
+DROP: elimina tabelle, schemi, database (es. DROP TABLE ...)
+ALTER: modifica la struttura (aggiunge/rimuove colonne, cambia tipi, ecc.)
 
 ## DATA LAKE VS DATA WAREHOUSE VS DATA CATALOG
 
@@ -597,8 +601,8 @@ Amazon usa entrambi i sistemi:
 
 **Flusso**:
 1. Cliente ordina → **MySQL** registra (real-time, ACID)
-2. Di notte → **Sqoop** esporta ordini a **S3**
-3. **EMR** elabora milioni di ordini
+2. Di notte → **Sqoop** esporta ordini a **S3** (Ossia datastore distribuito)
+3. **EMR**(servizio che gestisce cluster hadoop) elabora milioni di ordini
 4. Risultati in **Redshift** (DW) o **S3** (data lake)
 5. Analytics, ML e BI leggono da Redshift/S3
 
@@ -609,12 +613,12 @@ Amazon usa entrambi i sistemi:
 ## RIEPILOGO FINALE
 
 | Componente    | Ruolo                                | Possiede/Governa Dati | Latenza           |
-|---------------|--------------------------------------|----------------------|-------------------|
+|---------------|--------------------------------------|----------------------|------------------- |
 | **Storage**   | Memorizza file fisici                | Possiede              | N/A               |
 | **Metastore** | Catalogo e governance (tecnica?)     | Governa metadati      | N/A               |
 | **Hive**      | DW + query batch                     | Governa (non possiede) | Secondi/minuti   |
 | **Impala**    | Query interattivo MPP in-memory      | Governa (non possiede) | Secondi/milli    |
-| **Sqoop**     | Data transfer DB ↔ Hadoop            | Trasporta (non governa) | Batch            |
+| **Sqoop**     | Data transfer DB ↔ Hadoop            | Trasporta (non governa) | Batch           |
 
 **Governance vs Possesso**:
 - Lo **storage possiede** fisicamente i dati (file su HDFS/S3/ADLS)
