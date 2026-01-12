@@ -9,6 +9,309 @@
 
 ---
 
+# INTRODUZIONE: STORIA DI CLOUDERA E EVOLUZIONE VERSO CDP
+
+## 0.0 Come è nata Cloudera
+
+### 0.0.1 Le origini (2008)
+
+**Cloudera** è stata fondata nel 2008 da:
+- Doug Cutting (creatore di Hadoop)
+- Christophe Bisciglia (ex-Google)
+- Amr Awadallah (ex-Yahoo!)
+- Jeff Hammerbacher (ex-Facebook)
+
+**Missione originale:** commercializzare Apache Hadoop e renderlo enterprise-ready.
+
+---
+
+## 0.1 Prima di CDP: CDH e HDP
+
+### 0.1.1 Cloudera Distribution for Hadoop (CDH)
+
+**CDH** (2009-2020) era la distribuzione Hadoop di Cloudera.
+
+**Caratteristiche:**
+- Componenti: Hadoop, HDFS, MapReduce, YARN, Hive, Impala, HBase, Spark
+- Versioni: CDH 4, CDH 5, CDH 6
+- Manager: Cloudera Manager (GUI per gestione cluster)
+- Security: Cloudera Navigator (audit/lineage), Sentry (authorization)
+- Deployment: on-premise (bare metal)
+
+**Limitazioni:**
+- Solo on-premise
+- Architettura monolitica
+- Scaling verticale/orizzontale limitato
+- Sicurezza frammentata (tool separati)
+
+---
+
+### 0.1.2 Hortonworks Data Platform (HDP)
+
+**Hortonworks** (fondata 2011) era il competitor principale di Cloudera.
+
+**HDP** caratteristiche:
+- 100% open source (no codice proprietario)
+- Componenti: Hadoop, YARN, Hive, HBase, Kafka, Storm, Ranger, Atlas
+- Manager: Ambari (GUI cluster management)
+- Security: Ranger (authorization), Knox (gateway), Atlas (metadata)
+- Philosophy: "enterprise Hadoop without vendor lock-in"
+
+**Differenze CDH vs HDP:**
+
+| Aspetto | CDH (Cloudera) | HDP (Hortonworks) |
+|---------|----------------|-------------------|
+| Filosofia | Enterprise + alcune feature proprietarie | 100% open source |
+| SQL Engine | Impala (proprietario, veloce) | Hive + Tez |
+| Manager | Cloudera Manager | Ambari |
+| Security | Sentry + Navigator | Ranger + Knox + Atlas |
+| Target | Enterprise con budget | Open source enthusiast |
+| Support | Subscription commerciale | Subscription + community |
+
+---
+
+## 0.2 La fusione Cloudera + Hortonworks (2019)
+
+### 0.2.1 Merger announcement (Ottobre 2018)
+
+**Motivo della fusione:**
+- Competizione cloud (AWS, Azure, GCP stavano dominando)
+- Necessità di unire forze contro cloud provider
+- Combinare best-of-breed di entrambe le piattaforme
+
+**Nuovo nome:** Cloudera (mantiene il brand)
+
+**Valore:** ~$5.2 miliardi USD
+
+---
+
+### 0.2.2 Cosa è cambiato dopo la fusione
+
+✅ **Combinazione tecnologie:**
+- Impala (da CDH) + Ranger/Atlas (da HDP)
+- Cloudera Manager + features di Ambari
+- Best security/governance di entrambe
+
+✅ **Nuova vision:**
+- Hybrid/multi-cloud (non solo on-premise)
+- Enterprise Data Cloud
+- Data lifecycle completo (ingest → process → serve → protect)
+
+---
+
+## 0.3 Nascita di CDP (Cloudera Data Platform)
+
+### 0.3.1 Lancio CDP (2019-2020)
+
+**CDP** è la piattaforma unificata che sostituisce CDH e HDP.
+
+**Novità rispetto a CDH/HDP:**
+- ✅ **Hybrid cloud** (on-premise + AWS + Azure + GCP)
+- ✅ **SDX integrato** (Shared Data Experience: security + governance unificate)
+- ✅ **Containerizzazione** (Kubernetes per Data Services)
+- ✅ **Separation of storage and compute** (invece di tight coupling)
+- ✅ **Cloud-native architecture** (auto-scaling, serverless)
+- ✅ **Data Services modulari** (CDE, CDW, COD, CML, CDF)
+
+---
+
+### 0.3.2 Versioni CDP
+
+**CDP Private Cloud Base** (ex-CDH/HDP on-premise)
+- Deployment: on-premise, bare metal
+- Componenti: Cloudera Runtime (Hadoop, Spark, Hive, Impala, ecc.)
+- Manager: Cloudera Manager
+- Security: SDX (Ranger + Atlas integrati)
+- Target: aziende con data center esistenti, compliance strict
+
+**CDP Private Cloud Data Services** (nuovo, containerizzato)
+- Deployment: on-premise Kubernetes (OpenShift, ECS)
+- Architettura: containerized, microservices
+- Data Services: CDE, CDW, CML
+- Target: aziende on-premise che vogliono cloud-like experience
+
+**CDP Public Cloud** (cloud-native)
+- Deployment: AWS, Azure, GCP
+- Managed service (Cloudera gestisce control plane)
+- Auto-scaling, elastic, pay-as-you-go
+- Data Services: CDE, CDW, COD, CML, CDF
+- Target: aziende cloud-first, workload variabili
+
+---
+
+## 0.4 Differenze architetturali: CDH/HDP → CDP
+
+### 0.4.1 Differenze fisiche (infrastruttura)
+
+| Aspetto | CDH/HDP (legacy) | CDP |
+|---------|------------------|-----|
+| **Deployment** | Bare metal on-premise | Hybrid: on-premise + cloud |
+| **Architettura** | Monolitica (tutto su un cluster) | Modulare (Data Services separati) |
+| **Storage/Compute** | Tightly coupled (HDFS locale) | Separated (S3/ADLS + compute elastico) |
+| **Scaling** | Verticale/orizzontale hardware | Elastic cloud-native (auto-scaling) |
+| **Containers** | No (bare metal JVMs) | Sì (Kubernetes) |
+| **Hardware** | Commodity servers permanenti | Cloud VMs ephemeral |
+| **Network** | Intra-cluster (rack-local) | Cloud VPC + cross-region |
+
+---
+
+### 0.4.2 Differenze logiche (software/architettura)
+
+**Sicurezza e governance:**
+
+| Aspetto | CDH | HDP | CDP |
+|---------|-----|-----|-----|
+| Authorization | Sentry | Ranger | Ranger (unified) |
+| Metadata/Lineage | Navigator | Atlas | Atlas (unified) |
+| Gateway | Knox (add-on) | Knox | Knox (integrated) |
+| Encryption | Navigator Encrypt + HDFS TDE | HDFS TDE | HDFS TDE + cloud KMS |
+| **Integrazione** | Tool separati | Tool separati | **SDX (tutto integrato)** |
+
+**Management:**
+
+| Aspetto | CDH | HDP | CDP |
+|---------|-----|-----|-----|
+| Cluster manager | Cloudera Manager | Ambari | Cloudera Manager (enhanced) |
+| Monitoring | Cloudera Manager | Ambari + external | Cloudera Manager + Workload XM |
+| Replication | Cloudera Manager | Ambari + Falcon | Replication Manager (unified) |
+
+**Data Services (nuovo in CDP):**
+
+CDH/HDP non avevano servizi modulari cloud-native.
+
+CDP introduce:
+- **CDE** (Cloudera Data Engineering) - Spark as a Service
+- **CDW** (Cloudera Data Warehouse) - Hive/Impala virtual warehouses
+- **COD** (Cloudera Operational DB) - HBase as a Service
+- **CML** (Cloudera Machine Learning) - ML workspace unificato
+- **CDF** (Cloudera DataFlow) - NiFi as a Service
+
+Questi sono **containerizzati**, **auto-scaling**, **indipendenti**.
+
+---
+
+### 0.4.3 Storage: da HDFS locale a object storage
+
+**CDH/HDP:**
+```
+Cluster on-premise
+│
+├── Nodo 1: HDFS DataNode + YARN NodeManager + Compute
+├── Nodo 2: HDFS DataNode + YARN NodeManager + Compute
+└── Nodo 3: HDFS DataNode + YARN NodeManager + Compute
+
+Storage e compute sono ACCOPPIATI (tightly coupled)
+```
+
+**CDP Public Cloud:**
+```
+Cloud Storage (S3/ADLS/GCS) → Storage separato, persistente
+          ↓
+Ephemeral Compute Cluster (auto-scaling)
+- Spark executors
+- Hive/Impala workers
+- Containers Kubernetes
+
+Storage e compute sono SEPARATI (decoupled)
+```
+
+**Vantaggi separation of storage/compute:**
+- ✅ Scale storage e compute indipendentemente
+- ✅ Compute ephemeral (crea/distruggi cluster on-demand)
+- ✅ Storage persistente (dati rimangono su S3/ADLS)
+- ✅ Costo ridotto (paga solo compute quando serve)
+- ✅ Durability cloud-native (11 nines su S3)
+
+---
+
+### 0.4.4 Da monolite a microservizi
+
+**CDH/HDP (monolite):**
+```
+┌─────────────────────────────────────┐
+│ Cluster unico on-premise            │
+│ ┌─────────────────────────────────┐ │
+│ │ HDFS + YARN + Hive + Spark +    │ │
+│ │ HBase + Kafka + tutto insieme   │ │
+│ └─────────────────────────────────┘ │
+└─────────────────────────────────────┘
+```
+- Un cluster fa tutto
+- Upgrade = downtime di tutto
+- Resource contention tra workload
+
+**CDP (microservizi):**
+```
+┌────────────────┐  ┌────────────────┐  ┌────────────────┐
+│ CDE (Spark)    │  │ CDW (Hive)     │  │ CML (ML)       │
+│ Auto-scaling   │  │ Auto-scaling   │  │ Isolated       │
+└────────────────┘  └────────────────┘  └────────────────┘
+         ↓                   ↓                   ↓
+┌──────────────────────────────────────────────────────────┐
+│ SDX (Shared Data Experience)                             │
+│ Ranger + Atlas + Metastore                               │
+└──────────────────────────────────────────────────────────┘
+         ↓
+┌──────────────────────────────────────────────────────────┐
+│ Data Lake (S3/ADLS/GCS)                                  │
+└──────────────────────────────────────────────────────────┘
+```
+- Servizi indipendenti
+- Upgrade indipendenti (zero downtime)
+- Isolamento risorse
+- Governance condivisa (SDX)
+
+---
+
+## 0.5 Timeline evolutiva
+
+```
+2008 → Cloudera fondata
+2009 → CDH 1 (prima distribuzione Hadoop commerciale)
+2011 → Hortonworks fondata
+2012 → CDH 4 (Impala lanciato)
+2013 → HDP 2.0 (Ranger, Atlas)
+2014 → CDH 5 (Spark integrato)
+2017 → CDH 6 (ultima major release CDH)
+2018 → Merger Cloudera + Hortonworks annunciato
+2019 → Merger completato, CDP annunciato
+2020 → CDP Public Cloud GA (General Availability)
+2021 → CDP Private Cloud Data Services GA
+2023 → CDP evoluzione continua (nuovi Data Services)
+```
+
+---
+
+## 0.6 Perché CDP è importante per l'esame
+
+**L'esame CDP-0011 testa:**
+1. Conoscenza componenti (heritage da CDH/HDP)
+2. Architettura moderna (cloud-native, SDX)
+3. Differenze Public vs Private Cloud
+4. Data Services (nuovo in CDP)
+
+**Non chiede:**
+- Dettagli su CDH/HDP legacy (obsoleti)
+- Ambari (sostituito da Cloudera Manager)
+- Sentry (sostituito da Ranger)
+
+**Focus:** CDP come piattaforma unificata moderna.
+
+---
+
+## 0.7 Riepilogo: cosa devi sapere
+
+✅ **CDP unisce best-of-breed di CDH e HDP**
+✅ **SDX è il cuore (Ranger + Atlas + Metastore unificati)**
+✅ **Hybrid cloud: Private Cloud Base + Public Cloud**
+✅ **Separation of storage and compute (cloud-native)**
+✅ **Data Services containerizzati e auto-scaling**
+✅ **Security/governance integrate by design**
+
+❌ **Non serve sapere:** dettagli CDH/HDP specifici, Ambari, Sentry
+
+---
+
 # PARTE 1: COMPONENTI PRINCIPALI CDP (15 domande)
 
 ---
