@@ -577,4 +577,799 @@ Un analista deve eseguire query SQL rapide su grandi volumi di dati già struttu
 ## 8. Frase chiave da esame (memorizzala)
 
 > **Hive e Impala sono due motori SQL diversi che condividono gli stessi dati e lo stesso Metastore, ma servono casi d’uso differenti.**
+---
 
+# PARTE 2: SICUREZZA CDP (12 domande)
+
+## 9. Shared Data Experience (SDX)
+
+### 9.1 Cos'è SDX
+
+**SDX** è l'architettura di sicurezza e governance integrata di CDP.
+
+**Componenti SDX:**
+- **Apache Ranger** - Authorization & access control
+- **Apache Atlas** - Metadata management & data lineage
+- **Apache Knox** - Perimeter security (gateway)
+- **Hive Metastore** - Schema centrale
+- **Data Catalog** - Discovery & search
+- **Replication Manager** - Backup & DR
+- **Workload Manager** - Monitoring & optimization
+
+### 9.2 Perché SDX è importante
+
+✅ **Sicurezza integrata by design**
+✅ **Governance centralizzata**
+✅ **Policy consistenti su tutti i servizi**
+✅ **Audit trail completo**
+
+👉 **Domanda tipica d'esame**
+> SDX include Ranger e Atlas? → **Sì**
+> SDX è solo per security? → **No, anche governance e metadata**
+
+---
+
+## 10. Apache Ranger – Authorization
+
+### 10.1 Cos'è Ranger
+
+**Apache Ranger** fornisce **autorizzazione centralizzata** per l'ecosistema Hadoop.
+
+**Funzioni:**
+- Policy-based access control (PBAC)
+- Role-based access control (RBAC)
+- Fine-grained authorization (riga/colonna)
+- Data masking (offuscamento dati sensibili)
+- Row-level filtering
+- Audit centralizzato
+
+### 10.2 Servizi supportati da Ranger
+
+Ranger gestisce accessi per:
+- HDFS
+- Hive
+- Impala
+- HBase
+- Kafka
+- Solr
+- YARN
+- Atlas
+
+### 10.3 Ranger policies
+
+**Tipi di policy:**
+- **Access policies** - chi può fare cosa (SELECT, INSERT, UPDATE, DELETE)
+- **Masking policies** - offusca dati sensibili (es. GDPR)
+- **Row filter policies** - limita righe visibili per utente/gruppo
+
+👉 **Domanda tipica d'esame**
+> Ranger fa authentication o authorization? → **Authorization**
+> Ranger supporta masking? → **Sì**
+
+---
+
+## 11. Apache Atlas – Metadata & Governance
+
+### 11.1 Cos'è Atlas
+
+**Apache Atlas** è la piattaforma di **metadata management e data governance**.
+
+**Funzioni:**
+- Metadata repository (catalogo dati)
+- Data lineage (da dove viene il dato)
+- Data classification (PII, sensibile, pubblico)
+- Business glossary
+- Search & discovery
+
+### 11.2 Atlas e lineage
+
+**Data Lineage** traccia:
+- Origine dati (source)
+- Trasformazioni (ETL)
+- Destinazione (target)
+- Dipendenze tra entità
+
+Esempio: `Salesforce → Sqoop → HDFS → Hive → Impala → BI Report`
+
+### 11.3 Atlas integration
+
+Atlas traccia automaticamente:
+- Hive queries (CREATE TABLE, INSERT)
+- Spark jobs
+- Sqoop imports
+- NiFi flows
+
+👉 **Domanda tipica d'esame**
+> Atlas fa security o governance? → **Governance (metadata)**
+> Atlas traccia lineage? → **Sì**
+
+---
+
+## 12. Apache Knox – Perimeter Security
+
+### 12.1 Cos'è Knox
+
+**Apache Knox** è un **gateway di sicurezza perimetrale** per cluster Hadoop.
+
+**Funzioni:**
+- Single point of access (reverse proxy)
+- Authentication (LDAP, SSO, Kerberos)
+- SSL/TLS termination
+- Token-based authentication (JWT)
+- Topology-based routing
+
+### 12.2 Knox use cases
+
+- Esporre servizi Hadoop (Hive, HBase) all'esterno del cluster
+- Integrazione con enterprise SSO
+- Protezione endpoint REST API
+- Load balancing
+
+👉 **Domanda tipica d'esame**
+> Knox è un gateway? → **Sì**
+> Knox fa authentication? → **Sì**
+
+---
+
+## 13. CDP Public Cloud – Integration SSO
+
+### 13.1 Identity Federation
+
+CDP Public Cloud supporta **identity federation** con SAML-based IdP.
+
+**IdP supportati:**
+- Okta
+- Azure AD
+- Google Workspace
+- Ping Identity
+- ADFS (Active Directory Federation Services)
+
+### 13.2 Vantaggi SSO
+
+✅ Single sign-on (un login per tutti i servizi)
+✅ No account Cloudera necessario
+✅ Gestione utenti centralizzata
+✅ MFA (Multi-Factor Authentication) support
+
+👉 **Domanda tipica d'esame**
+> CDP Public supporta SAML SSO? → **Sì**
+> Serve account Cloudera con SSO? → **No**
+
+---
+
+## 14. CDP Private Cloud – LDAP e Kerberos
+
+### 14.1 Authentication in Private Cloud
+
+CDP Private Cloud integra:
+- **LDAP** (Lightweight Directory Access Protocol) per identity
+- **Kerberos** per authentication
+- **Active Directory** (LDAP + Kerberos combinati)
+
+### 14.2 LDAP
+
+**Funzioni:**
+- User/group management
+- Directory services
+- Integrazione con AD aziendale
+
+### 14.3 Kerberos
+
+**Funzioni:**
+- Strong authentication (ticket-based)
+- Mutual authentication (client ↔ server)
+- Protection contro replay attacks
+- Single sign-on (SSO)
+
+👉 **Domanda tipica d'esame**
+> Private Cloud usa Kerberos? → **Sì**
+> LDAP è per identity o authentication? → **Identity (Kerberos per auth)**
+
+---
+
+## 15. Encryption – Data at Rest
+
+### 15.1 HDFS Transparent Encryption
+
+**HDFS TDE** (Transparent Data Encryption):
+- Cifratura automatica dei dati su HDFS
+- Trasparente per applicazioni (no code change)
+- Key management via KMS (Key Management Service)
+- Per-zone encryption (encryption zones)
+
+### 15.2 Cloudera Navigator Encrypt
+
+**Navigator Encrypt**:
+- Full-disk encryption per nodi del cluster
+- Cifratura a livello OS (sotto HDFS)
+- Protection anche se disco rubato
+- Transparent per applicazioni
+
+### 15.3 Cloud Storage Encryption
+
+**Cloud providers:**
+- **AWS S3** - SSE (Server-Side Encryption), KMS
+- **Azure ADLS** - Storage Service Encryption
+- **GCP GCS** - Default encryption at rest
+
+👉 **Domanda tipica d'esame**
+> HDFS supporta encryption at rest? → **Sì (TDE)**
+> Cloud storage è cifrato? → **Sì (di default nei cloud provider)**
+
+---
+
+## 16. Encryption – Data in Transit
+
+### 16.1 TLS/SSL
+
+**Transport Layer Security** (TLS 1.2+):
+- Cifratura traffico di rete
+- Certificati X.509
+- Protection contro man-in-the-middle
+
+**Servizi con TLS:**
+- HDFS (NameNode ↔ DataNode)
+- Hive/Impala (client ↔ server)
+- HTTP/REST API
+- JDBC/ODBC connections
+
+👉 **Domanda tipica d'esame**
+> TLS cifra data in transit? → **Sì**
+> CDP supporta TLS? → **Sì (1.2+)**
+
+---
+
+# PARTE 3: DATA SERVICES (9 domande)
+
+## 17. Cloudera Data Engineering (CDE)
+
+### 17.1 Cos'è CDE
+
+**Cloudera Data Engineering** è un servizio per **gestire e schedulare job Apache Spark**.
+
+**Caratteristiche:**
+- Auto-scaling cluster Spark
+- No overhead di gestione cluster manuale
+- Supporto batch e streaming
+- Integrato con SDX (security/governance)
+
+### 17.2 CDE Public vs Private Cloud
+
+| Aspetto | Public Cloud | Private Cloud |
+|---------|--------------|---------------|
+| Infrastructure | Cloud provider managed | On-premise Kubernetes |
+| Scaling | Elastico (cloud-native) | Limitato da hardware |
+| Deployment | Managed service | Self-service virtual cluster |
+
+👉 **Domanda tipica d'esame**
+> CDE è per Spark? → **Sì**
+> CDE fa auto-scaling? → **Sì**
+
+---
+
+## 18. Cloudera Data Warehouse (CDW)
+
+### 18.1 Cos'è CDW
+
+**Cloudera Data Warehouse** è un servizio per creare **data warehouse indipendenti e auto-scaling**.
+
+**Caratteristiche:**
+- Containerizzato (Kubernetes)
+- Hive e Impala virtual warehouses
+- Auto-scaling dinamico
+- Indipendenti e isolati (multi-tenancy)
+- Upgrade indipendenti
+
+### 18.2 CDW Virtual Warehouses
+
+**Tipi:**
+- **Hive Virtual Warehouse** - batch ETL
+- **Impala Virtual Warehouse** - query interattive
+
+Ogni VW può scalare indipendentemente.
+
+### 18.3 CDW Public vs Private Cloud
+
+| Aspetto | Public Cloud | Private Cloud |
+|---------|--------------|---------------|
+| Infrastructure | AWS/Azure/GCP | OpenShift/ECS/Kubernetes |
+| Scaling | Elastic cloud-native | Limitato da capacity |
+| Storage | S3/ADLS/GCS | HDFS/Ozone |
+
+👉 **Domanda tipica d'esame**
+> CDW è containerizzato? → **Sì (Kubernetes)**
+> CDW supporta Hive e Impala? → **Sì (virtual warehouses)**
+
+---
+
+## 19. Cloudera Operational Database (COD)
+
+### 19.1 Cos'è COD
+
+**Cloudera Operational Database** è un servizio per **database operazionali real-time, scalabili e always-available**.
+
+**Tecnologie:**
+- Powered by **Apache HBase** (storage)
+- **Apache Phoenix** (SQL interface)
+
+### 19.2 COD use cases
+
+- Low-latency random access
+- Store/retrieve authentication details
+- Time-series data (IoT, logs)
+- Real-time analytics
+- Session management
+
+### 19.3 COD caratteristiche
+
+✅ Auto-scaling
+✅ Always-on (HA nativa)
+✅ SQL via Phoenix
+✅ NoSQL via HBase API
+
+👉 **Domanda tipica d'esame**
+> COD è per low-latency? → **Sì**
+> COD usa HBase? → **Sì**
+> COD è per authentication data? → **Sì (domanda campione esame)**
+
+---
+
+## 20. Cloudera Machine Learning (CML)
+
+### 20.1 Cos'è CML
+
+**Cloudera Machine Learning** unifica **data science e data engineering** in un servizio integrato.
+
+**Funzioni:**
+- Workspace collaborativo per data scientist
+- Supporto Python, R, Scala
+- Model training e deployment
+- Jupyter, RStudio, VS Code integration
+- MLOps (CI/CD per modelli)
+
+### 20.2 CML caratteristiche
+
+- **Workspace isolati** per progetti
+- **Experiments tracking** (modelli, hyperparameter)
+- **Model deployment** (REST API)
+- **Model monitoring** (drift detection)
+
+### 20.3 CML Public vs Private Cloud
+
+| Aspetto | Public Cloud | Private Cloud |
+|---------|--------------|---------------|
+| Infrastructure | Cloud managed | OpenShift/Kubernetes |
+| GPU support | Sì | Sì (se disponibile) |
+| Scaling | Elastico | Limitato da cluster |
+
+👉 **Domanda tipica d'esame**
+> CML è per ML? → **Sì**
+> CML supporta Python/R? → **Sì**
+
+---
+
+## 21. Cloudera DataFlow (CDF)
+
+### 21.1 Cos'è CDF
+
+**Cloudera DataFlow** è un servizio **cloud-native per distribuzione universale di dati**.
+
+**Tecnologia:**
+- Powered by **Apache NiFi**
+
+**Caratteristiche:**
+- Connect to any data source
+- Process and deliver to any destination
+- GUI drag-and-drop
+- Auto-scaling flow deployments
+
+### 21.2 CDF use cases
+
+- Real-time data ingestion
+- Data routing e enrichment
+- Edge-to-cloud data movement
+- IoT data collection
+
+👉 **Domanda tipica d'esame**
+> CDF usa NiFi? → **Sì**
+> CDF è cloud-native? → **Sì (Public Cloud)**
+
+---
+
+# PARTE 4: DEPLOY CDP PUBLIC CLOUD (9 domande)
+
+## 22. CDP Public Cloud – Concetti Core
+
+### 22.1 Cos'è un Environment
+
+**Environment** è un **subset logico del cloud provider account** che include:
+- Virtual network (VPC/VNet)
+- Security groups
+- Storage locations (S3/ADLS/GCS)
+- SDX (Data Lake)
+
+✅ Puoi registrare **quanti environment vuoi**
+✅ Ogni environment è isolato
+
+👉 **Domanda tipica d'esame** (domanda campione esame)
+> Environment è un subset del cloud account? → **Sì**
+> Quanti environment posso creare? → **Quanti voglio**
+
+---
+
+## 22.2 Credential
+
+**Credential** permette a CDP di **autenticarsi con il cloud provider**.
+
+**Prerequisiti:**
+- AWS: IAM role, cross-account access
+- Azure: Service Principal, Managed Identity
+- GCP: Service Account
+
+---
+
+## 22.3 Data Lake
+
+**Data Lake** in CDP Public Cloud:
+- Storage centralizzato (S3/ADLS/GCS)
+- SDX (Ranger + Atlas)
+- Hive Metastore
+- Shared tra tutti i Data Hub dello stesso environment
+
+---
+
+## 23. CDP Public Cloud – Cloud Providers
+
+### 23.1 AWS Requirements
+
+**Prerequisites:**
+- AWS account con privilegi sufficienti
+- VPC con subnet (pubbliche/private)
+- S3 bucket per storage
+- IAM roles/policies
+- Cross-account trust
+
+**Services usati:**
+- EC2 (compute)
+- S3 (storage)
+- RDS (Metastore/Ranger DB)
+- EKS (Kubernetes per Data Services)
+
+---
+
+### 23.2 Azure Requirements
+
+**Prerequisites:**
+- Azure subscription
+- Resource group
+- VNet con subnet
+- ADLS Gen2 storage account
+- Service Principal o Managed Identity
+
+**Services usati:**
+- VMs (compute)
+- ADLS Gen2 (storage)
+- Azure Database (Postgres/MySQL)
+- AKS (Kubernetes per Data Services)
+
+---
+
+### 23.3 GCP Requirements
+
+**Prerequisites:**
+- GCP project
+- VPC network
+- GCS bucket per storage
+- Service Account
+
+**Services usati:**
+- Compute Engine (VMs)
+- GCS (storage)
+- Cloud SQL (databases)
+- GKE (Kubernetes per Data Services)
+
+---
+
+👉 **Domanda tipica d'esame**
+> CDP Public supporta AWS/Azure/GCP? → **Sì, tutti e tre**
+> Serve VPC/VNet? → **Sì**
+
+---
+
+# PARTE 5: DEPLOY CDP PRIVATE CLOUD BASE (6 domande)
+
+## 24. CDP Private Cloud Base – System Requirements
+
+### 24.1 Hardware Requirements
+
+**Per production cluster:**
+- Minimum 3 nodi (5+ raccomandati)
+- CPU: 4+ core per nodo (8+ raccomandati)
+- RAM: 16GB+ per nodo (32GB+ raccomandati)
+- Disk: 
+  - OS: 100GB+
+  - Data: dipende da workload (TB+)
+- Network: 10 Gigabit Ethernet (raccomandato)
+
+---
+
+### 24.2 OS supportati
+
+**Operating Systems:**
+- Red Hat Enterprise Linux (RHEL) 7.x, 8.x
+- CentOS 7.x, 8.x
+- Ubuntu 18.04, 20.04
+- SUSE Linux Enterprise Server (SLES) 12, 15
+
+---
+
+### 24.3 Java supportati
+
+**Java Providers:** (domanda campione esame)
+- ✅ **Oracle JDK** 8, 11
+- ✅ **OpenJDK** 8, 11
+- ✅ **Azul Zulu JDK** 8, 11
+- ❌ Closed JDK (non esiste)
+
+👉 **Domanda tipica d'esame** (domanda campione esame)
+> Oracle JDK supportato? → **Sì**
+> OpenJDK supportato? → **Sì**
+> Azul/Zulu supportato? → **Sì**
+
+---
+
+### 24.4 Database supportati
+
+**Databases per Metastore/Ranger:** (domanda campione esame)
+- ✅ **PostgreSQL** 10, 11, 12
+- ✅ **MySQL** 5.7, 8.0
+- ✅ **MariaDB** 10.x
+- ✅ **Oracle Database** 12c, 19c
+
+👉 **Domanda tipica d'esame** (domanda campione esame)
+> PostgreSQL supportato? → **Sì**
+> MS SQL Server supportato? → **Sì**
+> Oracle DB supportato? → **Sì**
+> MySQL supportato? → **Sì**
+
+---
+
+### 24.5 Networking
+
+**Requirements:**
+- Forward and reverse DNS
+- NTP (Network Time Protocol) sincronizzato
+- Firewall rules per comunicazione inter-nodi
+- No conflitti di porte
+
+---
+
+# PARTE 6: CLOUDERA MANAGER (3 domande)
+
+## 25. Cloudera Manager
+
+### 25.1 Cos'è Cloudera Manager
+
+**Cloudera Manager** è l'applicazione per **gestire, configurare e monitorare cluster CDP Private Cloud Base**.
+
+**Architettura:**
+```
+Cloudera Manager Server
+- Gira su un host dedicato
+- Web UI + API REST
+- Gestisce uno o più cluster
+
+Cloudera Manager Agent
+- Gira su ogni nodo del cluster
+- Esegue comandi dal Server
+- Invia metriche e heartbeat
+```
+
+---
+
+### 25.2 Funzioni principali
+
+**Configurazione:**
+- Install/upgrade servizi (Hive, HDFS, YARN, ecc.)
+- Configurazione centralizzata
+- Rolling restart
+
+**Monitoring:**
+- Metriche real-time (CPU, disk, network)
+- Health checks automatici
+- Alerts e notifications
+
+**Troubleshooting:**
+- Log aggregation
+- Diagnostics
+- Performance tuning
+
+---
+
+### 25.3 Cloudera Manager e database
+
+Cloudera Manager richiede un database esterno per:
+- Configuration metadata
+- Monitoring data
+- User/role management
+
+**Databases supportati:** (già visto sopra)
+- PostgreSQL
+- MySQL / MariaDB
+- Oracle DB
+- MS SQL Server
+
+👉 **Domanda tipica d'esame**
+> Cloudera Manager gestisce cluster? → **Sì**
+> Serve database? → **Sì**
+> Dove gira? → **Su host dedicato**
+
+---
+
+# PARTE 7: WORKLOAD XM (3 domande)
+
+## 26. Workload XM
+
+### 26.1 Cos'è Workload XM
+
+**Workload XM** è uno strumento per **monitorare, analizzare e ottimizzare workload** su cluster CDP.
+
+**Funzioni:**
+- Understand workloads (Hive, Impala, Spark)
+- Troubleshoot failed jobs
+- Optimize slow queries
+- Capacity planning
+- Cost optimization
+
+---
+
+### 26.2 Workload XM caratteristiche
+
+**Analisi:**
+- Query performance analysis
+- Resource utilization (CPU, memory, I/O)
+- Baseline comparison
+- Anomaly detection
+
+**Recommendations:**
+- Query optimization suggestions
+- Configuration tuning
+- Resource allocation
+
+---
+
+### 26.3 Telemetry Publisher e redaction
+
+**Telemetry Publisher** raccoglie dati diagnostici e li invia a Workload XM.
+
+**Dati sensibili - redaction supportata:** (domanda campione esame)
+- ✅ **Log and query** text
+- ✅ **MapReduce job properties**
+- ✅ **Spark event and executor log**
+- ❌ HBase users (non redactable in questo contesto)
+- ❌ Kafka topics (non redactable in questo contesto)
+
+👉 **Domanda tipica d'esame** (domanda campione esame)
+> Workload XM ottimizza query? → **Sì**
+> Telemetry Publisher supporta redaction? → **Sì**
+> Log and query possono essere redatti? → **Sì**
+
+---
+
+# PARTE 8: REPLICATION MANAGER (3 domande)
+
+## 27. Replication Manager
+
+### 27.1 Cos'è Replication Manager
+
+**Replication Manager** è uno strumento per **replicare e migrare dati tra ambienti CDP**.
+
+**Funzioni:**
+- Copy HDFS data
+- Replicate Hive external tables
+- Backup HBase tables
+- Disaster Recovery (DR)
+- Cloud migration
+
+---
+
+### 27.2 Replication Manager – Private Cloud
+
+**Private Cloud:**
+- Replica HDFS tra cluster CDP Private Cloud Base 7.1.8+
+- Replica Hive external tables
+- Replica Ozone data
+
+---
+
+### 27.3 Replication Manager – Public Cloud
+
+**Public Cloud:**
+- Replica da CDH → CDP Public Cloud
+- Replica da CDP Private Cloud Base → CDP Public Cloud
+- Supporta HDFS, Hive, HBase
+- Cloud storage (S3/ADLS/GCS) come destination
+
+---
+
+### 27.4 HDFS Replication Policies
+
+**Requirements per replicare HDFS su cloud storage:** (domanda campione esame)
+- ✅ **Register cloud credentials** in Replication Manager
+- ✅ **Verify cluster access** e configure minimum ports
+- ❌ Non serve configurare Hive (HDFS è indipendente)
+- ❌ Non è vero che "works without configuration"
+
+👉 **Domanda tipica d'esame** (domanda campione esame)
+> Cosa serve per HDFS replication su cloud? → **Cloud credentials + cluster access**
+> Serve configurare Hive? → **No (HDFS ≠ Hive)**
+
+---
+
+# RIEPILOGO FINALE
+
+## Distribuzione domande per topic
+
+| Topic | Domande | Focus |
+|-------|---------|-------|
+| **Componenti CDP** | 15 | HDFS, Hive, Impala, YARN, Spark, Oozie, Kafka, NiFi, HBase, Kudu |
+| **Sicurezza** | 12 | SDX, Ranger, Atlas, Knox, encryption, SSO, Kerberos |
+| **Data Services** | 9 | CDE, CDW, COD, CML, CDF |
+| **Deploy Public Cloud** | 9 | AWS, Azure, GCP, environment, credential |
+| **Deploy Private Cloud** | 6 | System requirements, Java, DB, OS |
+| **Cloudera Manager** | 3 | Gestione cluster, configurazione |
+| **Workload XM** | 3 | Monitoring, optimization, telemetry |
+| **Replication Manager** | 3 | Backup, DR, migration |
+
+**Totale:** 60 domande  
+**Pass Score:** 60% (36 domande corrette su 60)
+
+---
+
+## Strategie per l'esame
+
+### ✅ Cosa memorizzare
+
+1. **Tabelle comparative** (Hive vs Impala, MapReduce vs Spark, ecc.)
+2. **Use cases specifici** (quando usare quale strumento)
+3. **Domande campione** (Oozie supporta MiNiFi? → No)
+4. **Liste supportate** (Java providers, databases, cloud providers)
+5. **Acronimi** (SDX, CDE, CDW, COD, CML, CDF, TDE, RBAC)
+
+### ❌ Errori comuni da evitare
+
+- Confondere Hive (batch) con Impala (interattivo)
+- Pensare che Ranger faccia authentication (fa authorization)
+- Credere che Atlas faccia security (fa governance/metadata)
+- Confondere NiFi (data flow) con Kafka (messaging)
+- Dimenticare che Hive e Impala condividono Metastore
+- Non conoscere i database supportati da Cloudera Manager
+
+### 📚 Risorse da studiare
+
+1. **Questo documento** (coverage completa 60 domande)
+2. **CDP documentation** ufficiale (link per approfondimenti)
+3. **Cloudera Essentials for CDP** (corso video)
+4. **Hands-on experience** (importante per domande pratiche)
+
+---
+
+## Frasi chiave da memorizzare
+
+> **Hive e Impala** condividono dati e Metastore, ma servono casi d'uso differenti.
+
+> **SDX** è l'architettura di sicurezza e governance integrata (Ranger + Atlas + Knox + Metastore).
+
+> **COD** è ideal per low-latency, highly scalable storage/retrieval (authentication, IoT).
+
+> **Environment** è un logical subset del cloud account con virtual network.
+
+> **Oozie** è un workflow scheduler che combina job sequenzialmente.
+
+> **Workload XM** ottimizza workload e troubleshoota failed jobs.
+
+> **Replication Manager** replica dati tra ambienti CDP (serve cloud credentials + cluster access).
+
+---
+
+**BUONO STUDIO!** 🚀
