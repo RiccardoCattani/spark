@@ -1,418 +1,260 @@
-# Cloudera Data Platform – CDP Generalist (CDP-0011)
-## Manuale di studio basato sul programma ufficiale d’esame
+# Approfondimento – Apache Hive e Apache Impala
+## (CDP Generalist Exam – CDP-0011)
 
 ---
 
-## Introduzione
+## 1. Ruolo di Hive e Impala nella Cloudera Data Platform
 
-Questo documento è una guida strutturata allo studio della **Cloudera Data Platform (CDP)**, costruita **sulla base del syllabus ufficiale del CDP Generalist Exam (CDP-0011)**.
+In **:contentReference[oaicite:0]{index=0}**, **Hive** e **Impala** non sono alternative, ma **complementari**.
 
-Obiettivo:
-- fornire una visione chiara dei **concetti richiesti all’esame**
-- aiutare a **riconoscere i casi d’uso corretti**
-- chiarire **differenze tra servizi e componenti**
+| Motore | Tipo di accesso | Caso d’uso principale |
+|------|----------------|----------------------|
+| Hive | SQL batch | ETL, reporting massivo |
+| Impala | SQL interattivo | Analisi a bassa latenza |
 
-Il documento **non sostituisce la documentazione ufficiale**, ma la rende più leggibile in ottica d’esame.
-
----
-
-# 1. Componenti principali dell’architettura CDP
-
-(≈ 15 domande d’esame)
+👉 **Domanda tipica d’esame**  
+> Quale scegliere per query interattive? → **Impala**  
+> Quale per ETL batch? → **Hive**
 
 ---
 
-## 1.1 HDFS (Hadoop Distributed File System)
+## 2. Apache Hive – Approfondimento completo
 
-HDFS è il file system distribuito utilizzato per:
-- memorizzare grandi volumi di dati
-- garantire affidabilità tramite replica
-- supportare elaborazioni distribuite
+## 2.1 Cos’è Apache Hive
 
-Caratteristiche chiave:
-- storage a blocchi
-- replica (tipicamente 3)
-- tolleranza ai guasti
-- ottimizzato per throughput, non per latenza
+**:contentReference[oaicite:1]{index=1}** è un **data warehouse distribuito** che fornisce:
+- un livello SQL sopra Hadoop
+- uno strato semantico sopra HDFS
+- uno schema-on-read
 
-Uso tipico:
-- Data Lake
-- storage per Hive, Impala, Spark
+Hive **non è un database** e **non è OLTP**.
 
 ---
 
-## 1.2 Hive e Impala
+## 2.2 Hive come strato semantico del Data Lake
 
-### Hive
-Hive è un **data warehouse su Hadoop** utilizzato per:
-- query SQL batch
-- trasformazioni ETL
-- analisi su grandi volumi di dati
+Senza Hive, il Data Lake è solo un insieme di file.  
+Hive introduce:
 
-Caratteristiche:
-- schema-on-read
-- latenza più elevata
-- orientato a query complesse
+- tabelle
+- colonne
+- tipi di dato
+- partizioni
 
-### Impala
-Impala è un **motore SQL interattivo** progettato per:
+➡️ **Hive dà significato al dato**
+
+Questo è fondamentale anche lato governance (Atlas, Ranger, auditing).
+
+---
+
+## 2.3 Hive Metastore (concetto CHIAVE per l’esame)
+
+Il **Metastore** è il componente più importante di Hive.
+
+Contiene:
+- definizione delle tabelle
+- schema delle colonne
+- partizioni
+- formati dei file
+- location su HDFS / object storage
+
+⚠️ **Punto d’esame cruciale**  
+> Hive e Impala **condividono lo stesso Metastore**
+
+Questo garantisce:
+- coerenza semantica
+- stessi dati, stesso schema
+- governance centralizzata
+
+---
+
+## 2.4 Schema-on-read (concetto fondamentale)
+
+Hive applica lo schema **in lettura**, non in scrittura.
+
+Vantaggi:
+- ingestione rapida
+- flessibilità
+- adattabilità a sorgenti diverse
+
+Svantaggi:
+- errori di schema emergono a query time
+- maggiore responsabilità sullo strato analitico
+
+👉 **Domanda tipica d’esame**  
+> Hive usa schema-on-read o schema-on-write? → **schema-on-read**
+
+---
+
+## 2.5 Tipi di tabelle Hive
+
+### Managed Tables
+- Hive gestisce dati e metadati
+- `DROP TABLE` elimina anche i file
+- più rischiose in ambienti enterprise
+
+### External Tables
+- Hive gestisce solo i metadati
+- i dati restano esterni
+- preferite nei Data Lake
+
+👉 **Domanda tipica d’esame**  
+> Quali tabelle sono consigliate per Data Lake? → **External**
+
+---
+
+## 2.6 Hive e performance
+
+Hive è:
+- **batch-oriented**
+- adatto a scansioni complete
+- meno performante su query rapide
+
+Ottimizzazioni comuni:
+- partizionamento
+- formati colonnari (ORC, Parquet)
+- predicate pushdown
+
+---
+
+## 2.7 Quando usare Hive (riassunto da esame)
+
+Usa Hive quando:
+- i dati sono molto grandi
+- la latenza non è critica
+- stai facendo ETL o reporting batch
+- la priorità è la scalabilità
+
+---
+
+## 3. Apache Impala – Approfondimento completo
+
+## 3.1 Cos’è Apache Impala
+
+**:contentReference[oaicite:2]{index=2}** è un **motore SQL MPP (Massively Parallel Processing)** progettato per:
+- query interattive
 - bassa latenza
-- query analitiche rapide
-- accesso diretto ai file Hadoop
+- analisi esplorativa
 
-Differenza chiave (domanda tipica d’esame):
-> Hive = batch  
-> Impala = interattivo
+Impala **non usa MapReduce**.
 
 ---
 
-## 1.3 Hue
+## 3.2 Architettura di Impala
 
-Hue è una **interfaccia web** che fornisce:
-- accesso SQL a Hive e Impala
-- esplorazione tabelle
-- editor query
-- visualizzazione risultati
-
-Hue **non è un motore di query**, ma un **tool di accesso**.
-
----
-
-## 1.4 YARN
-
-YARN è il **resource manager di Hadoop**.
-
-Funzioni:
-- allocazione CPU e memoria
-- gestione job distribuiti
-- supporto a più engine (Spark, Hive, MapReduce)
-
-Componenti principali:
-- ResourceManager
-- NodeManager
-- ApplicationMaster
-
----
-
-## 1.5 Spark
-
-Apache Spark è un **motore di elaborazione distribuito in memoria**.
-
-Utilizzato per:
-- ETL
-- analytics avanzata
-- machine learning
-
-Caratteristica chiave:
-- in-memory processing
-- alte prestazioni su workload iterativi
-
----
-
-## 1.6 Oozie
-
-Apache Oozie è un **workflow scheduler** per Hadoop.
-
-Permette di:
-- concatenare job (Hive, Spark, MapReduce)
-- gestire dipendenze
-- schedulare flussi complessi
-
-Domanda tipica:
-> Oozie combina più job in un unico workflow logico.
-
----
-
-## 1.7 Kafka
-
-Apache Kafka è una **piattaforma di streaming**.
-
-Utilizzato per:
-- ingestione dati real-time
-- messaging publish/subscribe
-- pipeline event-driven
+Impala utilizza:
+- daemon su ogni nodo
+- esecuzione in parallelo
+- elaborazione in memoria
 
 Caratteristiche:
-- alta disponibilità
-- throughput elevato
-- persistenza dei messaggi
+- niente job batch
+- niente scritture temporanee su HDFS
+- risposta immediata
+
+👉 **Domanda tipica d’esame**  
+> Impala è batch o interattivo? → **interattivo**
 
 ---
 
-## 1.8 NiFi
+## 3.3 Impala e Metastore condiviso
 
-Apache NiFi è un sistema per:
-- ingestione dati
-- routing
-- trasformazione
+Impala:
+- usa lo stesso Metastore di Hive
+- vede le stesse tabelle
+- usa gli stessi file su HDFS
 
-Caratteristiche:
-- interfaccia web
-- programmazione visuale (no-code)
-- controllo del flusso dei dati
+⚠️ **Punto d’esame importante**
+> Non esiste duplicazione dei dati tra Hive e Impala
 
 ---
 
-## 1.9 HBase e Phoenix
+## 3.4 Impala e performance
 
-### HBase
-Database NoSQL per:
-- accesso real-time
-- letture/scritture random
-- grandi volumi
+Impala è molto veloce perché:
+- legge direttamente i file
+- usa memoria
+- sfrutta MPP
 
-### Phoenix
-Layer SQL sopra HBase:
-- consente query SQL
-- traduce SQL in operazioni HBase
-
----
-
-## 1.10 Kudu
-
-Apache Kudu è uno storage colonnare progettato per:
-- update frequenti
-- accesso rapido
-- integrazione con Impala
-
-Caso d’uso tipico:
-> analytics + aggiornamenti frequenti
+Ma:
+- consuma molte risorse
+- è sensibile a query inefficienti
+- va governato (YARN, admission control)
 
 ---
 
-# 2. Sicurezza in CDP Public Cloud e Private Cloud Base
+## 3.5 Impala e sicurezza
 
-(≈ 12 domande)
+In Cloudera, Impala:
+- usa Kerberos
+- applica policy Ranger
+- è soggetto ad auditing
 
----
-
-## 2.1 Shared Data Experience (SDX)
-
-SDX è l’architettura di sicurezza e governance di Cloudera.
-
-Include:
-- Ranger (autorizzazione)
-- Atlas (metadata e lineage)
-- Hive Metastore
-- Data Catalog
-- Replication Manager
-- Workload Manager
-
-Concetto chiave:
-> sicurezza e governance **coerenti su tutti i servizi**
+⚠️ Impala **espone dati velocemente** → rischio maggiore se mal configurato.
 
 ---
 
-## 2.2 Sicurezza in CDP Public Cloud
+## 3.6 Quando usare Impala (riassunto da esame)
 
-Caratteristiche:
-- integrazione con Cloud SSO (SAML)
-- uso dei servizi di sicurezza del cloud provider
-- storage su S3 / ADLS / GCS
-
-L’identity management è **federato**.
-
----
-
-## 2.3 Sicurezza in CDP Private Cloud Base
-
-Caratteristiche:
-- integrazione con LDAP / Active Directory
-- autenticazione Kerberos
-- HDFS Transparent Encryption
-- TLS per dati in transito
+Usa Impala quando:
+- serve risposta rapida
+- analisi interattiva
+- dashboard
+- esplorazione dati
 
 ---
 
-## 2.4 Cloudera Navigator Encrypt
+## 4. Confronto Hive vs Impala (TABELLA DA MEMORIZZARE)
 
-Navigator Encrypt consente:
-- cifratura dei dati a riposo
-- senza modificare le applicazioni
-- con impatto minimo sulle performance
+| Caratteristica | Hive | Impala |
+|--------------|------|--------|
+| Tipo | Data Warehouse | SQL Engine |
+| Latenza | Alta | Bassa |
+| Uso | Batch / ETL | Interattivo |
+| Motore | Job batch | MPP |
+| Metastore | Sì | Sì (condiviso) |
+| Schema | Schema-on-read | Schema-on-read |
+| Query rapide | ❌ | ✅ |
 
----
-
-# 3. Data Services (Experiences)
-
-(≈ 9 domande)
-
----
-
-## 3.1 Cloudera Data Engineering (CDE)
-
-Servizio per:
-- eseguire job Spark
-- scheduling automatico
-- cluster virtuali autoscalanti
-
-Disponibile:
-- Public Cloud
-- Private Cloud Data Services
+👉 **Questa tabella copre il 90% delle domande Hive/Impala all’esame**
 
 ---
 
-## 3.2 Cloudera Data Warehouse (CDW)
+## 5. Scenario tipico d’esame (ragionamento)
 
-Servizio containerizzato per:
-- data warehouse self-service
-- workload isolati
-- scalabilità indipendente
+**Domanda**  
+Un analista deve eseguire query SQL rapide su grandi volumi di dati già strutturati. Quale strumento scegliere?
 
-Supporta:
-- Hive
-- Impala
+**Risposta corretta**
+→ **Impala**
 
----
-
-## 3.3 Cloudera Machine Learning (CML)
-
-Servizio per:
-- data science
-- machine learning
-- notebook (Python, R)
-
-Unifica:
-- data engineering
-- data science
-
----
-
-## 3.4 Cloudera Operational Database (COD)
-
-Database operativo real-time:
-- basato su HBase + Phoenix
-- alta disponibilità
+**Perché**
 - bassa latenza
-
-Caso d’uso tipico:
-> autenticazione, profili utente, lookup veloci
-
----
-
-## 3.5 Cloudera DataFlow (CDF)
-
-Servizio basato su NiFi per:
-- ingestione dati
-- data streaming
-- integrazione cloud-native
+- SQL interattivo
+- dati già nel Data Lake
 
 ---
 
-# 4. Deployment CDP Public Cloud
+## 6. Errori comuni da evitare all’esame
 
-(≈ 9 domande)
-
----
-
-## 4.1 Cloud supportati
-
-CDP Public Cloud può essere deployato su:
-- AWS
-- Azure
-- GCP
+❌ Dire che Hive è interattivo  
+❌ Dire che Impala è un data warehouse  
+❌ Pensare che Hive e Impala abbiano storage separato  
+❌ Confondere Metastore con HDFS  
 
 ---
 
-## 4.2 Environment in CDP Public Cloud
+## 7. Sintesi finale (da memorizzare)
 
-Un **environment** è:
-- un sottoinsieme logico dell’account cloud
-- associato a una rete virtuale
-- riutilizzabile per più workload
-
-Domanda tipica d’esame:
-> Environment ≠ cluster
+- Hive = significato + batch
+- Impala = velocità + interattività
+- Metastore = cuore semantico
+- HDFS = storage comune
+- CDP = governance unica
 
 ---
 
-# 5. Deployment CDP Private Cloud Base
+## 8. Frase chiave da esame (memorizzala)
 
-(≈ 6 domande)
-
----
-
-## 5.1 CDP Private Cloud Base
-
-Piattaforma installata:
-- on-prem
-- in data center privati
-
-Include:
-- Cloudera Runtime
-- servizi core Hadoop
-
----
-
-# 6. Cloudera Manager
-
-(≈ 3 domande)
-
----
-
-## 6.1 Funzioni principali
-
-Cloudera Manager consente di:
-- installare cluster
-- configurare servizi
-- monitorare salute
-- gestire upgrade
-
-Componenti:
-- Server
-- Agent
-
----
-
-# 7. Workload XM
-
-(≈ 3 domande)
-
----
-
-## 7.1 Funzioni principali
-
-Workload XM fornisce:
-- visibilità sui workload
-- analisi delle performance
-- troubleshooting
-- ottimizzazione job
-
-Utilizza dati di telemetria.
-
----
-
-# 8. Replication Manager
-
-(≈ 3 domande)
-
----
-
-## 8.1 Funzioni principali
-
-Replication Manager consente:
-- replica dati HDFS
-- migrazione tra cluster
-- replica verso Public Cloud
-
-Supporta:
-- HDFS
-- Hive external tables
-- HBase
-
----
-
-## Conclusione
-
-Questo documento copre **tutti gli argomenti ufficiali del CDP Generalist Exam (CDP-0011)**, organizzati per:
-- componenti
-- sicurezza
-- servizi
-- deployment
-- strumenti di gestione
-
-È ideale come:
-- guida di studio
-- ripasso pre-esame
-- mappa concettuale CDP
+> **Hive e Impala sono due motori SQL diversi che condividono gli stessi dati e lo stesso Metastore, ma servono casi d’uso differenti.**
 
