@@ -318,17 +318,17 @@ Doug Cutting (lavorando su Apache Nutch) provò a replicare quelle idee nel mond
 
 ```
 ┌─────────────────────────────────────────┐
-│ Aziende con big data (Google, Yahoo!)  │
+│ Aziende con big data (Google, Yahoo!)   │
 │                                         │
 │ Opzioni:                                │
-│ 1. Build custom distributed systems    │
-│    → Costi: milioni $, anni sviluppo   │
+│ 1. Build custom distributed systems     │
+│    → Costi: milioni $, anni sviluppo    │
 │                                         │
-│ 2. Buy expensive appliance             │
-│    → Costi: $$$, no flessibilità       │
+│ 2. Buy expensive appliance              │
+│    → Costi: $$$, no flessibilità        │
 │                                         │
-│ 3. Non fare analytics                  │
-│    → Perdere insights business         │
+│ 3. Non fare analytics                   │
+│    → Perdere insights business          │
 └─────────────────────────────────────────┘
 ```
 
@@ -1169,9 +1169,9 @@ In **:contentReference[oaicite:0]{index=0}**, **Hive** e **Impala** non sono alt
 ## 2.1 Cos’è Apache Hive
 
 **:contentReference[oaicite:1]{index=1}** è un **data warehouse distribuito** che fornisce:
-- un livello SQL sopra Hadoop
-- uno strato semantico sopra HDFS
-- uno schema-on-read
+- un livello SQL sopra Hadoop (Consente di scrivere query SQL-like per analizzare i dati in HDFS)
+- uno strato semantico sopra HDFS (Hive organizza i dati in tabelle e schemi, fornendo una struttura logica ai file grezzi in HDFS)
+- uno schema-on-read (Lo schema viene applicato ai dati solo quando vengono letti (non al momento della scrittura).
 
 Hive **non è un database** e **non è OLTP**.
 
