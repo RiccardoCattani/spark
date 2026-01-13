@@ -95,11 +95,11 @@ I dati non relazionali sono più flessibili e non seguono uno schema rigido.
 ### **Confronto Tabellare**
 
 | **Caratteristica**       | **Relazionale**                     | **Non Relazionale**               |
-|---------------------------|-------------------------------------|------------------------------------|
+|---------------------------|-------------------------------------|----------------------------------|
 | **Struttura**             | Tabelle (righe e colonne)          | Documenti, grafi, colonne, chiavi-valori |
 | **Schema**                | Rigido (schema-on-write)           | Flessibile (schema-on-read)       |
 | **Scalabilità**           | Verticale                          | Orizzontale                       |
-| **Adatto per**            | Dati strutturati                  | Dati non strutturati/semi-strutturati |
+| **Adatto per**            | Dati strutturati                   | Dati non strutturati/semi-strutturati |
 | **Esempi di database**    | MySQL, PostgreSQL, Oracle          | MongoDB, Cassandra, Neo4j         |
 | **Query**                 | SQL                                | API specifiche o linguaggi NoSQL  |
 
@@ -149,7 +149,7 @@ Google pubblicò il paper su **MapReduce**, paradigma di programmazione distribu
 - Ispirazione dai paper di Google
 
 **Nome "Hadoop":**
-- Nome del elefante di peluche giallo del figlio di Doug Cutting
+- Nome dell' elefante di peluche giallo del figlio di Doug Cutting
 - Non è un acronimo
 
 **Componenti iniziali:**
@@ -1123,7 +1123,6 @@ Un analista deve eseguire query SQL rapide su grandi volumi di dati già struttu
 
 > **Hive e Impala sono due motori SQL diversi che condividono gli stessi dati e lo stesso Metastore, ma servono casi d’uso differenti.**
 ---
-
 # PARTE 2: SICUREZZA CDP (12 domande)
 
 ## 9. Shared Data Experience (SDX)
@@ -1917,122 +1916,58 @@ Cloudera Manager richiede un database esterno per:
 
 ---
 
-## Differenza tra schema e tabella in Hadoop
+### **Cos'è lo Schema?**
 
-### **Schema in Hadoop**
-Lo schema in Hadoop definisce la struttura e il formato dei dati, ma viene applicato **in lettura** (schema-on-read), non in scrittura. Questo approccio è diverso dai database tradizionali.
+Lo **schema** è una definizione strutturale che descrive l'organizzazione e il formato dei dati in un sistema di gestione dei dati. Esso specifica come i dati sono strutturati, quali campi o colonne esistono, e quali tipi di dati sono associati a ciascun campo.
 
-#### **Caratteristiche principali:**
-1. **Definizione**:
-   - Specifica il layout dei dati (colonne, tipi di dati, ecc.).
-   - Non è imposto al momento dell'ingestione dei dati.
+#### **Caratteristiche principali dello Schema:**
+1. **Definizione della struttura:**
+   - Specifica i campi (colonne) e i loro tipi di dati (es. stringa, intero, data).
+   - Definisce le relazioni tra i dati (es. chiavi primarie e chiavi esterne nei database relazionali).
 
-2. **Schema-on-read**:
-   - Lo schema viene applicato solo quando i dati vengono letti o interrogati.
-   - Permette di gestire dati non strutturati o semi-strutturati.
+2. **Tipi di Schema:**
+   - **Schema-on-write:**
+     - Lo schema è definito prima che i dati vengano scritti nel sistema.
+     - Richiede che i dati rispettino la struttura predefinita.
+     - Utilizzato nei database relazionali (es. MySQL, PostgreSQL).
+   - **Schema-on-read:**
+     - Lo schema viene applicato solo al momento della lettura o dell'analisi dei dati.
+     - Permette di gestire dati non strutturati o semi-strutturati.
+     - Utilizzato in strumenti di big data come Hadoop e Hive.
 
-3. **Flessibilità**:
-   - I dati possono essere caricati senza uno schema predefinito.
-   - Lo schema può essere definito o modificato successivamente.
+3. **Flessibilità:**
+   - Nei sistemi relazionali, lo schema è rigido e deve essere rispettato.
+   - Nei sistemi non relazionali, lo schema può essere flessibile o assente.
 
-4. **Esempi**:
-   - In Hive, lo schema è definito nel **Metastore** e descrive le tabelle.
-   - In HDFS, i file possono essere archiviati senza schema, ma strumenti come Hive o Impala applicano uno schema per analizzarli.
-
----
-
-### **Tabella in Hadoop**
-Una tabella in Hadoop è una rappresentazione logica dei dati archiviati in HDFS o in un altro sistema di storage. Le tabelle sono utilizzate principalmente in strumenti come Hive o Impala.
-
-#### **Caratteristiche principali:**
-1. **Definizione**:
-   - Una tabella è un'entità logica che rappresenta i dati.
-   - È definita da uno schema (colonne, tipi di dati, partizioni).
-
-2. **Storage**:
-   - I dati di una tabella sono archiviati fisicamente in HDFS o in un object storage (es. S3, ADLS).
-   - Le tabelle possono essere **gestite** (managed) o **esterne** (external).
-
-3. **Tipi di Tabelle**:
-   - **Managed Tables**: Hive gestisce sia i dati che i metadati. Eliminare la tabella rimuove anche i dati.
-   - **External Tables**: Hive gestisce solo i metadati; i dati rimangono esterni e non vengono eliminati con la tabella.
-
-4. **Esempi**:
-   - Una tabella Hive può rappresentare un dataset CSV archiviato in HDFS.
-   - Una tabella Impala può interrogare dati Parquet o ORC.
-
----
-
-### **Esempio: Differenza tra Tabella Relazionale e Non Relazionale**
-
-#### **Tabella Relazionale**
-Immaginiamo di avere un database relazionale per gestire un negozio online. I dati relativi ai clienti e agli ordini sono organizzati in tabelle con righe e colonne.
-
-**Tabella: Clienti**
-| ID Cliente | Nome       | Cognome    | Email              |
-|------------|------------|------------|--------------------|
-| 1          | Mario      | Rossi      | mario.rossi@email.com |
-| 2          | Anna       | Bianchi    | anna.bianchi@email.com |
-
-**Tabella: Ordini**
-| ID Ordine | ID Cliente | Data       | Importo |
-|-----------|------------|------------|---------|
-| 101       | 1          | 2026-01-10 | 100.50  |
-| 102       | 2          | 2026-01-11 | 200.00  |
-
-**Caratteristiche:**
-- Le tabelle sono collegate tramite la colonna `ID Cliente` (chiave esterna).
-- Lo schema è rigido: ogni riga deve rispettare la struttura definita (colonne e tipi di dati).
-- Ideale per query SQL come: *"Trova tutti gli ordini di Mario Rossi"*.
+4. **Esempi di Schema:**
+   - **Database relazionale:**
+     ```sql
+     CREATE TABLE Clienti (
+       ID INT PRIMARY KEY,
+       Nome VARCHAR(50),
+       Cognome VARCHAR(50),
+       Email VARCHAR(100)
+     );
+     ```
+     Questo schema definisce una tabella con colonne e tipi di dati specifici.
+   - **Big Data (Hive):**
+     ```sql
+     CREATE EXTERNAL TABLE LogDati (
+       Timestamp STRING,
+       Messaggio STRING
+     )
+     STORED AS TEXTFILE;
+     ```
+     Questo schema viene applicato ai dati già esistenti in HDFS.
 
 ---
 
-#### **Tabella Non Relazionale**
-In un database non relazionale (es. MongoDB), i dati possono essere archiviati come documenti JSON, senza uno schema rigido.
-
-**Collezione: Clienti e Ordini**
-```json
-{
-  "id_cliente": 1,
-  "nome": "Mario",
-  "cognome": "Rossi",
-  "email": "mario.rossi@email.com",
-  "ordini": [
-    {
-      "id_ordine": 101,
-      "data": "2026-01-10",
-      "importo": 100.50
-    }
-  ]
-},
-{
-  "id_cliente": 2,
-  "nome": "Anna",
-  "cognome": "Bianchi",
-  "email": "anna.bianchi@email.com",
-  "ordini": [
-    {
-      "id_ordine": 102,
-      "data": "2026-01-11",
-      "importo": 200.00
-    }
-  ]
-}
-```
-
-**Caratteristiche:**
-- I dati di clienti e ordini sono archiviati insieme nello stesso documento.
-- Non c'è uno schema rigido: ogni documento può avere campi diversi.
-- Ideale per query flessibili come: *"Trova tutti i dettagli di Mario Rossi e i suoi ordini"* senza join.
+#### **Perché lo Schema è Importante?**
+- **Organizzazione:** Permette di dare struttura ai dati, rendendoli più facili da interrogare e analizzare.
+- **Validazione:** Garantisce che i dati rispettino determinati vincoli (es. tipi di dati corretti).
+- **Governance:** Aiuta a mantenere coerenza e integrità nei sistemi di gestione dei dati.
 
 ---
 
-### **Confronto**
-| **Caratteristica**       | **Relazionale**                     | **Non Relazionale**               |
-|---------------------------|-------------------------------------|------------------------------------|
-| **Struttura**             | Tabelle con righe e colonne        | Documenti JSON o simili           |
-| **Relazioni**             | Chiavi primarie/esterne            | Incorporate nei documenti         |
-| **Flessibilità**          | Schema rigido                      | Schema flessibile                 |
-| **Query**                 | SQL                                | API o linguaggi NoSQL             |
-| **Performance**           | Ottimale per dati strutturati      | Ottimale per dati non strutturati |
+In sintesi, lo schema è il "progetto" che descrive come i dati sono organizzati e strutturati in un sistema, influenzando il modo in cui vengono archiviati, letti e analizzati.
 
