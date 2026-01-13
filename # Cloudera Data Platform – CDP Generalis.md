@@ -1197,20 +1197,43 @@ Questo è fondamentale anche lato governance (Atlas, Ranger, auditing).
 
 Il **Metastore** è il componente più importante di Hive.
 
-Contiene:
-- definizione delle tabelle
-- schema delle colonne
-- partizioni
-- formati dei file
-- location su HDFS / object storage
+### **Cosa memorizza il Metastore?**
+1. **Definizione delle tabelle:**
+   - Nomi delle tabelle e dei database.
+2. **Schema delle tabelle:**
+   - Colonne, tipi di dati, vincoli.
+3. **Partizioni:**
+   - Informazioni sulle partizioni delle tabelle (es. `year=2025`, `region=EU`).
+4. **Formati dei file:**
+   - Specifica il formato di archiviazione (es. Parquet, ORC, TextFile).
+5. **Location su HDFS / Object Storage:**
+   - Percorso fisico dei dati (es. `hdfs://data/employees`).
+6. **Metadati aggiuntivi:**
+   - Statistiche (es. numero di righe, dimensione dei dati).
 
-⚠️ **Punto d’esame cruciale**  
-> Hive e Impala **condividono lo stesso Metastore**
+### **Perché è importante per l’esame?**
+- **Concetto chiave:** Il Metastore è il cuore di Hive, senza di esso non è possibile interrogare i dati.
+- **Domande tipiche:**
+  - Cosa memorizza il Metastore?
+  - Dove sono archiviati i metadati di Hive?
 
-Questo garantisce:
-- coerenza semantica
-- stessi dati, stesso schema
-- governance centralizzata
+### **Esempio pratico:**
+Per una tabella Hive:
+```sql
+CREATE TABLE employees (
+    id INT,
+    name STRING,
+    salary DECIMAL
+)
+PARTITIONED BY (department STRING)
+STORED AS PARQUET
+LOCATION 'hdfs://data/employees';
+```
+Il Metastore memorizza:
+- **Schema delle colonne:** `id INT`, `name STRING`, `salary DECIMAL`.
+- **Partizioni:** `department STRING`.
+- **Formato file:** `PARQUET`.
+- **Percorso:** `hdfs://data/employees`.
 
 ---
 
