@@ -30,8 +30,6 @@ Prima dell'avvento di Hadoop e Cloudera, il panorama del data management era dom
 - ❌ **Schema rigido** - schema-on-write, no flessibilità
 - ❌ **Vendor lock-in** - dipendenza da fornitori proprietari
 
-
-
 ## Differenza tra dati relazionali e non relazionali
 
 ### **Dati Relazionali**
@@ -111,9 +109,14 @@ In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradiziona
 
 ### Google: La rivoluzione (2003-2004)
 
-**Google File System (GFS) - 2003**
+#### **Timeline chiara: Da Google a Hadoop**
 
+**2003–2004: Google pubblica i paper rivoluzionari**
+
+**Google File System (GFS) - 2003**
 Google pubblicò un paper rivoluzionario sul **Google File System**.
+
+**⚠️ Importante:** Nel 2003 **Hadoop non esisteva ancora**. Non si "parlava di Hadoop" mentre Google creava GFS.
 
 **Problemi che GFS risolveva:**
 - Storage distribuito su migliaia di server commodity
@@ -136,6 +139,22 @@ Google pubblicò il paper su **MapReduce**, paradigma di programmazione distribu
 **Paper:** "MapReduce: Simplified Data Processing on Large Clusters" - Dean, Ghemawat (OSDI 2004)
 
 ⚠️ **Google NON rilasciò codice open source**, solo paper accademici.
+
+**2005–2006: Doug Cutting crea l'implementazione open source**
+
+Doug Cutting (lavorando su Apache Nutch) provò a replicare quelle idee nel mondo open source:
+- **HDFS** ≈ ispirato a GFS
+- **MapReduce di Hadoop** ≈ ispirato al MapReduce di Google
+
+**Quindi, rispondendo alla domanda "Si parlava di Hadoop nel 2003?":**
+
+❌ Nel 2003 Hadoop non esisteva ancora  
+❌ Non si "parlava di Hadoop" mentre Google creava GFS  
+✅ Si parlava già dei problemi (Big Data, scalabilità, fault tolerance)  
+✅ Google ha posto le basi concettuali che Hadoop renderà pubbliche e open source pochi anni dopo
+
+**💡 In sintesi (una frase):**  
+**GFS viene prima (2003), Hadoop viene dopo (2006) come reimplementazione open source delle idee di Google.**
 
 ---
 
@@ -301,18 +320,18 @@ Rendere Hadoop **enterprise-ready** con:
 
 **Differenze CDH vs HDP:**
 
-| Aspetto | CDH (Cloudera) | HDP (Hortonworks) |
-|---------|----------------|-------------------|
+| Aspetto | CDH (Cloudera) | --------------------------| HDP (Hortonworks) |
+|---------|----------------|-------------------------- |-------------------|
 | Filosofia | Enterprise + alcune feature proprietarie | 100% open source |
-| SQL Engine | Impala (proprietario, veloce) | Hive + Tez |
-| Manager | Cloudera Manager | Ambari |
-| Security | Sentry + Navigator | Ranger + Knox + Atlas |
-| Target | Enterprise con budget | Open source enthusiast |
-| Support | Subscription commerciale | Subscription + community |
+| SQL Engine | Impala (proprietario, veloce)           | Hive + Tez |
+| Manager | Cloudera Manager                           | Ambari |
+| Security | Sentry + Navigator                        | Ranger + Knox + Atlas |
+| Target | Enterprise con budget                       | Open source enthusiast |
+| Support | Subscription commerciale                   | Subscription + community |
 
 ---
 
-## 0.2 La fusione Cloudera + Hortonworks (2019)
+## 0.2 La fusione Cloudera (CDH) + Hortonworks (HDP) (2019)
 
 ### 0.2.1 Merger announcement (Ottobre 2018)
 
@@ -463,6 +482,170 @@ Storage e compute sono SEPARATI (decoupled)
 - ✅ Storage persistente (dati rimangono su S3/ADLS)
 - ✅ Costo ridotto (paga solo compute quando serve)
 - ✅ Durability cloud-native (11 nines su S3)
+
+---
+
+#### **Storage separato dal Compute in CDP: Risposta completa**
+
+**Domanda:** In CDP lo storage è sempre separato dal compute ed in cloud?
+
+**Risposta:** **Dipende dal deployment model di CDP che si sceglie.**
+
+---
+
+##### **1. CDP Public Cloud ☁️**
+**✅ SÌ - Storage SEMPRE separato e SEMPRE in cloud**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  CDP Public Cloud Architecture                          │
+│                                                          │
+│  ┌─────────────────┐         ┌──────────────────────┐  │
+│  │  Compute Layer  │   ←→    │  Storage Layer       │  │
+│  │  (Ephemeral)    │         │  (Persistent)        │  │
+│  │                 │         │                      │  │
+│  │ • CDE (Spark)   │         │ • S3 (AWS)           │  │
+│  │ • CDW (Hive)    │         │ • ADLS (Azure)       │  │
+│  │ • CML (ML)      │         │ • GCS (Google Cloud) │  │
+│  │ • COD (HBase)   │         │                      │  │
+│  │                 │         │ Object Storage       │  │
+│  │ Auto-scaling    │         │ Durable, scalable    │  │
+│  └─────────────────┘         └──────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Caratteristiche:**
+- **Storage:** Object storage cloud (S3, ADLS Gen2, GCS)
+- **Compute:** Cluster effimeri (EC2, Azure VMs, GCE instances)
+- **Architettura:** Completamente disaccoppiata
+- **Location:** Tutto in cloud (AWS/Azure/GCP)
+
+**Vantaggi:**
+- 🚀 **Elasticità totale:** scala compute senza toccare storage
+- 💰 **Costi ottimizzati:** paghi compute solo quando lo usi
+- 🔒 **Durabilità:** dati persistono anche cancellando cluster
+- ♻️ **Multi-workload:** stessi dati accessibili da CDE, CDW, CML simultaneamente
+- 🌍 **Global:** replica dati cross-region facilmente
+
+**Esempio pratico:**
+```
+Data Lake su S3 (us-east-1)
+    ↓
+├─ CDE Virtual Cluster #1 (Spark batch)
+│   └─ Scala/scompare on-demand
+│
+├─ CDW Virtual Warehouse (Impala query)
+│   └─ Auto-scale basato su query load
+│
+└─ CML Workspace (data scientists)
+    └─ Jupyter notebooks leggono/scrivono stesso Data Lake
+```
+
+---
+
+##### **2. CDP Private Cloud Base 🏢**
+**❌ NO - Storage e Compute ACCOPPIATI (architettura tradizionale Hadoop)**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  CDP Private Cloud Base Architecture                    │
+│                                                          │
+│  Ogni nodo ha STORAGE + COMPUTE insieme                 │
+│                                                          │
+│  ┌──────────────────────────────────────────────────┐  │
+│  │ Nodo 1: HDFS DataNode + YARN NodeManager        │  │
+│  │         [Storage locale] + [Compute]             │  │
+│  └──────────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────┐  │
+│  │ Nodo 2: HDFS DataNode + YARN NodeManager        │  │
+│  │         [Storage locale] + [Compute]             │  │
+│  └──────────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────┐  │
+│  │ Nodo 3: HDFS DataNode + YARN NodeManager        │  │
+│  │         [Storage locale] + [Compute]             │  │
+│  └──────────────────────────────────────────────────┘  │
+│                                                          │
+│  On-premise, bare metal servers                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Caratteristiche:**
+- **Storage:** HDFS locale sui nodi del cluster
+- **Compute:** YARN NodeManager sugli stessi nodi
+- **Architettura:** Tightly coupled (heritage da CDH/HDP)
+- **Location:** On-premise (data center aziendale)
+
+**Perché è accoppiato:**
+- 📍 **Data locality:** compute preferisce elaborare dati locali (stessa macchina)
+- 🏗️ **Architettura legacy:** eredità da Hadoop originale (2006-2015)
+- 🔧 **Hardware fisico:** server bare metal permanenti
+
+**Limitazioni:**
+- ⚠️ Non puoi scalare storage senza aggiungere nodi compute
+- ⚠️ Non puoi scalare compute senza aggiungere storage HDFS
+- ⚠️ Cluster sempre accesi (no elasticità on-demand)
+
+---
+
+##### **3. CDP Private Cloud Data Services 🏢☁️**
+**✅ SÌ - Storage separato (on-premise ma cloud-like)**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  CDP Private Cloud Data Services Architecture           │
+│                                                          │
+│  ┌─────────────────┐         ┌──────────────────────┐  │
+│  │  Compute Layer  │   ←→    │  Storage Layer       │  │
+│  │  (Kubernetes)   │         │  (Object Storage)    │  │
+│  │                 │         │                      │  │
+│  │ • CDE Pods      │         │ • Ozone              │  │
+│  │ • CDW Pods      │         │ • MinIO              │  │
+│  │ • CML Pods      │         │ • NetApp StorageGRID │  │
+│  │                 │         │ • Dell ECS           │  │
+│  │ OpenShift/ECS   │         │                      │  │
+│  └─────────────────┘         └──────────────────────┘  │
+│                                                          │
+│  On-premise, but cloud-native architecture              │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Caratteristiche:**
+- **Storage:** Object storage on-premise (Ozone, MinIO, NetApp, Dell ECS)
+- **Compute:** Container orchestration (Kubernetes: OpenShift o ECS Anywhere)
+- **Architettura:** Separata, cloud-native in data center
+- **Location:** On-premise ma con modello cloud
+
+**Vantaggi:**
+- ✅ Separazione storage/compute come il cloud pubblico
+- ✅ Auto-scaling dei Data Services
+- ✅ Containerizzazione (portabilità)
+- ✅ Rimane on-premise (compliance/data sovereignty)
+
+---
+
+##### **Tabella Riepilogativa**
+
+| **CDP Deployment**               | **Storage Separato?** | **In Cloud?** | **Storage Type**        | **Compute Type**          |
+|----------------------------------|-----------------------|---------------|-------------------------|---------------------------|
+| **CDP Public Cloud**             | ✅ SÌ                 | ✅ SÌ         | S3/ADLS/GCS (object)   | Cloud VMs (ephemeral)     |
+| **CDP Private Cloud Base**       | ❌ NO                 | ❌ NO         | HDFS (local disks)     | Bare metal (permanent)    |
+| **CDP Private Cloud Data Services** | ✅ SÌ              | ❌ NO         | Ozone/MinIO (object)   | Kubernetes pods (elastic) |
+
+---
+
+##### **In sintesi (rispondendo alla tua domanda):**
+
+**"In CDP lo storage è sempre separato dal compute ed in cloud?"**
+
+**Risposta:**
+- **CDP Public Cloud:** ✅ SÌ, sempre separato + sempre cloud (AWS/Azure/GCP)
+- **CDP Private Cloud Base:** ❌ NO, accoppiato + on-premise (HDFS tradizionale)
+- **CDP Private Cloud Data Services:** ✅ Separato ma ❌ on-premise (cloud-like architecture in data center)
+
+**Quindi:**
+- ✅ **Cloud = Sempre separato**
+- ❌ **On-premise Base = Mai separato** (tightly coupled)
+- ⚡ **On-premise Data Services = Separato ma non cloud** (hybrid model)
 
 ---
 
