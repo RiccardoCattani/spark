@@ -1963,13 +1963,76 @@ Una tabella in Hadoop è una rappresentazione logica dei dati archiviati in HDFS
 
 ---
 
-### **Confronto Tabellare**
+### **Esempio: Differenza tra Tabella Relazionale e Non Relazionale**
 
-| **Caratteristica**       | **Schema**                          | **Tabella**                       |
-|---------------------------|-------------------------------------|----------------------------------|
-| **Definizione**           | Struttura dei dati (colonne, tipi) | Rappresentazione logica dei dati  |
-| **Applicazione**          | In lettura (schema-on-read)        | Utilizzata per interrogare i dati |
-| **Persistenza**           | Non persistente                    | Persistente (metadati e dati)     |
-| **Gestione**              | Definito nel Metastore             | Può essere managed o external     |
-| **Esempi**                | Colonne e tipi di dati in Hive     | Tabelle Hive o Impala             |
+#### **Tabella Relazionale**
+Immaginiamo di avere un database relazionale per gestire un negozio online. I dati relativi ai clienti e agli ordini sono organizzati in tabelle con righe e colonne.
+
+**Tabella: Clienti**
+| ID Cliente | Nome       | Cognome    | Email              |
+|------------|------------|------------|--------------------|
+| 1          | Mario      | Rossi      | mario.rossi@email.com |
+| 2          | Anna       | Bianchi    | anna.bianchi@email.com |
+
+**Tabella: Ordini**
+| ID Ordine | ID Cliente | Data       | Importo |
+|-----------|------------|------------|---------|
+| 101       | 1          | 2026-01-10 | 100.50  |
+| 102       | 2          | 2026-01-11 | 200.00  |
+
+**Caratteristiche:**
+- Le tabelle sono collegate tramite la colonna `ID Cliente` (chiave esterna).
+- Lo schema è rigido: ogni riga deve rispettare la struttura definita (colonne e tipi di dati).
+- Ideale per query SQL come: *"Trova tutti gli ordini di Mario Rossi"*.
+
+---
+
+#### **Tabella Non Relazionale**
+In un database non relazionale (es. MongoDB), i dati possono essere archiviati come documenti JSON, senza uno schema rigido.
+
+**Collezione: Clienti e Ordini**
+```json
+{
+  "id_cliente": 1,
+  "nome": "Mario",
+  "cognome": "Rossi",
+  "email": "mario.rossi@email.com",
+  "ordini": [
+    {
+      "id_ordine": 101,
+      "data": "2026-01-10",
+      "importo": 100.50
+    }
+  ]
+},
+{
+  "id_cliente": 2,
+  "nome": "Anna",
+  "cognome": "Bianchi",
+  "email": "anna.bianchi@email.com",
+  "ordini": [
+    {
+      "id_ordine": 102,
+      "data": "2026-01-11",
+      "importo": 200.00
+    }
+  ]
+}
+```
+
+**Caratteristiche:**
+- I dati di clienti e ordini sono archiviati insieme nello stesso documento.
+- Non c'è uno schema rigido: ogni documento può avere campi diversi.
+- Ideale per query flessibili come: *"Trova tutti i dettagli di Mario Rossi e i suoi ordini"* senza join.
+
+---
+
+### **Confronto**
+| **Caratteristica**       | **Relazionale**                     | **Non Relazionale**               |
+|---------------------------|-------------------------------------|------------------------------------|
+| **Struttura**             | Tabelle con righe e colonne        | Documenti JSON o simili           |
+| **Relazioni**             | Chiavi primarie/esterne            | Incorporate nei documenti         |
+| **Flessibilità**          | Schema rigido                      | Schema flessibile                 |
+| **Query**                 | SQL                                | API o linguaggi NoSQL             |
+| **Performance**           | Ottimale per dati strutturati      | Ottimale per dati non strutturati |
 
