@@ -1841,3 +1841,80 @@ Cloudera Manager richiede un database esterno per:
 ---
 
 **BUONO STUDIO!** 🚀
+
+---
+
+## Differenza tra dati relazionali e non relazionali
+
+### **Dati Relazionali**
+I dati relazionali sono organizzati in un formato strutturato, seguendo uno schema rigido.
+
+#### **Caratteristiche principali:**
+1. **Struttura**:
+   - Organizzati in tabelle con righe e colonne.
+   - Ogni tabella ha uno schema predefinito (schema-on-write).
+   - Le relazioni tra i dati sono definite tramite chiavi primarie e chiavi esterne.
+
+2. **Esempi di dati**:
+   - Informazioni su clienti (nome, cognome, email, telefono).
+   - Transazioni finanziarie (ID transazione, importo, data).
+   - Inventari di prodotti (ID prodotto, quantità, prezzo).
+
+3. **Database relazionali (RDBMS)**:
+   - MySQL, PostgreSQL, Oracle Database, Microsoft SQL Server.
+
+4. **Vantaggi**:
+   - **Integrità dei dati**: Garantita da vincoli (es. chiavi primarie, univocità).
+   - **Query potenti**: Linguaggio SQL per interrogare i dati.
+   - **Adatto a dati strutturati**: Ideale per applicazioni aziendali tradizionali.
+
+5. **Svantaggi**:
+   - **Scalabilità verticale**: Difficile scalare orizzontalmente (richiede hardware più potente).
+   - **Schema rigido**: Cambiare lo schema può essere complesso.
+   - **Non adatto a dati non strutturati**: Come immagini, video, log.
+
+---
+
+### **Dati Non Relazionali**
+I dati non relazionali sono più flessibili e non seguono uno schema rigido.
+
+#### **Caratteristiche principali:**
+1. **Struttura**:
+   - Non organizzati in tabelle.
+   - Possono essere archiviati in formati come documenti, grafi, colonne o chiavi-valori.
+   - Schema dinamico o assente (schema-on-read).
+
+2. **Esempi di dati**:
+   - Log di sistema (timestamp, messaggio di errore).
+   - Post sui social media (testo, immagini, video).
+   - Dati IoT (sensori, eventi in tempo reale).
+
+3. **Database non relazionali (NoSQL)**:
+   - MongoDB (documenti), Cassandra (colonne), Redis (chiavi-valori), Neo4j (grafi).
+
+4. **Vantaggi**:
+   - **Scalabilità orizzontale**: Aggiungere nodi per gestire più dati.
+   - **Flessibilità**: Adatto a dati non strutturati o semi-strutturati.
+   - **Performance**: Ottimizzato per specifici casi d'uso (es. letture/scritture rapide).
+
+5. **Svantaggi**:
+   - **Meno consistenza**: Non sempre garantisce transazioni ACID.
+   - **Query limitate**: Non sempre supporta SQL.
+   - **Meno adatto a dati strutturati**: Non ideale per applicazioni tradizionali.
+
+---
+
+### **Confronto Tabellare**
+
+| **Caratteristica**       | **Relazionale**                     | **Non Relazionale**               |
+|---------------------------|-------------------------------------|------------------------------------|
+| **Struttura**             | Tabelle (righe e colonne)          | Documenti, grafi, colonne, chiavi-valori |
+| **Schema**                | Rigido (schema-on-write)           | Flessibile (schema-on-read)       |
+| **Scalabilità**           | Verticale                          | Orizzontale                       |
+| **Adatto per**            | Dati strutturati                  | Dati non strutturati/semi-strutturati |
+| **Esempi di database**    | MySQL, PostgreSQL, Oracle          | MongoDB, Cassandra, Neo4j         |
+| **Query**                 | SQL                                | API specifiche o linguaggi NoSQL  |
+
+---
+
+In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradizionali con dati strutturati, mentre i dati non relazionali sono più adatti per scenari moderni che richiedono flessibilità e scalabilità.
