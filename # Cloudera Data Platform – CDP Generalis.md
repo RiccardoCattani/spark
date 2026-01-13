@@ -25,7 +25,7 @@ Prima dell'avvento di Hadoop e Cloudera, il panorama del data management era dom
 
 **Limitazioni critiche:**
 - ❌ **Scalabilità verticale** - solo scale-up, hardware costoso
-- ❌ **Dati non strutturati** - difficile gestire log, testo, social media
+- ❌ **Gestione dati non strutturati** - difficile gestire log, testo come documenti articoli e commenti sui social media
 - ❌ **Costi proibitivi** - milioni di dollari per petabyte
 - ❌ **Schema rigido** - schema-on-write, no flessibilità
 - ❌ **Vendor lock-in** - dipendenza da fornitori proprietari
