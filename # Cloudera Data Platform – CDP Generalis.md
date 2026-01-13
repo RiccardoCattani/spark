@@ -11,6 +11,171 @@
 
 # INTRODUZIONE: STORIA DI CLOUDERA E EVOLUZIONE VERSO CDP
 
+## Pre-Cloudera: Il contesto tecnologico (2003-2008)
+
+### Tecnologie pre-big data
+
+Prima dell'avvento di Hadoop e Cloudera, il panorama del data management era dominato da soluzioni tradizionali.
+
+**Data Warehouse tradizionali (anni '90-2000):**
+- **Oracle Database** - leader enterprise RDBMS
+- **IBM DB2** - mainframe e enterprise
+- **Teradata** - appliance per analytics
+- **Microsoft SQL Server** - piattaforma Windows
+
+**Limitazioni critiche:**
+- ❌ **Scalabilità verticale** - solo scale-up, hardware costoso
+- ❌ **Dati non strutturati** - difficile gestire log, testo, social media
+- ❌ **Costi proibitivi** - milioni di dollari per petabyte
+- ❌ **Schema rigido** - schema-on-write, no flessibilità
+- ❌ **Vendor lock-in** - dipendenza da fornitori proprietari
+
+---
+
+### Google: La rivoluzione (2003-2004)
+
+**Google File System (GFS) - 2003**
+
+Google pubblicò un paper rivoluzionario sul **Google File System**.
+
+**Problemi che GFS risolveva:**
+- Storage distribuito su migliaia di server commodity
+- Fault tolerance automatica
+- Alta throughput per grandi file
+- Gestione petabyte di dati web
+
+**Paper:** "The Google File System" - Ghemawat, Gobioff, Leung (SOSP 2003)
+
+**MapReduce - 2004**
+
+Google pubblicò il paper su **MapReduce**, paradigma di programmazione distribuita.
+
+**Concetti chiave:**
+- **Map** - elaborazione parallela dei dati
+- **Reduce** - aggregazione dei risultati
+- **Scalabilità lineare** - aggiungere nodi = più performance
+- **Fault tolerance** - retry automatico dei task falliti
+
+**Paper:** "MapReduce: Simplified Data Processing on Large Clusters" - Dean, Ghemawat (OSDI 2004)
+
+⚠️ **Google NON rilasciò codice open source**, solo paper accademici.
+
+---
+
+### Apache Hadoop: La nascita (2006)
+
+**Doug Cutting e Mike Cafarella** (ex-Yahoo!) implementarono in open source le idee di Google.
+
+**Motivazione:**
+- Creare un motore di ricerca web scalabile (progetto Nutch)
+- Nessuna soluzione open source esistente
+- Ispirazione dai paper di Google
+
+**Nome "Hadoop":**
+- Nome del elefante di peluche giallo del figlio di Doug Cutting
+- Non è un acronimo
+
+**Componenti iniziali:**
+- **HDFS** (Hadoop Distributed File System) - ispirato a GFS
+- **MapReduce** - ispirato al paper Google
+
+**Rilascio:**
+- 2006: Hadoop come sottoprogetto Apache Nutch
+- 2008: Hadoop diventa top-level Apache project
+
+---
+
+### Yahoo!: Il primo grande utilizzatore (2006-2008)
+
+**Yahoo! assunse Doug Cutting nel 2006** per sviluppare Hadoop internamente.
+
+**Motivi:**
+- Indicizzare miliardi di pagine web
+- Competere con Google nella ricerca web
+- Ridurre costi infrastrutturali
+
+**Investimenti Yahoo! in Hadoop:**
+- Team dedicato di sviluppo
+- Cluster da migliaia di nodi
+- Contributi open source massicci
+- Test in produzione su scala web
+
+**Risultato:** Yahoo! dimostrò che Hadoop poteva scalare a livelli enterprise.
+
+---
+
+### Facebook: Big data sociale (2007-2008)
+
+**Facebook** iniziò ad usare Hadoop per analytics sui dati utenti.
+
+**Contributi di Facebook:**
+- **Apache Hive** (2008) - SQL su Hadoop
+- Processing di log massivi
+- Analytics comportamentali utenti
+- Data warehouse distribuito
+
+**Jeff Hammerbacher** (co-fondatore di Cloudera) era il data team lead di Facebook.
+
+---
+
+### Il problema che Hadoop risolse
+
+**Prima di Hadoop (2003-2006):**
+
+```
+┌─────────────────────────────────────────┐
+│ Aziende con big data (Google, Yahoo!)  │
+│                                         │
+│ Opzioni:                                │
+│ 1. Build custom distributed systems    │
+│    → Costi: milioni $, anni sviluppo   │
+│                                         │
+│ 2. Buy expensive appliance             │
+│    → Costi: $$$, no flessibilità       │
+│                                         │
+│ 3. Non fare analytics                  │
+│    → Perdere insights business         │
+└─────────────────────────────────────────┘
+```
+
+**Dopo Hadoop (2006-2008):**
+
+```
+┌─────────────────────────────────────────┐
+│ Hadoop open source                      │
+│                                         │
+│ ✅ Commodity hardware (economico)       │
+│ ✅ Scalabilità orizzontale infinita     │
+│ ✅ Fault tolerance nativa               │
+│ ✅ Open source (no vendor lock-in)      │
+│ ✅ Dati non strutturati (log, testo)    │
+│ ✅ Schema-on-read (flessibilità)        │
+└─────────────────────────────────────────┘
+```
+
+---
+
+### La sfida: Hadoop era difficile (2006-2008)
+
+**Problemi di Hadoop "raw":**
+- ❌ No gestione centralizzata (manuale)
+- ❌ Installazione complessa
+- ❌ Security minima (no autenticazione/autorizzazione)
+- ❌ No monitoring/alerting
+- ❌ No supporto enterprise
+- ❌ Solo per esperti Linux/Java
+- ❌ No governance/auditing
+
+**Opportunità per Cloudera:**
+Rendere Hadoop **enterprise-ready** con:
+- Distribuzione pacchettizzata
+- Manager centralizzato
+- Security integrata
+- Supporto professionale
+- Governance e compliance
+
+---
+
 ## 0.0 Come è nata Cloudera
 
 ### 0.0.1 Le origini (2008)
