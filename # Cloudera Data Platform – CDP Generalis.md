@@ -107,6 +107,104 @@ In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradiziona
 
 ---
 
+### **Concetto fondamentale: Database vs Schema**
+
+#### **Spesso confusi, ma sono diversi:**
+
+**Database (DB):**
+- È l'**intero contenitore** di dati e metadati
+- È il **livello più alto di organizzazione**
+- Raggruppa più tabelle correlate (namespace Hive)
+- Esempio: `hive_warehouse`, `analytics_db`
+
+**Schema:**
+- È la **struttura** di una singola tabella
+- Definisce colonne, tipi di dati, vincoli
+- È l'**intestazione** di una tabella
+- Esempio: `(id INT, name STRING, salary DECIMAL)`
+
+#### **Analogia visiva:**
+
+```
+┌─────────────────────────────────────────┐
+│  Database: hive_warehouse               │  ← Intero cassetto
+│                                         │
+│  ┌───────────────────────────────────┐ │
+│  │ Table: employees                  │ │
+│  │ Schema: id INT, name STRING,      │ │  ← Struttura colonne
+│  │         salary DECIMAL            │ │
+│  │                                   │ │
+│  │ Data (rows):                      │ │  ← Dati effettivi
+│  │ 1, John, 50000                    │ │
+│  │ 2, Jane, 60000                    │ │
+│  └───────────────────────────────────┘ │
+│                                         │
+│  ┌───────────────────────────────────┐ │
+│  │ Table: departments                │ │
+│  │ Schema: dept_id INT,              │ │
+│  │         dept_name STRING          │ │
+│  └───────────────────────────────────┘ │
+└─────────────────────────────────────────┘
+```
+
+#### **In SQL/Hive:**
+
+```sql
+-- Creare un DATABASE (contenitore)
+CREATE DATABASE hive_warehouse;
+
+-- Creare una TABELLA con SCHEMA definito (struttura)
+CREATE TABLE hive_warehouse.employees (
+    id INT,                    -- ↓ Questo è lo SCHEMA
+    name STRING,               -- Definisce la struttura
+    salary DECIMAL             -- della tabella
+);
+
+-- Inserire DATA (dati effettivi)
+INSERT INTO employees VALUES (1, 'John', 50000);
+```
+
+#### **Differenze chiave:**
+
+| **Aspetto**        | **Database**                      | **Schema**                          |
+|-------------------|-----------------------------------|-------------------------------------|
+| **Cos'è?**        | Contenitore/namespace            | Struttura di una singola tabella    |
+| **Livello**       | Alto (raggruppa tabelle)         | Basso (singola tabella)             |
+| **Comando SQL**   | `CREATE DATABASE mydb;`          | `CREATE TABLE mydb.mytable (...)`  |
+| **Contiene**      | Molteplici tabelle               | Definizione colonne + tipi + vincoli |
+| **Esempio**       | `analytics_db`, `sales_db`       | `(id INT, name STRING, date DATE)` |
+| **Modifica**      | Raro (cambio struttura db)       | Più frequente (ALTER TABLE)        |
+
+#### **Nel contesto Cloudera/Hive:**
+
+- **Hive Database** = Namespace che raggruppa tabelle correlate
+  ```sql
+  CREATE DATABASE sales;  -- database per dati vendite
+  CREATE TABLE sales.transactions (...);
+  CREATE TABLE sales.customers (...);
+  ```
+
+- **Hive Schema** = Definizione della tabella (colonne + tipi)
+  ```sql
+  CREATE TABLE sales.transactions (
+      transaction_id INT,
+      customer_id INT,
+      amount DECIMAL(10,2),
+      transaction_date DATE
+  );
+  -- ↑ Questa è la struttura (schema) della tabella
+  ```
+
+#### **Per l'esame CDP:**
+
+⚠️ Assicurati di capire:
+- **Database**: namespace logico che organizza tabelle correlate
+- **Schema**: la struttura fisica di una tabella (colonne + tipi)
+- **Metastore Hive**: dove vengono archiviati i metadati (info su database e schema)
+- **Atlas**: catalogo che documenta database, schema, lineage, ownership
+
+---
+
 ### Google: La rivoluzione (2003-2004)
 
 #### **Timeline chiara: Da Google a Hadoop**
@@ -422,19 +520,19 @@ Rendere Hadoop **enterprise-ready** con:
 
 | Aspetto | CDH | HDP | CDP |
 |---------|-----|-----|-----|
-| Authorization | Sentry | Ranger | Ranger (unified) |
-| Metadata/Lineage | Navigator | Atlas | Atlas (unified) |
-| Gateway | Knox (add-on) | Knox | Knox (integrated) |
-| Encryption | Navigator Encrypt + HDFS TDE | HDFS TDE | HDFS TDE + cloud KMS |
+| **Authorization** | Sentry | Ranger | Ranger (unified) |
+| **Metadata/Lineage** | Navigator | Atlas | Atlas (unified) |
+| **Gateway** | Knox (add-on) | Knox | Knox (integrated) |
+| **Encryption** | Navigator Encrypt + HDFS TDE | HDFS TDE | HDFS TDE + cloud KMS |
 | **Integrazione** | Tool separati | Tool separati | **SDX (tutto integrato)** |
 
 **Management:**
 
 | Aspetto | CDH | HDP | CDP |
 |---------|-----|-----|-----|
-| Cluster manager | Cloudera Manager | Ambari | Cloudera Manager (enhanced) |
-| Monitoring | Cloudera Manager | Ambari + external | Cloudera Manager + Workload XM |
-| Replication | Cloudera Manager | Ambari + Falcon | Replication Manager (unified) |
+| **Cluster manager** | Cloudera Manager | Ambari | Cloudera Manager (enhanced) |
+| **Monitoring** | Cloudera Manager | Ambari + external | Cloudera Manager + Workload XM |
+| **Replication** | Cloudera Manager | Ambari + Falcon | Replication Manager (unified) |
 
 **Data Services (nuovo in CDP):**
 
@@ -2106,7 +2204,7 @@ Lo **schema** è una definizione strutturale che descrive l'organizzazione e il 
 #### **Caratteristiche principali dello Schema:**
 1. **Definizione della struttura:**
    - Specifica i campi (colonne) e i loro tipi di dati (es. stringa, intero, data).
-   - Definisce le relazioni tra i dati (es. chiavi primarie e chiavi esterne nei database relazionali).
+   - Definisce le relazioni tra i dati (es. chiavi primarie, univocità, ecc.) nei database relazionali.
 
 2. **Tipi di Schema:**
    - **Schema-on-write:**
@@ -2143,7 +2241,33 @@ Lo **schema** è una definizione strutturale che descrive l'organizzazione e il 
      ```
      Questo schema viene applicato ai dati già esistenti in HDFS.
 
----
+### **Esempio di Schema**
+
+Uno schema definisce la struttura di una tabella, specificando i nomi delle colonne e i tipi di dati associati. Ecco un esempio:
+
+```sql
+CREATE TABLE employees (
+    id INT,          -- Identificativo univoco
+    name STRING,     -- Nome del dipendente
+    salary DECIMAL   -- Stipendio
+);
+```
+
+#### **Dettagli dello schema:**
+- **`id INT`**: Colonna `id` con tipo di dato intero (integer).
+- **`name STRING`**: Colonna `name` con tipo di dato stringa (testo).
+- **`salary DECIMAL`**: Colonna `salary` con tipo di dato decimale (numerico con precisione).
+
+#### **Cosa rappresenta uno schema?**
+- Lo schema è la **struttura logica** di una tabella.
+- Specifica:
+  1. **Nomi delle colonne** (es. `id`, `name`, `salary`).
+  2. **Tipi di dati** (es. `INT`, `STRING`, `DECIMAL`).
+  3. (Opzionale) **Vincoli** come chiavi primarie, univocità, ecc.
+
+#### **Nota per l'esame CDP:**
+- Ogni tabella in Hive o SQL richiede uno schema.
+- Lo schema è obbligatorio per definire come i dati vengono archiviati e interrogati.
 
 #### **Perché lo Schema è Importante?**
 - **Organizzazione:** Permette di dare struttura ai dati, rendendoli più facili da interrogare e analizzare.
