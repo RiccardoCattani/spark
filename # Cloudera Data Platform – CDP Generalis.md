@@ -30,6 +30,83 @@ Prima dell'avvento di Hadoop e Cloudera, il panorama del data management era dom
 - ❌ **Schema rigido** - schema-on-write, no flessibilità
 - ❌ **Vendor lock-in** - dipendenza da fornitori proprietari
 
+
+
+## Differenza tra dati relazionali e non relazionali
+
+### **Dati Relazionali**
+I dati relazionali sono organizzati in un formato strutturato, seguendo uno schema rigido.
+
+#### **Caratteristiche principali:**
+1. **Struttura**:
+   - Organizzati in tabelle con righe e colonne.
+   - Ogni tabella ha uno schema predefinito (schema-on-write).
+   - Le relazioni tra i dati sono definite tramite chiavi primarie e chiavi esterne.
+
+2. **Esempi di dati**:
+   - Informazioni su clienti (nome, cognome, email, telefono).
+   - Transazioni finanziarie (ID transazione, importo, data).
+   - Inventari di prodotti (ID prodotto, quantità, prezzo).
+
+3. **Database relazionali (RDBMS)**:
+   - MySQL, PostgreSQL, Oracle Database, Microsoft SQL Server.
+
+4. **Vantaggi**:
+   - **Integrità dei dati**: Garantita da vincoli (es. chiavi primarie, univocità).
+   - **Query potenti**: Linguaggio SQL per interrogare i dati.
+   - **Adatto a dati strutturati**: Ideale per applicazioni aziendali tradizionali.
+
+5. **Svantaggi**:
+   - **Scalabilità verticale**: Difficile scalare orizzontalmente (richiede hardware più potente).
+   - **Schema rigido**: Cambiare lo schema può essere complesso.
+   - **Non adatto a dati non strutturati**: Come immagini, video, log.
+
+---
+
+### **Dati Non Relazionali**
+I dati non relazionali sono più flessibili e non seguono uno schema rigido.
+
+#### **Caratteristiche principali:**
+1. **Struttura**:
+   - Non organizzati in tabelle.
+   - Possono essere archiviati in formati come documenti, grafi, colonne o chiavi-valori.
+   - Schema dinamico o assente (schema-on-read).
+
+2. **Esempi di dati**:
+   - Log di sistema (timestamp, messaggio di errore).
+   - Post sui social media (testo, immagini, video).
+   - Dati IoT (sensori, eventi in tempo reale).
+
+3. **Database non relazionali (NoSQL)**:
+   - MongoDB (documenti), Cassandra (colonne), Redis (chiavi-valori), Neo4j (grafi).
+
+4. **Vantaggi**:
+   - **Scalabilità orizzontale**: Aggiungere nodi per gestire più dati.
+   - **Flessibilità**: Adatto a dati non strutturati o semi-strutturati.
+   - **Performance**: Ottimizzato per specifici casi d'uso (es. letture/scritture rapide).
+
+5. **Svantaggi**:
+   - **Meno consistenza**: Non sempre garantisce transazioni ACID.
+   - **Query limitate**: Non sempre supporta SQL.
+   - **Meno adatto a dati strutturati**: Non ideale per applicazioni tradizionali.
+
+---
+
+### **Confronto Tabellare**
+
+| **Caratteristica**       | **Relazionale**                     | **Non Relazionale**               |
+|---------------------------|-------------------------------------|------------------------------------|
+| **Struttura**             | Tabelle (righe e colonne)          | Documenti, grafi, colonne, chiavi-valori |
+| **Schema**                | Rigido (schema-on-write)           | Flessibile (schema-on-read)       |
+| **Scalabilità**           | Verticale                          | Orizzontale                       |
+| **Adatto per**            | Dati strutturati                  | Dati non strutturati/semi-strutturati |
+| **Esempi di database**    | MySQL, PostgreSQL, Oracle          | MongoDB, Cassandra, Neo4j         |
+| **Query**                 | SQL                                | API specifiche o linguaggi NoSQL  |
+
+---
+
+In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradizionali con dati strutturati, mentre i dati non relazionali sono più adatti per scenari moderni che richiedono flessibilità e scalabilità.
+
 ---
 
 ### Google: La rivoluzione (2003-2004)
@@ -886,7 +963,7 @@ Svantaggi:
 - i dati restano esterni
 - preferite nei Data Lake
 
-👉 **Domanda tipica d’esame**  
+👉 **Domanda tipica d'esame**  
 > Quali tabelle sono consigliate per Data Lake? → **External**
 
 ---
@@ -1840,81 +1917,59 @@ Cloudera Manager richiede un database esterno per:
 
 ---
 
-**BUONO STUDIO!** 🚀
+## Differenza tra schema e tabella in Hadoop
+
+### **Schema in Hadoop**
+Lo schema in Hadoop definisce la struttura e il formato dei dati, ma viene applicato **in lettura** (schema-on-read), non in scrittura. Questo approccio è diverso dai database tradizionali.
+
+#### **Caratteristiche principali:**
+1. **Definizione**:
+   - Specifica il layout dei dati (colonne, tipi di dati, ecc.).
+   - Non è imposto al momento dell'ingestione dei dati.
+
+2. **Schema-on-read**:
+   - Lo schema viene applicato solo quando i dati vengono letti o interrogati.
+   - Permette di gestire dati non strutturati o semi-strutturati.
+
+3. **Flessibilità**:
+   - I dati possono essere caricati senza uno schema predefinito.
+   - Lo schema può essere definito o modificato successivamente.
+
+4. **Esempi**:
+   - In Hive, lo schema è definito nel **Metastore** e descrive le tabelle.
+   - In HDFS, i file possono essere archiviati senza schema, ma strumenti come Hive o Impala applicano uno schema per analizzarli.
 
 ---
 
-## Differenza tra dati relazionali e non relazionali
-
-### **Dati Relazionali**
-I dati relazionali sono organizzati in un formato strutturato, seguendo uno schema rigido.
+### **Tabella in Hadoop**
+Una tabella in Hadoop è una rappresentazione logica dei dati archiviati in HDFS o in un altro sistema di storage. Le tabelle sono utilizzate principalmente in strumenti come Hive o Impala.
 
 #### **Caratteristiche principali:**
-1. **Struttura**:
-   - Organizzati in tabelle con righe e colonne.
-   - Ogni tabella ha uno schema predefinito (schema-on-write).
-   - Le relazioni tra i dati sono definite tramite chiavi primarie e chiavi esterne.
+1. **Definizione**:
+   - Una tabella è un'entità logica che rappresenta i dati.
+   - È definita da uno schema (colonne, tipi di dati, partizioni).
 
-2. **Esempi di dati**:
-   - Informazioni su clienti (nome, cognome, email, telefono).
-   - Transazioni finanziarie (ID transazione, importo, data).
-   - Inventari di prodotti (ID prodotto, quantità, prezzo).
+2. **Storage**:
+   - I dati di una tabella sono archiviati fisicamente in HDFS o in un object storage (es. S3, ADLS).
+   - Le tabelle possono essere **gestite** (managed) o **esterne** (external).
 
-3. **Database relazionali (RDBMS)**:
-   - MySQL, PostgreSQL, Oracle Database, Microsoft SQL Server.
+3. **Tipi di Tabelle**:
+   - **Managed Tables**: Hive gestisce sia i dati che i metadati. Eliminare la tabella rimuove anche i dati.
+   - **External Tables**: Hive gestisce solo i metadati; i dati rimangono esterni e non vengono eliminati con la tabella.
 
-4. **Vantaggi**:
-   - **Integrità dei dati**: Garantita da vincoli (es. chiavi primarie, univocità).
-   - **Query potenti**: Linguaggio SQL per interrogare i dati.
-   - **Adatto a dati strutturati**: Ideale per applicazioni aziendali tradizionali.
-
-5. **Svantaggi**:
-   - **Scalabilità verticale**: Difficile scalare orizzontalmente (richiede hardware più potente).
-   - **Schema rigido**: Cambiare lo schema può essere complesso.
-   - **Non adatto a dati non strutturati**: Come immagini, video, log.
-
----
-
-### **Dati Non Relazionali**
-I dati non relazionali sono più flessibili e non seguono uno schema rigido.
-
-#### **Caratteristiche principali:**
-1. **Struttura**:
-   - Non organizzati in tabelle.
-   - Possono essere archiviati in formati come documenti, grafi, colonne o chiavi-valori.
-   - Schema dinamico o assente (schema-on-read).
-
-2. **Esempi di dati**:
-   - Log di sistema (timestamp, messaggio di errore).
-   - Post sui social media (testo, immagini, video).
-   - Dati IoT (sensori, eventi in tempo reale).
-
-3. **Database non relazionali (NoSQL)**:
-   - MongoDB (documenti), Cassandra (colonne), Redis (chiavi-valori), Neo4j (grafi).
-
-4. **Vantaggi**:
-   - **Scalabilità orizzontale**: Aggiungere nodi per gestire più dati.
-   - **Flessibilità**: Adatto a dati non strutturati o semi-strutturati.
-   - **Performance**: Ottimizzato per specifici casi d'uso (es. letture/scritture rapide).
-
-5. **Svantaggi**:
-   - **Meno consistenza**: Non sempre garantisce transazioni ACID.
-   - **Query limitate**: Non sempre supporta SQL.
-   - **Meno adatto a dati strutturati**: Non ideale per applicazioni tradizionali.
+4. **Esempi**:
+   - Una tabella Hive può rappresentare un dataset CSV archiviato in HDFS.
+   - Una tabella Impala può interrogare dati Parquet o ORC.
 
 ---
 
 ### **Confronto Tabellare**
 
-| **Caratteristica**       | **Relazionale**                     | **Non Relazionale**               |
-|---------------------------|-------------------------------------|------------------------------------|
-| **Struttura**             | Tabelle (righe e colonne)          | Documenti, grafi, colonne, chiavi-valori |
-| **Schema**                | Rigido (schema-on-write)           | Flessibile (schema-on-read)       |
-| **Scalabilità**           | Verticale                          | Orizzontale                       |
-| **Adatto per**            | Dati strutturati                  | Dati non strutturati/semi-strutturati |
-| **Esempi di database**    | MySQL, PostgreSQL, Oracle          | MongoDB, Cassandra, Neo4j         |
-| **Query**                 | SQL                                | API specifiche o linguaggi NoSQL  |
+| **Caratteristica**       | **Schema**                          | **Tabella**                       |
+|---------------------------|-------------------------------------|----------------------------------|
+| **Definizione**           | Struttura dei dati (colonne, tipi) | Rappresentazione logica dei dati  |
+| **Applicazione**          | In lettura (schema-on-read)        | Utilizzata per interrogare i dati |
+| **Persistenza**           | Non persistente                    | Persistente (metadati e dati)     |
+| **Gestione**              | Definito nel Metastore             | Può essere managed o external     |
+| **Esempi**                | Colonne e tipi di dati in Hive     | Tabelle Hive o Impala             |
 
----
-
-In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradizionali con dati strutturati, mentre i dati non relazionali sono più adatti per scenari moderni che richiedono flessibilità e scalabilità.
