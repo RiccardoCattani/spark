@@ -583,14 +583,6 @@ Storage e compute sono SEPARATI (decoupled)
 
 ---
 
-#### **Storage separato dal Compute in CDP: Risposta completa**
-
-**Domanda:** In CDP lo storage è sempre separato dal compute ed in cloud?
-
-**Risposta:** **Dipende dal deployment model di CDP che si sceglie.**
-
----
-
 ##### **1. CDP Public Cloud ☁️**
 **✅ SÌ - Storage SEMPRE separato e SEMPRE in cloud**
 
@@ -2306,3 +2298,460 @@ CREATE TABLE employees (
 
 In sintesi, lo schema è il "progetto" che descrive come i dati sono organizzati e strutturati in un sistema, influenzando il modo in cui vengono archiviati, letti e analizzati.
 
+---
+
+# Chiave primaria e chiave esterna
+
+## Introduzione
+
+In un database, l’organizzazione, l’identificazione e la coerenza dei dati dipendono sia dal **modello di database adottato** sia dall’uso corretto di **chiavi** e **metadati**.
+
+In questo documento vengono spiegati:
+
+* chiave primaria e chiave esterna nei database relazionali
+* come vengono identificate tabelle e record
+* le differenze tra **database relazionali (RDBMS)** e **non relazionali (NoSQL)**
+* il collegamento con i sistemi **Big Data** come Hive
+
+---
+
+## Differenza tra database relazionali e non relazionali
+
+### Database relazionali (RDBMS)
+
+I database relazionali (**Relational Database Management System**) organizzano i dati in **tabelle** composte da **righe (record)** e **colonne (attributi)**, seguendo uno **schema fisso** definito a priori.
+
+Ogni tabella:
+
+* rappresenta un’**entità** del dominio applicativo
+* è identificata dal **nome della tabella all’interno di uno schema**
+* utilizza una **chiave primaria** per identificare univocamente i record
+* può essere collegata ad altre tabelle tramite **chiavi esterne**
+
+Le relazioni tra tabelle sono **esplicite** e il database garantisce la coerenza dei dati tramite le proprietà **ACID**:
+
+* **Atomicità**
+* **Consistenza**
+* **Isolamento**
+* **Durabilità**
+
+📌 Esempi di RDBMS:
+
+* MySQL
+* PostgreSQL
+* Oracle
+
+Si chiamano database relazionali perché organizzano i dati in tabelle che possono essere messe in relazione tra loro tramite chiavi (primarie e esterne). Il termine “relazionale” deriva dal concetto matematico di “relazione”, che in questo contesto indica una tabella composta da righe e colonne. Le relazioni tra le tabelle permettono di collegare e integrare dati diversi in modo strutturato e coerente.
+
+---
+
+### Database non relazionali (NoSQL)
+
+I database non relazionali (**NoSQL**) non si basano sul modello tabellare classico e **non richiedono uno schema rigido**. Sono progettati per gestire **grandi volumi di dati**, **alta scalabilità orizzontale** e dati **semi-strutturati o non strutturati**.
+
+Non utilizzano chiavi esterne formali e le relazioni tra dati sono spesso:
+
+* incorporate nei dati stessi
+* oppure gestite a livello applicativo
+
+I principali modelli NoSQL sono:
+
+* **Documentali** (es. MongoDB)
+  I dati sono memorizzati come documenti JSON/BSON. Ogni documento ha un identificatore univoco (es. `_id`), simile a una chiave primaria, ma senza vincoli relazionali.
+
+* **Key-Value** (es. Redis)
+  I dati sono coppie chiave–valore. Il modello è estremamente veloce, ma non supporta relazioni strutturate.
+
+* **A colonne** (es. Cassandra, HBase)
+  I dati sono organizzati per colonne e partizioni. È adatto a grandi volumi e carichi distribuiti.
+
+* **A grafo** (es. Neo4j)
+  I dati sono nodi e relazioni esplicite, ideali per rappresentare reti complesse (social network, recommendation system).
+
+---
+
+### Confronto sintetico RDBMS vs NoSQL
+
+| Aspetto           | Database relazionali            | Database NoSQL                           |
+| ----------------- | ------------------------------- | ---------------------------------------- |
+| Modello dati      | Tabelle (righe/colonne)         | Documenti, key-value, colonne, grafi     |
+| Schema            | Rigido                          | Flessibile o assente                     |
+| Chiave primaria   | Sì (vincolo reale)              | Identificatore univoco                   |
+| Chiave esterna    | Sì                              | No                                       |
+| Coerenza          | Forte (ACID)                    | Eventuale (BASE)                         |
+| Scalabilità       | Verticale                       | Orizzontale                              |
+| Caso d’uso tipico | Transazioni, sistemi gestionali | Big Data, analytics, sistemi distribuiti |
+
+---
+
+## Cos’è una tabella
+
+Una **tabella** rappresenta un’**entità** del mondo reale (ad esempio: Studente, Cliente, Ordine).
+È composta da:
+
+* **righe (record)** → singole istanze dell’entità
+* **colonne (attributi)** → caratteristiche dell’entità
+
+### Identificazione di una tabella
+
+Una tabella **non è identificata dalla chiave primaria**.
+
+👉 **La tabella è identificata dal suo nome all’interno di uno schema (o database).**
+
+Formalmente, l’identificatore univoco di una tabella è:
+
+```
+(schema, nome_tabella)
+```
+
+Questo significa che due tabelle possono avere lo stesso nome se appartengono a schemi diversi.
+
+### Esempio
+
+```
+public.studente
+didattica.studente
+```
+
+Queste due tabelle:
+
+* hanno lo stesso nome (`studente`)
+* appartengono a schemi diversi
+* sono **tabelle distinte**
+
+---
+
+## Chiave primaria (Primary Key)
+
+### Definizione
+
+La **chiave primaria** è un attributo (o un insieme di attributi) che **identifica univocamente ogni record di una tabella**.
+
+👉 **La chiave primaria identifica un record, non la tabella.**
+
+### Proprietà fondamentali
+
+Una chiave primaria deve essere:
+
+* **Univoca** (nessun duplicato)
+* **Non nulla** (NOT NULL)
+* **Stabile** (non dovrebbe cambiare nel tempo)
+
+Può essere:
+
+* **Semplice** → una sola colonna
+* **Composta** → più colonne insieme
+
+---
+
+## Esempio pratico: chiave primaria
+
+### Tabella STUDENTE
+
+| matricola (PK) | nome  | cognome |
+| -------------- | ----- | ------- |
+| 12345          | Mario | Rossi   |
+| 12346          | Luca  | Bianchi |
+
+* `matricola = 12345` identifica **Mario Rossi**
+* `matricola = 12346` identifica **Luca Bianchi**
+
+---
+
+## Chiave esterna (Foreign Key)
+
+### Definizione
+
+La **chiave esterna** è un attributo di una tabella che fa riferimento alla **chiave primaria di un’altra tabella**.
+
+Serve a:
+
+* collegare dati tra tabelle diverse
+* garantire l’**integrità referenziale**
+
+👉 Un valore di chiave esterna **deve corrispondere a una chiave primaria esistente**.
+
+---
+
+## Esempio pratico: chiave primaria e chiave esterna
+
+### Tabella CLIENTE
+
+| id_cliente (PK) | nome  |
+| --------------- | ----- |
+| 10              | Anna  |
+| 11              | Paolo |
+
+### Tabella ORDINE
+
+| id_ordine (PK) | data       | id_cliente (FK) |
+| -------------- | ---------- | --------------- |
+| 501            | 2026-01-10 | 10              |
+| 502            | 2026-01-12 | 10              |
+| 503            | 2026-01-13 | 11              |
+
+* `id_cliente` è **PK** in CLIENTE
+* `id_cliente` è **FK** in ORDINE
+* ogni ordine è associato a un cliente esistente
+
+---
+
+## Rappresentazione grafica concettuale
+
+```
+CLIENTE (1) ────────────< ORDINE (N)
+```
+
+* una riga di CLIENTE può essere collegata a molte righe di ORDINE
+* la relazione è realizzata tramite la chiave esterna
+
+---
+
+## Chiave primaria composta
+
+In alcuni casi, una singola colonna non è sufficiente a identificare un record.
+
+### Esempio: ISCRIZIONE_ESAME
+
+| matricola | id_esame |
+| --------- | -------- |
+| 12345     | 1        |
+| 12345     | 2        |
+| 12346     | 1        |
+
+Qui la chiave primaria è **composta**:
+
+```
+PK = (matricola, id_esame)
+```
+
+Questa coppia identifica univocamente una singola iscrizione.
+
+---
+
+## Confronto con database non relazionali (NoSQL)
+
+Nei database NoSQL:
+
+* esiste solitamente un **identificatore univoco** del dato (es. `_id` in MongoDB)
+* **non esistono chiavi esterne formali**
+* le relazioni sono gestite dall’applicazione o tramite strutture annidate
+
+### Esempio MongoDB
+
+```
+{
+  _id: "u1",
+  nome: "Anna",
+  ordini: [501, 502]
+}
+```
+
+* `_id` svolge un ruolo simile alla chiave primaria
+* le relazioni non sono vincolate dal database
+
+---
+
+## Schema gerarchico di identificazione
+
+```
+Database
+ └── Schema
+      └── Tabella
+           └── Record (riga)
+```
+
+* **Database** → identificato dal suo nome
+* **Schema** → identificato dal suo nome all’interno del database
+* **Tabella** → identificata dalla coppia *(schema, nome_tabella)*
+* **Record** → identificato dalla **chiave primaria**
+
+---
+
+## Confronto: chiave primaria vs nome della tabella
+
+| Aspetto                | Chiave primaria (PK)                    | Nome della tabella                     |
+| ---------------------- | --------------------------------------- | -------------------------------------- |
+| Cosa identifica        | Un **record (riga)**                    | Una **tabella**                        |
+| Ambito                 | Interno alla tabella                    | All’interno di uno **schema/database** |
+| Unicità                | Deve essere **univoca** per ogni record | Deve essere univoco nello schema       |
+| Può cambiare?          | No (o fortemente sconsigliato)          | Sì (rinomina tabella)                  |
+| Serve per le relazioni | Sì (referenziata dalle FK)              | No                                     |
+| Esempio                | `id_cliente = 10`                       | `public.cliente`                       |
+
+👉 **Errore comune da evitare**: pensare che la chiave primaria identifichi la tabella.
+
+---
+
+## Collegamento a Hive Metastore e Big Data
+
+Nei sistemi Big Data basati su **Hive** (e più in generale su Hadoop/Cloudera), i concetti di database e tabella esistono ancora, ma il ruolo delle chiavi cambia.
+
+### Hive Metastore
+
+Il **Hive Metastore** è il servizio che mantiene i **metadati** delle tabelle, tra cui:
+
+* database
+* nome della tabella
+* colonne e tipi di dato
+* partizioni
+* percorso fisico dei dati su HDFS o Object Storage
+
+📌 In Hive:
+
+* una tabella è identificata da **(database, nome_tabella)**
+* esattamente come negli RDBMS con *(schema, nome_tabella)*
+
+### Gerarchia in Hive
+
+```
+Hive Metastore
+ └── Database
+      └── Table
+           └── Partition (opzionale)
+                └── File / Record
+```
+
+### Chiavi primarie in Hive
+
+* Hive **supporta sintatticamente** PRIMARY KEY e FOREIGN KEY
+* **non sono vincoli applicati** (non viene garantita l’unicità)
+* servono principalmente per:
+
+  * documentazione del modello dati
+  * ottimizzazioni del query planner
+  * integrazione con strumenti di BI
+
+👉 In Hive:
+
+> **la chiave primaria non garantisce l’unicità dei record**, ma descrive l’intenzione logica del modello.
+
+### Confronto RDBMS vs Hive
+
+| Aspetto                | RDBMS                  | Hive / Big Data            |
+| ---------------------- | ---------------------- | -------------------------- |
+| Identità tabella       | (schema, nome)         | (database, nome)           |
+| PK applicata           | Sì (vincolo reale)     | No (solo metadato)         |
+| FK applicata           | Sì                     | No                         |
+| Integrità referenziale | Garantita              | Demandata all’applicazione |
+| Focus                  | Coerenza transazionale | Analisi su grandi volumi   |
+
+### Collegamento concettuale chiave
+
+* **RDBMS** → PK/FK = vincoli forti
+* **Hive/Big Data** → PK/FK = informazione logica
+* **Metastore** → “catalogo” delle tabelle, non dei record
+
+-------|----------------------|-------------------|
+| Cosa identifica | Un **record (riga)** | Una **tabella** |
+| Ambito | Interno alla tabella | All’interno di uno **schema/database** |
+| Unicità | Deve essere **univoca** per ogni record | Deve essere univoco nello schema |
+| Può cambiare? | No (o fortemente sconsigliato) | Sì (rinomina tabella) |
+| Serve per le relazioni | Sì (referenziata dalle FK) | No |
+| Esempio | `id_cliente = 10` | `public.cliente` |
+
+👉 **Errore comune da evitare**: pensare che la chiave primaria identifichi la tabella.
+
+---
+
+## Quando scegliere RDBMS, NoSQL o Hive
+
+La scelta tra **database relazionali**, **NoSQL** e **Hive/Big Data** dipende principalmente dal **tipo di dati**, dal **carico di lavoro** e dai **requisiti di coerenza e scalabilità**.
+
+---
+
+### Quando scegliere un database relazionale (RDBMS)
+
+Scegli un **RDBMS** quando:
+
+* i dati sono **altamente strutturati**
+* lo schema è **stabile nel tempo**
+* sono richieste **transazioni affidabili**
+* l’integrità dei dati è **critica**
+
+📌 Casi d’uso tipici:
+
+* sistemi gestionali (ERP, CRM)
+* contabilità e fatturazione
+* sistemi bancari e finanziari
+* applicazioni OLTP
+
+👉 Perché: PK e FK garantiscono **coerenza forte** e **integrità referenziale**.
+
+---
+
+### Quando scegliere un database NoSQL
+
+Scegli un **NoSQL** quando:
+
+* i dati sono **eterogenei o semi-strutturati**
+* lo schema cambia frequentemente
+* è richiesta **alta scalabilità orizzontale**
+* le prestazioni sono più importanti della coerenza immediata
+
+📌 Casi d’uso tipici:
+
+* applicazioni web ad alto traffico
+* caching e session management (Redis)
+* IoT e time series
+* sistemi distribuiti globali
+
+👉 Perché: maggiore **flessibilità** e **scalabilità**, accettando coerenza eventuale.
+
+---
+
+### Quando scegliere Hive / Big Data
+
+Scegli **Hive** (o sistemi Big Data simili) quando:
+
+* i dati sono **molto voluminosi** (Big Data)
+* il carico è principalmente **analitico** (OLAP)
+* non servono transazioni riga-per-riga
+* l’obiettivo è l’analisi storica e batch
+
+📌 Casi d’uso tipici:
+
+* data warehouse
+* data lake
+* reportistica e BI
+* analisi su grandi dataset storici
+
+👉 Perché: Hive separa **storage e compute** e scala su grandi volumi, ma non applica vincoli PK/FK.
+
+---
+
+### Confronto decisionale rapido
+
+| Esigenza                | Tecnologia consigliata |
+| ----------------------- | ---------------------- |
+| Transazioni critiche    | RDBMS                  |
+| Schema flessibile       | NoSQL                  |
+| Altissimo volume dati   | Hive / Big Data        |
+| Integrità referenziale  | RDBMS                  |
+| Scalabilità orizzontale | NoSQL / Hive           |
+| Analytics e BI          | Hive                   |
+
+---
+
+## Riassunto finale
+
+* **La tabella rappresenta un’entità**
+* **La chiave primaria identifica un record della tabella**
+* **La chiave esterna collega record di tabelle diverse**
+* Nei database relazionali, PK e FK garantiscono coerenza e integrità dei dati
+
+👉 Frase chiave da ricordare:
+
+> *La chiave primaria identifica univocamente una riga di una tabella; la chiave esterna realizza le relazioni tra tabelle.*
+
+---
+
+## Chiave primaria nei database non relazionali
+
+Nei database non relazionali, il concetto di chiave primaria esiste ma può essere diverso rispetto ai database relazionali:
+- Nei database documentali (es. MongoDB), ogni documento ha un identificatore unico (di solito il campo _id), che svolge il ruolo di chiave primaria.
+- Nei database key-value, la “chiave” è sempre unica e identifica il valore associato.
+- Nei database a colonne (es. Cassandra), si usano chiavi primarie composte per identificare in modo univoco le righe.
+- Nei database a grafo, i nodi e le relazioni hanno identificatori unici.
+
+Quindi, anche nei database non relazionali esiste un meccanismo per identificare univocamente i dati, ma la gestione e la struttura possono variare a seconda del modello.
