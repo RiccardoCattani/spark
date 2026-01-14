@@ -1,14 +1,3 @@
-# CDP Generalist Exam – Guida Completa
-## (CDP-0011)
-
-**Dettagli Esame:**
-- Numero domande: 60
-- Pass Score: 60%
-- Delivery: online, proctored
-- Argomenti: 8 topic principali
-
----
-
 # INTRODUZIONE: STORIA DI CLOUDERA E EVOLUZIONE VERSO CDP
 
 ## Pre-Cloudera: Il contesto tecnologico (2003-2008)
@@ -89,6 +78,17 @@ I dati non relazionali sono più flessibili e non seguono uno schema rigido.
    - **Meno adatto a dati strutturati**: Non ideale per applicazioni tradizionali.
 
 ---
+
+HDFS (Hadoop Distributed File System) non è un database relazionale. È un file system distribuito progettato per archiviare grandi quantità di dati su cluster di computer. HDFS gestisce file e directory, non tabelle relazionali, e non impone uno schema rigido ai dati. Quindi, HDFS è considerato un sistema di archiviazione non relazionale.
+Hive e Impala non sono database relazionali in senso stretto, ma sono motori di query che permettono di eseguire interrogazioni SQL su dati archiviati in HDFS (o altri file system distribuiti). Tuttavia, forniscono un’interfaccia relazionale: i dati sono organizzati in tabelle e si usa SQL per interrogarli, quindi si comportano come sistemi relazionali dal punto di vista dell’utente, pur non essendo veri e propri RDBMS tradizionali.
+
+La differenza principale tra database e filesystem è la seguente:
+
+Un filesystem gestisce l’archiviazione e l’organizzazione di file e cartelle su un disco. Permette di salvare, leggere, modificare e cancellare file, ma non offre funzionalità avanzate per la gestione strutturata dei dati.
+Un database, invece, è progettato per archiviare, organizzare e gestire dati strutturati (ad esempio, in tabelle) e offre funzionalità come query, transazioni, integrità dei dati e sicurezza. Permette di cercare e manipolare i dati in modo efficiente tramite linguaggi come SQL.
+In sintesi: il filesystem gestisce file, il database gestisce dati strutturati.
+
+
 
 ### **Confronto Tabellare**
 
