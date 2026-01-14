@@ -981,6 +981,8 @@ YARN gestisce risorse per:
 
 ---
 
+
+
 ## 0.11 Apache Oozie
 
 ### 0.11.1 Cos'è Oozie
@@ -1024,10 +1026,12 @@ Oozie supporta:
 **Apache Kafka** è una **piattaforma di streaming distribuita** ad alte prestazioni.
 
 **Caratteristiche:**
-- Publish-subscribe messaging
+- Publish-subscribe messaging*
 - Storage persistente su disco
 - Alta throughput (milioni msg/sec)
 - Fault tolerance e replication
+
+*Publish-subscribe messaging: è un modello di comunicazione asincrona in cui i produttori (publisher) inviano messaggi a un canale o argomento (topic), senza conoscere i destinatari. I consumatori (subscriber) si iscrivono a uno o più topic e ricevono solo i messaggi di loro interesse. Questo modello permette un forte disaccoppiamento tra chi produce e chi consuma i dati, ed è molto usato in sistemi distribuiti, streaming e big data (es. Apache Kafka, RabbitMQ, Google Pub/Sub).
 
 ### 0.13.2 Concetti chiave Kafka
 
@@ -2002,6 +2006,7 @@ Ogni VW può scalare indipendentemente.
 
 **Architettura:**
 ```
+
 Cloudera Manager Server
 - Gira su un host dedicato
 - Web UI + API REST
