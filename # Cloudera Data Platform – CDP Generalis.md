@@ -572,7 +572,7 @@ Storage e compute sono SEPARATI (decoupled)
 ```
 ┌─────────────────────────────────────────────────────────┐
 │  CDP Public Cloud Architecture                          │
-│                                                          │
+│                                                         │
 │  ┌─────────────────┐         ┌──────────────────────┐  │
 │  │  Compute Layer  │   ←→    │  Storage Layer       │  │
 │  │  (Ephemeral)    │         │  (Persistent)        │  │
@@ -840,7 +840,7 @@ In pratica, SDX permette di:
 
 ```
 NameNode (master)
-- Gestisce namespace del file system*
+- Gestisce namespace del file system* **
 - Controlla metadata (nomi file, permessi, posizioni blocchi)
 - Single point of failure (mitigato da HA)
 
@@ -852,14 +852,15 @@ DataNode (worker)
 
 *“Gestisce namespace del file system” significa che il sistema (ad esempio HDFS) si occupa di organizzare e tenere traccia della struttura delle cartelle e dei file, dei loro nomi, delle gerarchie e dei percorsi. In pratica, il namespace è l’insieme di tutti i nomi (file e directory) e la loro organizzazione all’interno del file system, come una mappa che dice dove si trova ogni file o cartella.
 
+
 ### 0.3 Concetti chiave HDFS
 
 | Concetto | Descrizione |
 |----------|-------------|
 | **Blocco** | Unità minima di storage (default 128MB/256MB) |
-| **Replica** | Numero di copie di ogni blocco (default 3) |
+| **Replica** | Numero di copie di ogni blocco (default 3)   |
 | **Rack Awareness** | Distribuisce repliche su rack diversi |
-| **NameNode HA** | Secondary/Standby NameNode per failover |
+| **NameNode HA** | Secondary/Standby NameNode per failover  |
 
 👉 **Domanda tipica d'esame**
 > HDFS è ottimizzato per? → **Grandi file, accesso sequenziale, throughput alto**
@@ -967,8 +968,6 @@ YARN gestisce risorse per:
 > Perché Spark è più veloce? → **Elaborazione in-memory**
 
 ---
-
-
 
 ## 0.11 Apache Oozie
 
