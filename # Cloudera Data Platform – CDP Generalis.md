@@ -55,7 +55,7 @@ I dati non relazionali sono più flessibili e non seguono uno schema rigido.
 
 #### **Caratteristiche principali:**
 1. **Struttura**:
-   - Non organizzati in tabelle.
+   - Non organizzati in tabelle (IMP).
    - Possono essere archiviati in formati come documenti, grafi, colonne o chiavi-valori.
    - Schema dinamico o assente (schema-on-read).
 
