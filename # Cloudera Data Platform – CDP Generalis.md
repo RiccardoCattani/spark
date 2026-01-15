@@ -1123,6 +1123,8 @@ Oozie supporta:
 
 **Apache Kudu** è un **columnar storage engine** per Hadoop.
 
+Kudu in Cloudera serve per memorizzare e gestire dati che devono essere sia letti che scritti velocemente, anche in tempo reale. È un database pensato per analisi veloci: permette di aggiungere, modificare e leggere dati subito, senza dover aspettare lunghi tempi di caricamento. Kudu è ideale quando hai bisogno di aggiornare spesso i dati e fare analisi rapide, ad esempio per dashboard, report o applicazioni che lavorano con dati sempre aggiornati.
+
 **Caratteristiche:**
 - Storage colonnare (come Parquet, ma mutabile)
 - Fast analytics (scan) + fast updates/inserts
@@ -1147,7 +1149,7 @@ Oozie supporta:
 
 ## 1. Ruolo di Hive e Impala nella Cloudera Data Platform
 
-In **:contentReference[oaicite:0]{index=0}**, **Hive** e **Impala** non sono alternative, ma **complementari**.
+In **In cloudera**, **Hive** e **Impala** non sono alternative, ma **complementari**.
 
 | Motore | Tipo di accesso | Caso d’uso principale |
 |------|----------------|----------------------|
@@ -1164,9 +1166,9 @@ In **:contentReference[oaicite:0]{index=0}**, **Hive** e **Impala** non sono alt
 
 ## 2.1 Cos’è Apache Hive
 
-**:contentReference[oaicite:1]{index=1}** è un **data warehouse distribuito** che fornisce:
+**Apache Hive** è un **data warehouse distribuito** che fornisce:
 - un livello SQL sopra Hadoop (Consente di scrivere query SQL-like per analizzare i dati in HDFS)
-- uno strato semantico sopra HDFS (Hive organizza i dati in tabelle e schemi, fornendo una struttura logica ai file grezzi in HDFS)
+- è uno strato sopra HDFS (Hive organizza i dati in tabelle e schemi, fornendo una struttura logica ai file grezzi in HDFS)
 - uno schema-on-read (Lo schema viene applicato ai dati solo quando vengono letti (non al momento della scrittura).
 
 Hive **non è un database** e **non è OLTP**.
@@ -1270,15 +1272,17 @@ Svantaggi:
 
 ## 2.6 Hive e performance
 
-Hive è:
-- **batch-oriented**
-- adatto a scansioni complete
-- meno performante su query rapide
+- Batch-oriented: Hive è progettato per elaborare grandi quantità di dati in blocco (batch), non per rispondere a singole query in tempo reale. È ideale per analisi massive, come report o aggregazioni su tabelle molto grandi.
+
+- Adatto a scansioni complete: Hive lavora bene quando deve leggere e analizzare intere tabelle o grandi porzioni di dati, ad esempio per calcolare totali, medie o altre statistiche su dataset estesi.
+
+- Meno performante su query rapide: Se hai bisogno di risposte immediate su pochi record (come una ricerca puntuale), Hive non è la scelta migliore, perché il suo motore (basato su MapReduce o Tez) ha una latenza di avvio elevata.
 
 Ottimizzazioni comuni:
-- partizionamento
-- formati colonnari (ORC, Parquet)
-- predicate pushdown
+- Partizionamento: suddivide le tabelle in “parti” (es. per data, paese, ecc.), così le query leggono solo i dati necessari, riducendo i tempi di scansione.
+- Formati colonnari (ORC, Parquet): questi formati memorizzano i dati per colonne invece che per righe, migliorando la compressione e la velocità di lettura per le query analitiche.
+- Predicate pushdown: permette di applicare i filtri (WHERE) direttamente durante la lettura dei dati, evitando di caricare dati inutili e velocizzando le query.
+
 
 ---
 
