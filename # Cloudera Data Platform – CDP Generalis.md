@@ -808,7 +808,11 @@ Data Lake su S3 (us-east-1)
 
 ❌ **Non serve sapere:** dettagli CDH/HDP specifici, Ambari, Sentry
 
-*SDX (Shared Data Experience) è una componente della piattaforma Cloudera che gestisce in modo centralizzato la sicurezza, il catalogo dei dati, la governance e le policy di accesso ai dati nei cluster Big Data.
+*SDX (Shared Data Experience) è una componente della piattaforma Cloudera che gestisce in modo centralizzato:
+- la sicurezza, 
+- il catalogo dei dati, 
+- la governance 
+- e le policy di accesso ai dati nei cluster Big Data
 
 In pratica, SDX permette di:
 
@@ -851,7 +855,7 @@ DataNode (worker)
 ```
 
 *“Gestisce namespace del file system” significa che il sistema (ad esempio HDFS) si occupa di organizzare e tenere traccia della struttura delle cartelle e dei file, dei loro nomi, delle gerarchie e dei percorsi. In pratica, il namespace è l’insieme di tutti i nomi (file e directory) e la loro organizzazione all’interno del file system, come una mappa che dice dove si trova ogni file o cartella.
-
+**Il file system è il componente di un sistema operativo (o di una piattaforma come HDFS) che organizza, gestisce e memorizza i file e le cartelle su un dispositivo di archiviazione (come disco, SSD, ecc.). Permette di salvare, leggere, modificare e cancellare file, mantenendo la struttura gerarchica (cartelle, sottocartelle, percorsi) e gestendo i nomi e i permessi di accesso. In sintesi, è il “sistema” che tiene in ordine tutti i dati su un computer o cluster
 
 ### 0.3 Concetti chiave HDFS
 
@@ -872,7 +876,7 @@ DataNode (worker)
 
 ### 0.5.1 Cos'è Hue
 
-**Hue** è l'interfaccia web unificata per interrogare dati in CDP.
+**Hue** è l'interfaccia web unificata interrogare dati con hive ed impala in CDP.
 
 **Funzioni principali:**
 - Editor SQL per Hive e Impala
@@ -941,8 +945,10 @@ YARN gestisce risorse per:
 
 **Caratteristiche:**
 - Elaborazione in-memory (10-100x più veloce di MapReduce)
-- API unificata: batch, streaming, ML, SQL, graph
+- API unificata: batch*, streaming, ML, SQL, graph
 - Supporta Scala, Java, Python, R
+
+* è un’operazione che esegue una serie di comandi o elaborazioni automaticamente, senza intervento umano, spesso su grandi quantità di dati.
 
 ### 0.9.2 Componenti Spark
 
