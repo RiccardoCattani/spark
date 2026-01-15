@@ -37,15 +37,20 @@ echo "vm.max_map_count = 8000000" >> /etc/sysctl.conf
 :: Questo garantisce che solo il proprietario di un file possa eliminarlo
 chmod 1777 /tmp
  
+:: Scarica il pacchetto RPM di Java JDK 8u121 per Linux
 wget https://files-cdn.liferay.com/mirrors/download.oracle.com/otn-pub/java/jdk/8u121-b13/jdk-8u121-linux-x64.rpm
  
+:: Scarica di nuovo il pacchetto RPM di Java JDK 8u121 per Linux
 wget https://files.liferay.com/mirrors/download.oracle.com/otn-pub/java/jdk/8u121-b13/jdk-8u121-linux-x64.rpm
  
-Scusatemi ho una chiamata ci aggiorniamo alle 11.55
  
+:: Scarica il file delle policy di Java JCE 8
 wget http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip
+:: Richiesta non autorizzata
 Unauthorized Request
  
+:: Percorso della directory di sicurezza di Java JDK
 /usr/java/jdk1.8.0_121/jre/lib/security/
  
+:: Crea un file system XFS sul dispositivo specificato
 mkfs.xfs -f /dev/sda1
