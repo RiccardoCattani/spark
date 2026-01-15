@@ -89,17 +89,23 @@ Un database, invece, è progettato per archiviare, organizzare e gestire dati st
 In sintesi: il filesystem gestisce file, il database gestisce dati strutturati.
 
 
-
 ### **Confronto Tabellare**
 
 | **Caratteristica**       | **Relazionale**                     | **Non Relazionale**               |
 |---------------------------|-------------------------------------|----------------------------------|
 | **Struttura**             | Tabelle (righe e colonne)          | Documenti, grafi, colonne, chiavi-valori |
-| **Schema**                | Rigido (schema-on-write)           | Flessibile (schema-on-read)       |
+| **Schema**                | Rigido (schema-on-write)*           | Flessibile (schema-on-read)       |
 | **Scalabilità**           | Verticale                          | Orizzontale                       |
 | **Adatto per**            | Dati strutturati                   | Dati non strutturati/semi-strutturati |
 | **Esempi di database**    | MySQL, PostgreSQL, Oracle          | MongoDB, Cassandra, Neo4j         |
 | **Query**                 | SQL                                | API specifiche o linguaggi NoSQL  |
+
+* "Schema rigido on write" significa che, quando si scrivono dati in un database, questi devono rispettare una struttura (schema) predefinita e obbligatoria. Ogni record deve avere i campi, i tipi di dati e le regole stabilite dallo schema, altrimenti la scrittura viene rifiutata
+
+In pratica:
+- Prima di inserire dati, lo schema (ad esempio tabelle e colonne in SQL) deve essere già definito.
+- Non puoi aggiungere dati con campi diversi o mancanti rispetto allo schema.
+- Questo garantisce coerenza e integrità dei dati, ma riduce la flessibilità rispetto a sistemi con schema dinamico (come MongoDB).
 
 ---
 
