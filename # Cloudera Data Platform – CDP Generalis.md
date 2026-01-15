@@ -344,9 +344,10 @@ Altri componenti: YARN (gestione delle risorse), Hive, Pig, ecc.
 
 **Opportunità per Cloudera:**
 Rendere Hadoop **enterprise-ready** con:
-- Distribuzione pacchettizzata
 - Manager centralizzato
+- Distribuzione pacchettizzata
 - Security integrata
+- monitoring/alerting
 - Supporto professionale
 - Governance e compliance
 
@@ -444,7 +445,7 @@ Rendere Hadoop **enterprise-ready** con:
 
 ### 0.3.1 Lancio CDP (2019-2020)
 
-**CDP** è la piattaforma unificata che sostituisce CDH e HDP.
+**CDP** è la piattaforma unificata che sostituisce CDH e HDP (Che prima erano unite).
 
 **Novità rispetto a CDH/HDP:**
 - ✅ **Hybrid cloud** (on-premise + AWS + Azure + GCP)
@@ -465,7 +466,7 @@ Rendere Hadoop **enterprise-ready** con:
 - Security: SDX (Ranger + Atlas integrati)
 - Target: aziende con data center esistenti, compliance strict
 
-**CDP Private Cloud Data Services** (nuovo, containerizzato)
+**CDP Private Cloud Data Services** (nuovo, containerizzato, microservizi)
 - Deployment: on-premise Kubernetes (OpenShift, ECS)
 - Architettura: containerized, microservices
 - Data Services: CDE, CDW, CML
@@ -712,7 +713,7 @@ Data Lake su S3 (us-east-1)
 **Risposta:**
 - **CDP Public Cloud:** ✅ SÌ, sempre separato + sempre cloud (AWS/Azure/GCP)
 - **CDP Private Cloud Base:** ❌ NO, accoppiato + on-premise (HDFS tradizionale)
-- **CDP Private Cloud Data Services:** ✅ Separato ma ❌ on-premise (cloud-like architecture in data center)
+- **CDP Private Cloud Data Services:** ✅ Separato ma ❌ on-premise (cloud-like architecture ma on prem)
 
 **Quindi:**
 - ✅ **Cloud = Sempre separato**
@@ -807,6 +808,16 @@ Data Lake su S3 (us-east-1)
 
 ❌ **Non serve sapere:** dettagli CDH/HDP specifici, Ambari, Sentry
 
+*SDX (Shared Data Experience) è una componente della piattaforma Cloudera che gestisce in modo centralizzato la sicurezza, il catalogo dei dati, la governance e le policy di accesso ai dati nei cluster Big Data.
+
+In pratica, SDX permette di:
+
+- Definire e applicare regole di sicurezza e privacy sui dati.
+- Gestire i metadati (informazioni sui dati) in modo unificato.
+- Tracciare e monitorare chi accede ai dati e come vengono usati.
+- Garantire coerenza e controllo su dati distribuiti tra diversi servizi (come Hadoop, Hive, Impala, ecc.).
+- SDX semplifica la gestione dei dati in ambienti complessi, assicurando che le policy siano rispettate ovunque i dati vengano usati.
+
 ---
 
 # PARTE 1: COMPONENTI PRINCIPALI CDP (15 domande)
@@ -829,7 +840,7 @@ Data Lake su S3 (us-east-1)
 
 ```
 NameNode (master)
-- Gestisce namespace del file system
+- Gestisce namespace del file system*
 - Controlla metadata (nomi file, permessi, posizioni blocchi)
 - Single point of failure (mitigato da HA)
 
@@ -838,6 +849,8 @@ DataNode (worker)
 - Invia heartbeat al NameNode
 - Esegue letture/scritture su richiesta client
 ```
+
+*“Gestisce namespace del file system” significa che il sistema (ad esempio HDFS) si occupa di organizzare e tenere traccia della struttura delle cartelle e dei file, dei loro nomi, delle gerarchie e dei percorsi. In pratica, il namespace è l’insieme di tutti i nomi (file e directory) e la loro organizzazione all’interno del file system, come una mappa che dice dove si trova ogni file o cartella.
 
 ### 0.3 Concetti chiave HDFS
 
