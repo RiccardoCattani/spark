@@ -230,59 +230,35 @@ Google pubblicò un paper rivoluzionario sul **Google File System**.
 
 **Paper:** "The Google File System" - Ghemawat, Gobioff, Leung (SOSP 2003)
 
-**MapReduce - 2004**
 
-Google pubblicò il paper su **MapReduce**, paradigma di programmazione distribuita.
+**MapReduce (Google, 2004)**
+- Google pubblica il paper "MapReduce: Simplified Data Processing on Large Clusters" (Dean, Ghemawat).
+- Concetti chiave:
+   - Map: elaborazione parallela dei dati
+   - Reduce: aggregazione dei risultati
+   - Scalabilità lineare: più nodi = più performance
+   - Fault tolerance: retry automatico dei task falliti
+- Google non rilascia codice open source, solo paper.
 
-**Concetti chiave:**
-- **Map** - elaborazione parallela dei dati
-- **Reduce** - aggregazione dei risultati
-- **Scalabilità lineare** - aggiungere nodi = più performance
-- **Fault tolerance** - retry automatico dei task falliti
+**2005–2006: Nasce Hadoop**
+- Doug Cutting (su Apache Nutch) crea l’implementazione open source ispirata ai paper di Google:
+   - HDFS (da GFS)
+   - MapReduce (da Google MapReduce)
+- Nel 2003 non esisteva Hadoop, ma si discutevano già i problemi di Big Data e scalabilità.
+- GFS (Google File System) viene prima (2003), Hadoop nasce dopo (2006) come reimplementazione open source.
 
-**Paper:** "MapReduce: Simplified Data Processing on Large Clusters" - Dean, Ghemawat (OSDI 2004)
+**Apache Hadoop: La nascita 2006**
+- Doug Cutting e Mike Cafarella (ex Yahoo!) implementano Hadoop per creare un motore di ricerca web scalabile.
+- Nome "Hadoop": elefante di peluche del figlio di Doug Cutting.
+- Componenti iniziali: HDFS e MapReduce.
+- 2006: Hadoop come sottoprogetto di Apache Nutch.
+- 2008: Hadoop diventa progetto Apache top-level.
 
-⚠️ **Google NON rilasciò codice open source**, solo paper accademici.
+Def. attuale di Hadoop:  è un framework open source per l’archiviazione e l’elaborazione distribuita di grandi quantità di dati (Big Data) su cluster di computer. È composto principalmente da:
 
-**2005–2006: Doug Cutting crea l'implementazione open source**
-
-Doug Cutting (lavorando su Apache Nutch) provò a replicare quelle idee nel mondo open source:
-- **HDFS** ≈ ispirato a GFS
-- **MapReduce di Hadoop** ≈ ispirato al MapReduce di Google
-
-**Quindi, rispondendo alla domanda "Si parlava di Hadoop nel 2003?":**
-
-❌ Nel 2003 Hadoop non esisteva ancora  
-❌ Non si "parlava di Hadoop" mentre Google creava GFS  
-✅ Si parlava già dei problemi (Big Data, scalabilità, fault tolerance)  
-✅ Google ha posto le basi concettuali che Hadoop renderà pubbliche e open source pochi anni dopo
-
-**💡 In sintesi (una frase):**  
-**GFS viene prima (2003), Hadoop viene dopo (2006) come reimplementazione open source delle idee di Google.**
-
----
-
-### Apache Hadoop: La nascita (2006)
-
-**Doug Cutting e Mike Cafarella** (ex-Yahoo!) implementarono in open source le idee di Google.
-
-**Motivazione:**
-- Creare un motore di ricerca web scalabile (progetto Nutch)
-- Nessuna soluzione open source esistente
-- Ispirazione dai paper di Google
-
-**Nome "Hadoop":**
-- Nome dell' elefante di peluche giallo del figlio di Doug Cutting
-- Non è un acronimo
-
-**Componenti iniziali:**
-- **HDFS** (Hadoop Distributed File System) - ispirato a GFS
-- **MapReduce** - ispirato al paper Google
-
-**Rilascio:**
-- 2006: Hadoop come sottoprogetto Apache Nutch
-- 2008: Hadoop diventa top-level Apache project
-
+HDFS (Hadoop Distributed File System): file system distribuito che memorizza i dati su più nodi.
+MapReduce: modello di programmazione per elaborare dati in parallelo.
+Altri componenti: YARN (gestione delle risorse), Hive, Pig, ecc.
 ---
 
 ### Yahoo!: Il primo grande utilizzatore (2006-2008)
