@@ -1,3 +1,5 @@
+link https://docs.cloudera.com/cdp-private-cloud-base/7.1.9/installation/topics/cdpdc-before-you-install.html
+
 :: Disabilita IPv6 per tutte le interfacce di rete
 echo net.ipv6.conf.all.disable_ipv6 = 1 >> /etc/sysctl.conf
 :: Disabilita IPv6 per le interfacce di rete predefinite
