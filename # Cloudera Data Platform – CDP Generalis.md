@@ -2627,6 +2627,7 @@ L' **Hive Metastore** è il servizio che mantiene i **metadati** delle tabelle, 
 Hive Metastore
  └── Database
       └── Table
+           ├── Schema (nome colonna, tipo dato)
            └── Partition (opzionale)
                 └── File / Record
 ```
@@ -2640,6 +2641,8 @@ Hive Metastore
   * documentazione del modello dati
   * ottimizzazioni del query planner
   * integrazione con strumenti di BI
+
+
 
 👉 In Hive:
 
@@ -2724,9 +2727,9 @@ Scegli un **NoSQL** quando:
 Scegli **Hive** (o sistemi Big Data simili) quando:
 
 * i dati sono **molto voluminosi** (Big Data)
-* il carico è principalmente **analitico** (OLAP)
-* non servono transazioni riga-per-riga
-* l’obiettivo è l’analisi storica e batch
+* il carico è principalmente **analitico** (OLAP) -> Significa che il focus è sulla lettura e aggregazione di grandi volumi di dati   (somme, medie, conteggi su milioni/miliardi di record), non su modifiche frequenti di singoli record
+* non servono transazioni riga-per-riga -> Hive non è ottimizzato per aggiornamenti, inserimenti o eliminazioni frequenti su singoli record.
+* l’obiettivo è l’analisi storica e batch -> I dati elaborati sono storici (già accumulati), e l'elaborazione avviene in lotti pianificati (batch processing) piuttosto che in tempo reale.
 
 📌 Casi d’uso tipici:
 
@@ -2758,6 +2761,19 @@ Scegli **Hive** (o sistemi Big Data simili) quando:
 * **La chiave primaria identifica un record della tabella**
 * **La chiave esterna collega record di tabelle diverse**
 * Nei database relazionali, PK e FK garantiscono coerenza e integrità dei dati
+
+### Esempio tabellare: attributo, colonna, contenuto, record
+
+| Nome   | Età | Città     |
+|--------|-----|-----------|
+| Luca   | 25  | Milano    |
+| Anna   | 30  | Roma      |
+| Marco  | 40  | Torino    |
+
+- Gli attributi sono: Nome, Età, Città (le caratteristiche dell’entità “persona”).
+- Le colonne sono: “Nome”, “Età”, “Città” (ogni colonna contiene i valori di un attributo).
+- I contenuti delle colonne sono: Luca, Anna, Marco (per “Nome”), 25, 30, 40 (per “Età”), Milano, Roma, Torino (per “Città”).
+- Ogni riga è un record, cioè una persona con i suoi valori per ogni attributo.
 
 👉 Frase chiave da ricordare:
 
