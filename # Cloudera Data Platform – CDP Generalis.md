@@ -2731,6 +2731,12 @@ Scegli **Hive** (o sistemi Big Data simili) quando:
 * non servono transazioni riga-per-riga -> Hive non è ottimizzato per aggiornamenti, inserimenti o eliminazioni frequenti su singoli record.
 * l’obiettivo è l’analisi storica e batch -> I dati elaborati sono storici (già accumulati), e l'elaborazione avviene in lotti pianificati (batch processing) piuttosto che in tempo reale.
 
+**Approfondimento sui tre punti:**
+
+- **Carico analitico (OLAP):** OLAP (Online Analytical Processing) è progettato per analizzare grandi quantità di dati, eseguendo operazioni di aggregazione, raggruppamento e calcolo su dataset estesi. Non è pensato per gestire modifiche frequenti di singoli record, ma per rispondere a domande complesse come "Qual è la media delle vendite per regione negli ultimi 5 anni?".
+- **Nessuna transazione riga-per-riga:** Hive non è adatto a gestire aggiornamenti, inserimenti o cancellazioni frequenti su singoli record. Se l'applicazione richiede di modificare dati individuali in tempo reale (es. aggiornare il saldo di un conto bancario), è meglio usare un RDBMS. Hive è pensato per elaborare dati stabili e consolidati.
+- **Analisi storica e batch:** L'elaborazione avviene su dati storici, già accumulati, e viene eseguita in modalità batch, cioè in lotti pianificati (ad esempio, analizzare le vendite di tutto l'anno ogni notte). Non è pensato per operazioni in tempo reale, ma per analisi approfondite su grandi volumi di dati.
+
 📌 Casi d’uso tipici:
 
 * data warehouse
