@@ -1445,7 +1445,7 @@ In sintesi: la sicurezza protegge, la governance gestisce e controlla. Spesso la
 
 
 **Componenti SDX:**
-- **Apache Ranger** - Authorization & access control
+- **Apache Ranger** - Authorization 
 - **Apache Atlas** - Metadata management & data lineage
 - **Apache Knox** - Perimeter security (gateway)
 - **Hive Metastore** - Schema centrale
@@ -1466,7 +1466,19 @@ In sintesi: la sicurezza protegge, la governance gestisce e controlla. Spesso la
 > SDX è solo per security? → **No, anche governance e metadata**
 
 ---
+# 10. Apache Ranger – Authorization
+# 10.1 Cos'è Ranger
 
+Apache Ranger è il componente di Cloudera Data Platform (CDP) che gestisce l’authorization centralizzata per l’ecosistema Hadoop. Ranger consente di definire, applicare e monitorare policy di accesso granulari su dati e servizi Big Data.
+
+Importante: Ranger si occupa solo di authorization (cosa può fare l’utente), mentre l’autenticazione (chi è l’utente) è gestita da sistemi esterni come Kerberos, LDAP, SSO.
+
+10.2 Funzionalità principali di Ranger
+- Policy-based access control (PBAC): gestione delle regole di accesso per utenti, gruppi e ruoli.
+- Controllo granulare: autorizzazione a livello di database, tabella, colonna, riga.
+- Data masking: offuscamento di dati sensibili per conformità (es. GDPR).
+- Row-level filtering: limitazione delle righe visibili in base all’utente/gruppo.
+- Audit centralizzato: tracciabilità di tutte le operazioni di accesso e modifica sui dati.
 
 
 ### 11.2 Servizi supportati da Ranger
@@ -2533,7 +2545,7 @@ Questa coppia identifica univocamente una singola iscrizione.
 
 ## Confronto con database non relazionali (NoSQL)
 
-Nei database NoSQL:
+Nei database non relazionali:
 
 * esiste solitamente un **identificatore univoco** del dato (es. `_id` in MongoDB)
 * **non esistono chiavi esterne formali**
