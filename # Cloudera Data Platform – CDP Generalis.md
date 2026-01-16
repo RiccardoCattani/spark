@@ -2608,7 +2608,7 @@ Nei sistemi Big Data basati su **Hive** (e più in generale su Hadoop/Cloudera),
 
 ### Hive Metastore
 
-Il **Hive Metastore** è il servizio che mantiene i **metadati** delle tabelle, tra cui:
+L' **Hive Metastore** è il servizio che mantiene i **metadati** delle tabelle, tra cui:
 
 * database
 * nome della tabella
