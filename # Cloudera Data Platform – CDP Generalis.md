@@ -1850,6 +1850,7 @@ Ogni VW può scalare indipendentemente.
 ✅ Ogni environment è isolato
 
 👉 **Domanda tipica d'esame** (domanda campione esame)
+
 > Environment è un subset del cloud account? → **Sì**
 > Quanti environment posso creare? → **Quanti voglio**
 
@@ -2233,7 +2234,10 @@ Cloudera Manager richiede un database esterno per:
 
 ### **Cos'è lo Schema?**
 
-Lo **schema** è una definizione strutturale che descrive l'organizzazione e il formato dei dati in un sistema di gestione dei dati. Esso specifica come i dati sono strutturati, quali campi o colonne esistono, e quali tipi di dati sono associati a ciascun campo.
+Lo **schema** è una definizione strutturale che descrive l'organizzazione e il formato dei dati in un sistema di gestione dei dati. Esso specifica come i dati sono strutturati, quali colonne (O campi) esistono, e quali tipi di dati sono associati a ciascun campo.
+Piu semplicemente lo schema è la struttura della tabella, ossia:
+- quali colonne esistono 
+- e quali tipi di dati sono associati a ciascun camppo
 
 #### **Caratteristiche principali dello Schema:**
 1. **Definizione della struttura:**
@@ -2277,7 +2281,8 @@ Lo **schema** è una definizione strutturale che descrive l'organizzazione e il 
 
 ### **Esempio di Schema**
 
-Uno schema definisce la struttura di una tabella, specificando i nomi delle colonne e i tipi di dati associati. Ecco un esempio:
+Uno schema definisce la struttura di una tabella, specificando i nomi delle colonne e i tipi di dati associati. 
+Ecco un esempio:
 
 ```sql
 CREATE TABLE employees (
