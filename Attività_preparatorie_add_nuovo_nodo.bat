@@ -55,11 +55,22 @@ Unauthorized Request
 /usr/java/jdk1.8.0_121/jre/lib/security/
  
 :: Crea un file system XFS sul dispositivo specificato
-
 mkfs.xfs -f /dev/sda1
 
 # Crea la directory di mount per il dispositivo
 /opt/cloudera/security/jks 
+
 # Crea un keystore Java KeyStore (JKS) con un certificato autofirmato 
-keytool -genkeypair -alias cdpco25 -validity 3650 -keyalg RSA -keysize 2048 -dname "cn=cdpco25.cdpsede.cassaddpp.it,ou=ICT,o=CDP,l=Rome,st=Rome,c=IT" -keypass teZuPR-7 -keystore cdpco25.jks -storepass teZuPR-7
- 
+keytool -genkeypair -alias cdpco25 -validity 3650 -keyalg RSA -keysize 2048 -dname "cn=cdpco23.cdpsede.cassaddpp.it,ou=ICT,o=CDP,l=Rome,st=Rome,c=IT" -keypass teZuPR-7 -keystore cdpco25.jks -storepass teZuPR-7
+
+# Genera una richiesta di firma del certificato (CSR) dal keystore JKS
+keytool -certreq -alias cdpco25 -keystore cdpco25.jks -file /opt/cloudera/security/x509/csr/cdpco25.csr -storepass teZuPR-7 -keypass teZuPR-7
+
+# Firma la richiesta di certificato (CSR) utilizzando l'autorità di certificazione (CA)
+openssl x509 -req -CA ../ca-cert -CAkey ../ca-key -in cdpco25.csr -out ../cer/cdpco25.sign.cer -days 2048 -CAcreateserial -passin pass:mercurio1
+
+# Importa il certificato dell'autorità di certificazione (CA) nel keystore JKS
+keytool -keystore cdpco23.jks -alias CARoot -import -file /opt/cloudera/security/x509/ca-cert -noprompt -storepass teZuPR-7
+
+# Importa il certificato firmato nel keystore JKS
+keytool -keystore cdpco23.jks -alias cdpco23 -import -file /opt/cloudera/security/x509/cer/cdpco23.sign.cer -noprompt -storepass teZuPR-7
