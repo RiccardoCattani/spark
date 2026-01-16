@@ -55,4 +55,11 @@ Unauthorized Request
 /usr/java/jdk1.8.0_121/jre/lib/security/
  
 :: Crea un file system XFS sul dispositivo specificato
+
 mkfs.xfs -f /dev/sda1
+
+# Crea la directory di mount per il dispositivo
+/opt/cloudera/security/jks 
+# Crea un keystore Java KeyStore (JKS) con un certificato autofirmato 
+keytool -genkeypair -alias cdpco25 -validity 3650 -keyalg RSA -keysize 2048 -dname "cn=cdpco25.cdpsede.cassaddpp.it,ou=ICT,o=CDP,l=Rome,st=Rome,c=IT" -keypass teZuPR-7 -keystore cdpco25.jks -storepass teZuPR-7
+ 
