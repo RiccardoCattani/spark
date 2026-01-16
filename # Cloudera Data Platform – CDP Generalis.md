@@ -1435,6 +1435,15 @@ Un analista deve eseguire query SQL rapide su grandi volumi di dati già struttu
 
 **SDX** è l'architettura di sicurezza e governance integrata di CDP.
 
+La differenza tra sicurezza e governance, in ambito IT e dati, è la seguente:
+
+Sicurezza: riguarda la protezione dei dati e dei sistemi da accessi non autorizzati, minacce, attacchi, perdita o furto. Include misure tecniche (come crittografia, autenticazione, firewall) e procedure per garantire la riservatezza, l’integrità e la disponibilità delle informazioni.
+
+Governance: riguarda la gestione, il controllo e la supervisione delle risorse informative e dei processi aziendali. Include la definizione di politiche, ruoli, responsabilità, regole di accesso, conformità normativa e monitoraggio delle attività per assicurare che i dati siano usati in modo corretto, etico e conforme alle leggi.
+
+In sintesi: la sicurezza protegge, la governance gestisce e controlla. Spesso lavorano insieme per garantire un uso sicuro e conforme delle informazioni.
+
+
 **Componenti SDX:**
 - **Apache Ranger** - Authorization & access control
 - **Apache Atlas** - Metadata management & data lineage
@@ -1443,6 +1452,7 @@ Un analista deve eseguire query SQL rapide su grandi volumi di dati già struttu
 - **Data Catalog** - Discovery & search
 - **Replication Manager** - Backup & DR
 - **Workload Manager** - Monitoring & optimization
+
 
 ### 9.2 Perché SDX è importante
 
@@ -1457,21 +1467,9 @@ Un analista deve eseguire query SQL rapide su grandi volumi di dati già struttu
 
 ---
 
-## 10. Apache Ranger – Authorization
 
-### 10.1 Cos'è Ranger
 
-**Apache Ranger** fornisce **autorizzazione centralizzata** per l'ecosistema Hadoop.
-
-**Funzioni:**
-- Policy-based access control (PBAC)
-- Role-based access control (RBAC)
-- Fine-grained authorization (riga/colonna)
-- Data masking (offuscamento dati sensibili)
-- Row-level filtering
-- Audit centralizzato
-
-### 10.2 Servizi supportati da Ranger
+### 11.2 Servizi supportati da Ranger
 
 Ranger gestisce accessi per:
 - HDFS
@@ -1483,7 +1481,7 @@ Ranger gestisce accessi per:
 - YARN
 - Atlas
 
-### 10.3 Ranger policies
+### 11.3 Ranger policies
 
 **Tipi di policy:**
 - **Access policies** - chi può fare cosa (SELECT, INSERT, UPDATE, DELETE)
@@ -1491,14 +1489,14 @@ Ranger gestisce accessi per:
 - **Row filter policies** - limita righe visibili per utente/gruppo
 
 👉 **Domanda tipica d'esame**
-> Ranger fa authentication o authorization? → **Authorization**
+> Ranger fa authentication o authorization? → **Authorization** (l'authentication è gestita da Kerberos/LDAP)
 > Ranger supporta masking? → **Sì**
 
 ---
 
-## 11. Apache Atlas – Metadata & Governance
+## 12. Apache Atlas – Metadata & Governance
 
-### 11.1 Cos'è Atlas
+### 12.1 Cos'è Atlas
 
 **Apache Atlas** è la piattaforma di **metadata management e data governance**.
 
@@ -1509,7 +1507,7 @@ Ranger gestisce accessi per:
 - Business glossary
 - Search & discovery
 
-### 11.2 Atlas e lineage
+### 12.2 Atlas e lineage
 
 **Data Lineage** traccia:
 - Origine dati (source)
@@ -1519,7 +1517,7 @@ Ranger gestisce accessi per:
 
 Esempio: `Salesforce → Sqoop → HDFS → Hive → Impala → BI Report`
 
-### 11.3 Atlas integration
+### 12.3 Atlas integration
 
 Atlas traccia automaticamente:
 - Hive queries (CREATE TABLE, INSERT)
@@ -1533,9 +1531,9 @@ Atlas traccia automaticamente:
 
 ---
 
-## 12. Apache Knox – Perimeter Security
+## 13. Apache Knox – Perimeter Security
 
-### 12.1 Cos'è Knox
+### 13.1 Cos'è Knox
 
 **Apache Knox** è un **gateway di sicurezza perimetrale** per cluster Hadoop.
 
@@ -1546,7 +1544,7 @@ Atlas traccia automaticamente:
 - Token-based authentication (JWT)
 - Topology-based routing
 
-### 12.2 Knox use cases
+### 13.2 Knox use cases
 
 - Esporre servizi Hadoop (Hive, HBase) all'esterno del cluster
 - Integrazione con enterprise SSO
@@ -1559,9 +1557,9 @@ Atlas traccia automaticamente:
 
 ---
 
-## 13. CDP Public Cloud – Integration SSO
+## 14. CDP Public Cloud – Integration SSO
 
-### 13.1 Identity Federation
+### 14.1 Identity Federation
 
 CDP Public Cloud supporta **identity federation** con SAML-based IdP.
 
