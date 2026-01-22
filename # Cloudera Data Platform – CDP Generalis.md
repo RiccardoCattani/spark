@@ -2791,8 +2791,37 @@ Scegli **Hive** (o sistemi Big Data simili) quando:
 
 Nei database non relazionali, il concetto di chiave primaria esiste ma può essere diverso rispetto ai database relazionali:
 - Nei database documentali (es. MongoDB), ogni documento ha un identificatore unico (di solito il campo _id), che svolge il ruolo di chiave primaria.
+
+Es. Database documentale 
+
+{
+   "_id": "507f1f77bcf86cd799439012",
+   "nome": "Luca",
+   "cognome": "Bianchi"
+}
+{
+   "_id": "507f1f77bcf86cd799439013",
+   "nome": "Giulia",
+   "cognome": "Verdi"
+}
+{
+   "_id": "507f1f77bcf86cd799439014",
+   "nome": "Anna",
+   "cognome": "Neri"
+}
+
 - Nei database key-value, la “chiave” è sempre unica e identifica il valore associato.
 - Nei database a colonne (es. Cassandra), si usano chiavi primarie composte per identificare in modo univoco le righe.
 - Nei database a grafo, i nodi e le relazioni hanno identificatori unici.
 
 Quindi, anche nei database non relazionali esiste un meccanismo per identificare univocamente i dati, ma la gestione e la struttura possono variare a seconda del modello.
+
+### Differenza tra database relazionali e non relazionali
+
+- **Relazioni**: nei relazionali usi chiavi esterne e JOIN; nei non relazionali le relazioni esistono ma si modellano in altri modi (embed dei dati nei documenti, denormalizzazione, chiavi composte nei columnar, archi nei grafi) senza le JOIN tradizionali.
+- **Schema**: i relazionali hanno schemi rigidi; i non relazionali permettono schemi flessibili o schema-less.
+- **Consistenza**: i relazionali offrono transazioni ACID complete; molti non relazionali privilegiano scalabilità e disponibilità, adottando modelli di consistenza configurabili (eventuale o per-partizione).
+- **Scalabilità**: i relazionali scalano tipicamente in verticale o con sharding più complesso; i non relazionali sono progettati per scalare orizzontalmente in modo nativo.
+
+Quindi “non relazionale” non significa che non puoi mettere in relazione in dati in  tabelle diverse, ma che il modo di modellare e interrogare le relazioni è diverso rispetto al modello tabellare con JOIN.
+Piu semplicmente Significa che non usano il modello relazionale a tabelle con schema rigido e JOIN/chiavi esterne. Nei NoSQL le relazioni ci sono, ma si modellano diversamente a seconda del motore: embed/denormalizzazione nei documentali, chiavi composte e clustering nei columnar, archi nei grafi, pattern applicativi nei key-value. Il nome evidenzia che non adottano il paradigma relazionale classico, non che i dati restino isolati.
