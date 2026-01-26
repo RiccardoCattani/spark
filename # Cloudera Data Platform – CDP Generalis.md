@@ -109,6 +109,19 @@ In pratica:
 
 ---
 
+Tipologie di Schema
+Nel contesto dei dati e dei database, esistono diverse tipologie di schema:
+
+Schema-on-write: Lo schema viene applicato ai dati al momento della scrittura. I dati devono rispettare una struttura predefinita (tipico dei database relazionali).
+Schema-on-read: Lo schema viene applicato solo quando i dati vengono letti. I dati possono essere archiviati in modo flessibile e la struttura viene imposta solo in fase di query (tipico di Hive, HDFS, sistemi Big Data).
+Schema rigido: Struttura fissa e obbligatoria, difficile da modificare (es. RDBMS).
+Schema flessibile/dinamico: Struttura variabile, adattabile a dati diversi (es. NoSQL, MongoDB).
+Nei Data Warehouse:
+Star Schema: Tabella dei fatti centrale collegata a tabelle di dimensione.
+Snowflake Schema: Variante normalizzata dello star schema, con dimensioni suddivise in più tabelle.
+Fact Constellation (Galaxy Schema): Più tabelle dei fatti che condividono dimensioni comuni.
+Queste tipologie influenzano la flessibilità, la scalabilità e le modalità di gestione dei dati nei diversi sistemi.
+
 In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradizionali con dati strutturati, mentre i dati non relazionali sono più adatti per scenari moderni che richiedono flessibilità e scalabilità.
 
 ---
@@ -118,24 +131,6 @@ In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradiziona
 #### **Spesso confusi, ma sono diversi:**
 
 **Database (DB):**
-
----
-
-## Tipologie di Schema
-
-Nel contesto dei dati e dei database, esistono diverse tipologie di schema:
-
-- **Schema-on-write**: Lo schema viene applicato ai dati al momento della scrittura. I dati devono rispettare una struttura predefinita (tipico dei database relazionali).
-- **Schema-on-read**: Lo schema viene applicato solo quando i dati vengono letti. I dati possono essere archiviati in modo flessibile e la struttura viene imposta solo in fase di query (tipico di Hive, HDFS, sistemi Big Data).
-- **Schema rigido**: Struttura fissa e obbligatoria, difficile da modificare (es. RDBMS).
-- **Schema flessibile/dinamico**: Struttura variabile, adattabile a dati diversi (es. NoSQL, MongoDB).
-
-### Nei Data Warehouse:
-- **Star Schema**: Tabella dei fatti centrale collegata a tabelle di dimensione.
-- **Snowflake Schema**: Variante normalizzata dello star schema, con dimensioni suddivise in più tabelle.
-- **Fact Constellation (Galaxy Schema)**: Più tabelle dei fatti che condividono dimensioni comuni.
-
-Queste tipologie influenzano la flessibilità, la scalabilità e le modalità di gestione dei dati nei diversi sistemi.
 - È l'**intero contenitore** di dati e metadati
 - È il **livello più alto di organizzazione**
 - Raggruppa più tabelle correlate (namespace Hive)
@@ -273,12 +268,22 @@ Google pubblicò un paper rivoluzionario sul **Google File System**.
 - 2006: Hadoop come sottoprogetto di Apache Nutch.
 - 2008: Hadoop diventa progetto Apache top-level.
 
-Def. attuale di Hadoop:  è un framework open source per l’archiviazione e l’elaborazione distribuita di grandi quantità di dati (Big Data) su cluster di computer. È composto principalmente da:
+Def. attuale di Hadoop:  è un framework* open source per l’archiviazione e l’elaborazione distribuita di grandi quantità di dati (Big Data) su cluster di computer. È composto principalmente da:
 
 HDFS (Hadoop Distributed File System): file system distribuito che memorizza i dati su più nodi.
 MapReduce: modello di programmazione per elaborare dati in parallelo.
 Altri componenti: YARN (gestione delle risorse), Hive, Pig, ecc.
 ---
+*Un framework è una piattaforma software composta da un insieme di componenti utilizzabili(librerie, strumenti, regole e convenzioni) che fornisce una struttura di base per sviluppare applicazioni in modo più semplice, veloce e standardizzato.
+In pratica, un framework:
+- Definisce l’architettura e il “modello” dell’applicazione.
+- Fornisce funzionalità già pronte (es. gestione database, sicurezza, interfaccia utente).
+- Impone delle regole e un flusso di lavoro (inversione del controllo: è il framework che chiama il tuo codice, non viceversa).
+Ad esempio posso citare le seguenti:
+- Apache Hadoop: framework per l’elaborazione distribuita di Big Data.
+- Spring: framework per lo sviluppo di applicazioni Java.
+- Django: framework per applicazioni web in Python.
+- Angular: framework per lo sviluppo di applicazioni web front-end in JavaScript.
 
 ### Yahoo!: Il primo grande utilizzatore (2006-2008)
 
