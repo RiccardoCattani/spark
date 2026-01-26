@@ -505,6 +505,15 @@ Rendere Hadoop **enterprise-ready** con:
 
 ---
 
+Per “data services” si intendono servizi o componenti software che gestiscono, forniscono, trasformano o espongono dati a diverse applicazioni o utenti. I data services possono includere:
+
+Accesso e integrazione di dati da fonti diverse (database, file, API, ecc.)
+Trasformazione, pulizia e arricchimento dei dati
+Esposizione dei dati tramite API, servizi web o endpoint
+Sicurezza, controllo degli accessi e gestione delle autorizzazioni sui dati
+Monitoraggio, logging e auditing delle operazioni sui dati
+In sintesi, i data services permettono di rendere i dati disponibili, affidabili e utilizzabili in modo centralizzato e controllato, spesso come parte di architetture moderne (es. microservizi, data lake, data warehouse, ecc.).
+
 ## 0.4 Differenze architetturali: CDH/HDP → CDP
 
 ### 0.4.1 Differenze fisiche (infrastruttura)
