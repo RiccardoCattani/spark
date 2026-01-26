@@ -79,7 +79,7 @@ I dati non relazionali sono più flessibili e non seguono uno schema rigido.
 
 ---
 
-HDFS (Hadoop Distributed File System) non è un database relazionale. È un file system distribuito progettato per archiviare grandi quantità di dati su cluster di computer. HDFS gestisce file e directory, non tabelle relazionali, e non impone uno schema rigido ai dati. Quindi, HDFS è considerato un sistema di archiviazione non relazionale.
+HDFS (Hadoop Distributed File System) non è un database relazionale ma è un file system distribuito progettato per archiviare grandi quantità di dati su cluster di computer. HDFS gestisce file e directory, non tabelle relazionali, e non impone uno schema rigido ai dati. Quindi, HDFS è considerato un sistema di archiviazione non relazionale.
 Hive e Impala non sono database relazionali in senso stretto, ma sono motori di query che permettono di eseguire interrogazioni SQL su dati archiviati in HDFS (o altri file system distribuiti). Tuttavia, forniscono un’interfaccia relazionale: i dati sono organizzati in tabelle e si usa SQL per interrogarli, quindi si comportano come sistemi relazionali dal punto di vista dell’utente, pur non essendo veri e propri RDBMS tradizionali.
 
 La differenza principale tra database e filesystem è la seguente:
