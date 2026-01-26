@@ -89,7 +89,7 @@ Un database, invece, è progettato per archiviare, organizzare e gestire dati st
 In sintesi: il filesystem gestisce file, il database gestisce dati strutturati.
 
 
-### **Confronto Tabellare**
+### **Confronto database Tabellare**
 
 | **Caratteristica**       | **Relazionale**                     | **Non Relazionale**               |
 |---------------------------|-------------------------------------|----------------------------------|
@@ -118,6 +118,24 @@ In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradiziona
 #### **Spesso confusi, ma sono diversi:**
 
 **Database (DB):**
+
+---
+
+## Tipologie di Schema
+
+Nel contesto dei dati e dei database, esistono diverse tipologie di schema:
+
+- **Schema-on-write**: Lo schema viene applicato ai dati al momento della scrittura. I dati devono rispettare una struttura predefinita (tipico dei database relazionali).
+- **Schema-on-read**: Lo schema viene applicato solo quando i dati vengono letti. I dati possono essere archiviati in modo flessibile e la struttura viene imposta solo in fase di query (tipico di Hive, HDFS, sistemi Big Data).
+- **Schema rigido**: Struttura fissa e obbligatoria, difficile da modificare (es. RDBMS).
+- **Schema flessibile/dinamico**: Struttura variabile, adattabile a dati diversi (es. NoSQL, MongoDB).
+
+### Nei Data Warehouse:
+- **Star Schema**: Tabella dei fatti centrale collegata a tabelle di dimensione.
+- **Snowflake Schema**: Variante normalizzata dello star schema, con dimensioni suddivise in più tabelle.
+- **Fact Constellation (Galaxy Schema)**: Più tabelle dei fatti che condividono dimensioni comuni.
+
+Queste tipologie influenzano la flessibilità, la scalabilità e le modalità di gestione dei dati nei diversi sistemi.
 - È l'**intero contenitore** di dati e metadati
 - È il **livello più alto di organizzazione**
 - Raggruppa più tabelle correlate (namespace Hive)
@@ -172,10 +190,9 @@ INSERT INTO employees VALUES (1, 'John', 50000);
 
 #### **Differenze chiave:**
 
-| **Aspetto**        | **Database**                      | **Schema**                          |
-|-------------------|-----------------------------------|-------------------------------------|
-| **Cos'è?**        | Contenitore/namespace            | Struttura di una singola tabella    |
-| **Livello**       | Alto (raggruppa tabelle)         | Basso (singola tabella)             |
+| **Aspetto**        | **Database**                      | **Schema**                          
+| **Cos'è?**        | Contenitore/namespace            | Struttura di una singola tabella   |
+| **Livello**       | Alto (raggruppa tabelle)         | Basso (singola tabella)            |
 | **Comando SQL**   | `CREATE DATABASE mydb;`          | `CREATE TABLE mydb.mytable (...)`  |
 | **Contiene**      | Molteplici tabelle               | Definizione colonne + tipi + vincoli |
 | **Esempio**       | `analytics_db`, `sales_db`       | `(id INT, name STRING, date DATE)` |
@@ -200,6 +217,8 @@ INSERT INTO employees VALUES (1, 'John', 50000);
   );
   -- ↑ Questa è la struttura (schema) della tabella
   ```
+
+
 
 #### **Per l'esame CDP:**
 
