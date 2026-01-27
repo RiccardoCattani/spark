@@ -505,13 +505,13 @@ Rendere Hadoop **enterprise-ready** con:
 
 ---
 
-Per “data services” si intendono servizi o componenti software che gestiscono, forniscono, trasformano o espongono dati a diverse applicazioni o utenti. I data services possono includere:
-
-Accesso e integrazione di dati da fonti diverse (database, file, API, ecc.)
-Trasformazione, pulizia e arricchimento dei dati
-Esposizione dei dati tramite API, servizi web o endpoint
-Sicurezza, controllo degli accessi e gestione delle autorizzazioni sui dati
-Monitoraggio, logging e auditing delle operazioni sui dati
+Per “data services” si intendono servizi o componenti software che gestiscono, forniscono, trasformano o espongono dati a diverse applicazioni o utenti. 
+I data services possono includere:
+- Accesso e integrazione di dati da fonti diverse (database, file, API, ecc.)
+- Trasformazione, pulizia e arricchimento dei dati
+- Esposizione dei dati tramite API, servizi web o endpoint
+- Sicurezza, controllo degli accessi e gestione delle autorizzazioni sui dati
+- Monitoraggio, logging e auditing delle operazioni sui dati
 In sintesi, i data services permettono di rendere i dati disponibili, affidabili e utilizzabili in modo centralizzato e controllato, spesso come parte di architetture moderne (es. microservizi, data lake, data warehouse, ecc.).
 
 ## 0.4 Differenze architetturali: CDH/HDP → CDP
@@ -810,9 +810,7 @@ Data Lake su S3 (us-east-1)
 2021 → CDP Private Cloud Data Services GA
 2023 → CDP evoluzione continua (nuovi Data Services)
 ```
-
 ---
-
 ## 0.6 Perché CDP è importante per l'esame
 
 **L'esame CDP-0011 testa:**
@@ -848,9 +846,9 @@ Data Lake su S3 (us-east-1)
 - tracciamento e audit
 - coerenza 
 
-In pratica, SDX permette di:
+In pratica, SDX permette di centralizzare la gestione delle regole di sicurezza e privacy, assicurando che vengano applicate in modo coerente su tutti i servizi e i dati della piattaforma Cloudera, permettendo di:
 
-- Definire e applicare regole di sicurezza e privacy sui dati.
+- Definire e applicare regole di sicurezza e privacy sui dati (Mediante apache Ranger, Atlas e audit e monitoring).
 - Gestire i metadati (informazioni sui dati) in modo unificato.
 - Tracciare e monitorare chi accede ai dati e come vengono usati.
 - Garantire coerenza e controllo su dati distribuiti tra diversi servizi (come Hadoop, Hive, Impala, ecc.).
