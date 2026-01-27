@@ -839,11 +839,12 @@ Data Lake su S3 (us-east-1)
 
 ❌ **Non serve sapere:** dettagli CDH/HDP specifici, Ambari, Sentry
 
-*SDX (Shared Data Experience) è una componente della piattaforma Cloudera che gestisce in modo centralizzato:
-- la sicurezza, 
+*SDX (Shared Data Experience) è una componente della piattaforma Cloudera che gestisce in modo centralizzato la governance in cloudera, ossia:
+- la sicurezza e privacy, 
 - il catalogo dei dati, 
-- la governance 
 - e le policy di accesso ai dati nei cluster Big Data
+- tracciamento e audit
+- coerenza 
 
 In pratica, SDX permette di centralizzare la gestione delle regole di sicurezza e privacy, assicurando che vengano applicate in modo coerente su tutti i servizi e i dati della piattaforma Cloudera, permettendo di:
 
@@ -875,7 +876,7 @@ In pratica, SDX permette di centralizzare la gestione delle regole di sicurezza 
 
 ```
 NameNode (master)
-- Gestisce namespace del file system* **
+- Gestisce namespace del file system***
 - Controlla metadata (nomi file, permessi, posizioni blocchi)
 - Single point of failure (mitigato da HA)
 
@@ -1073,6 +1074,18 @@ Oozie supporta:
 - Event sourcing
 - Messaging tra microservizi
 
+Ecco come Apache Kafka è integrato nelle funzionalità di alcune aziende famose:
+
+LinkedIn: Kafka gestisce il flusso di attività degli utenti, la raccolta di log, le notifiche, la messaggistica interna e l’analisi in tempo reale.
+Netflix: Kafka è usato per il monitoraggio dei sistemi, la raccolta di log, la gestione degli eventi e la distribuzione di dati tra microservizi.
+Uber: Kafka supporta il tracciamento delle corse, la gestione degli eventi in tempo reale, la fatturazione e l’analisi dei dati.
+Spotify: Kafka è integrato per la raccolta di dati di ascolto, la raccomandazione musicale, il monitoraggio e la pipeline di dati.
+Airbnb: Kafka gestisce la pipeline di dati per analisi, monitoraggio delle attività degli utenti e integrazione tra servizi.
+Twitter: Kafka viene usato per la gestione degli stream di tweet, la raccolta di log e la distribuzione di eventi tra sistemi.
+
+In sintesi, Kafka è usato principalmente per gestire flussi di dati in tempo reale, logging, monitoraggio, analisi e integrazione tra microservizi.
+Con Apache Kafka, i messaggi vengono distribuiti principalmente da server (broker Kafka) a client (consumer), ma anche da client (producer) a server (broker Kafka)
+
 👉 **Domanda tipica d'esame**
 > Kafka è storage o processing? → **Entrambi (memorizza + distribuisce)**
 > Kafka è persistente? → **Sì, retention configurabile**
@@ -1107,6 +1120,25 @@ Oozie supporta:
 | Trasformazioni | Sì (native) | No (serve Kafka Streams) |
 | Throughput | Medio/alto | Altissimo |
 
+###La differenza più distintiva tra Apache NiFi e Apache Kafka è il loro scopo principale:
+
+NiFi è progettato per l’orchestrazione e l’automazione dei flussi di dati, con una GUI visuale per il routing, la trasformazione e l’arricchimento dei dati tra sistemi diversi.
+Kafka è una piattaforma di messaging/streaming ad altissimo throughput, pensata per la distribuzione e la persistenza di flussi di messaggi in tempo reale tra produttori e consumatori.
+In sintesi:
+NiFi = orchestrazione e automazione dei flussi di dati
+Kafka = distribuzione e streaming di messaggi
+
+Ecco alcune aziende che usano Apache NiFi e le attività per cui lo integrano:
+
+- Cloudera: NiFi è parte della piattaforma CDP per orchestrare flussi di dati tra sistemi, ingestione, routing, trasformazione e arricchimento dati.
+- ING Bank: Usa NiFi per la gestione e l’automazione dei flussi di dati tra sistemi bancari, compliance e data lineage.
+- US Army: NiFi è impiegato per la raccolta, il trasferimento e la trasformazione di dati provenienti da sensori e sistemi di intelligence.
+- Leidos: Utilizza NiFi per integrare dati da fonti eterogenee in ambito difesa e intelligence.
+- Oath (Yahoo): NiFi gestisce pipeline di dati per analisi, monitoraggio e data enrichment.
+- Telefonica: NiFi è usato per orchestrare flussi di dati tra sistemi di telecomunicazione, monitoraggio e analisi.
+
+Le attività principali sono: ingestione dati da molteplici sorgenti, orchestrazione e automazione dei flussi, trasformazione e arricchimento dati, data lineage, routing, compliance e integrazione tra sistemi diversi.
+
 👉 **Domanda tipica d'esame**
 > NiFi ha GUI? → **Sì, web-based drag-and-drop**
 > NiFi è no-code? → **Sì, visual programming**
@@ -1117,7 +1149,7 @@ Oozie supporta:
 
 ### 0.17.1 Cos'è HBase
 
-**Apache HBase** è un **database NoSQL distribuito** per accesso real-time a big data.
+**Apache HBase** è un **database NoSQL* distribuito** per accesso real-time a big data.
 
 **Caratteristiche:**
 - Modello wide-column (colonne sparse)
@@ -1132,15 +1164,88 @@ Oozie supporta:
 - Messaggistica e social media feed
 - IoT sensor data
 
+*La differenza principale tra database SQL e NoSQL è nel modello dei dati e nella flessibilità:
+
+Database SQL (relazionali):
+
+- Usano tabelle con schema rigido (colonne e tipi fissi).
+- Supportano SQL per query, JOIN, transazioni ACID.
+- Ideali per dati strutturati e relazioni complesse.
+
+Esempi: MySQL, PostgreSQL, Oracle.
+
+Database NoSQL:
+
+- Modelli flessibili: documenti, key-value, colonne, grafi (Si fa presente quindi esiste anche lo schema colonnale nei NOSQL).
+- Schema dinamico o assente, adatti a dati semi-strutturati o non strutturati.
+- Scalabilità orizzontale, performance su grandi volumi e accessi distribuiti.
+- Non usano SQL standard, niente JOIN classiche.
+
+Esempi: MongoDB (documentale), Cassandra (colonnare), Redis (key-value), Neo4j (grafi).
+In sintesi:
+
+SQL = schema rigido, relazioni forti, query potenti
+NoSQL = schema flessibile, scalabilità, adatto a dati variabili
+
+## Casi D'uso
+
+NoSQL:
+
+- Facebook usa Cassandra (colonnare) per gestire messaggi e feed in tempo reale.
+- Netflix usa DynamoDB (key-value/documentale) per la gestione delle sessioni utente e raccomandazioni.
+- Twitter usa Redis (key-value) per caching e timeline degli utenti.
+- LinkedIn usa HBase (colonnare) per analytics e messaggistica.
+
+SQL:
+
+- Bank of America usa Oracle Database per la gestione delle transazioni bancarie.
+- Airbnb usa MySQL per gestire prenotazioni e dati degli utenti.
+- Wikipedia usa MariaDB per l’archiviazione delle pagine e delle revisioni.
+
+In sintesi:
+
+NoSQL è scelto per attività che richiedono alta scalabilità, gestione di grandi volumi di dati variabili, real-time e flessibilità.
+SQL è scelto per attività che richiedono integrità dei dati, transazioni sicure e relazioni complesse tra dati.
+
+## Ecco la comparazione tra HBase, Impala e Hive:
+
+- HBase:
+a) Database NoSQL wide-column
+b) Accesso random veloce a singoli record
+c) Scritture/letture in tempo reale
+d) Schema flessibile
+e) Ideale per time-series, IoT, social feed
+- Impala:
+a) Motore SQL MPP per query interattive
+b) Analisi esplorativa su dati strutturati
+c) Latenza molto bassa
+d) Lavora su dati in HDFS, Parquet, ORC
+e) Non adatto a scritture frequenti o accesso random
+- Hive:
+a) Data warehouse SQL sopra Hadoop
+b) Analisi batch su grandi dataset
+c) Latenza elevata (non adatto a query rapide)
+d) Schema-on-read
+e) Ideale per ETL, reporting massivo
+
+Sintesi:
+HBase = NoSQL, accesso random, real-time
+Impala = SQL, query interattive, bassa latenza
+Hive = SQL, analisi batch, alta latenza
+
 ### 0.17.3 Cos'è Phoenix
 
 **Apache Phoenix** è un **layer SQL sopra HBase**.
 
-**Funzioni:**
-- Query SQL su dati HBase
-- Indici secondari
-- JDBC driver
-- Performance ottimizzate
+Apache Phoenix è un layer che permette di usare il linguaggio SQL sopra HBase, trasformando il database NoSQL in una piattaforma interrogabile con query simili a quelle di un database relazionale.
+
+** Funzionalità principali di Phoenix:
+- Consente di creare, modificare e interrogare tabelle HBase usando SQL standard (SELECT, INSERT, UPDATE, DELETE).
+- Traduce le query SQL in operazioni native HBase, ottimizzando l’accesso ai dati.
+- Supporta indici secondari per velocizzare le ricerche.
+- Offre un driver JDBC, così applicazioni e strumenti BI possono collegarsi a HBase come a un normale database SQL.
+- Gestisce transazioni e batch di operazioni.
+- Permette di sfruttare la scalabilità e la velocità di HBase, ma con la semplicità di SQL.
 
 👉 **Domanda tipica d'esame**
 > HBase è relazionale? → **No, NoSQL wide-column**
@@ -1154,13 +1259,39 @@ Oozie supporta:
 
 **Apache Kudu** è un **columnar storage engine** per Hadoop.
 
-Kudu in Cloudera serve per memorizzare e gestire dati che devono essere sia letti che scritti velocemente, anche in tempo reale. È un database pensato per analisi veloci: permette di aggiungere, modificare e leggere dati subito, senza dover aspettare lunghi tempi di caricamento. Kudu è ideale quando hai bisogno di aggiornare spesso i dati e fare analisi rapide, ad esempio per dashboard, report o applicazioni che lavorano con dati sempre aggiornati.
+Kudu è un database il quale serve in Cloudera serve per memorizzare e gestire dati che devono essere sia letti che scritti velocemente, anche in tempo reale. È un database pensato per analisi veloci: permette di aggiungere, modificare e leggere dati subito, senza dover aspettare lunghi tempi di caricamento. Kudu è ideale quando hai bisogno di aggiornare spesso i dati e fare analisi rapide, ad esempio per dashboard, report o applicazioni che lavorano con dati sempre aggiornati.
 
 **Caratteristiche:**
-- Storage colonnare (come Parquet, ma mutabile)
+- Memorizza in maniera colonnare i dati (come Parquet, ma mutabile), perchè kudu memorizza i dati organizzandoli per colonne invece che per righe, come fanno i database tradizionali
 - Fast analytics (scan) + fast updates/inserts
 - Integrazione nativa con Impala e Spark
 - ACID compliant
+
+Ecco un esempio schematico di storage colonnare (come in Kudu) rispetto a quello tradizionale (row-based):
+
+Storage per righe (row-based):
+
+
+| ID | Nome   | Età | Città    |
+|----|--------|-----|----------|
+| 1  | Anna   | 30  | Milano   |
+| 2  | Marco  | 25  | Roma     |
+| 3  | Lucia  | 28  | Torino   |
+
+I dati sono memorizzati riga per riga.
+
+Storage per colonne (columnar, come Kudu):
+
+
+Colonna ID:    1, 2, 3
+Colonna Nome:  Anna, Marco, Lucia
+Colonna Età:   30, 25, 28
+Colonna Città: Milano, Roma, Torino
+I dati sono memorizzati colonna per colonna.
+
+Vantaggio:
+Se vuoi analizzare solo la colonna “Età”, Kudu legge solo quella colonna, rendendo le query più veloci ed efficienti.
+
 
 ### 0.19.2 Kudu vs HBase vs HDFS
 
@@ -1199,7 +1330,7 @@ In **In cloudera**, **Hive** e **Impala** non sono alternative, ma **complementa
 
 **Apache Hive** è un **data warehouse distribuito** che fornisce:
 - un livello SQL sopra Hadoop (Consente di scrivere query SQL-like per analizzare i dati in HDFS)
-- è uno strato sopra HDFS (Hive organizza i dati in tabelle e schemi, fornendo una struttura logica ai file grezzi in HDFS)
+- è uno strato sopra HDFS (Hive organizza i dati in tabelle e schemi (Struttura delle tabelle), fornendo una struttura logica ai file grezzi in HDFS)
 - uno schema-on-read (Lo schema viene applicato ai dati solo quando vengono letti (non al momento della scrittura).
 
 Hive **non è un database** e **non è OLTP**.
@@ -1209,8 +1340,8 @@ Hive **non è un database** e **non è OLTP**.
 ## 2.2 Hive come strato semantico del Data Lake
 
 Senza Hive, il Data Lake è solo un insieme di file.  
-Hive introduce:
 
+Hive introduce:
 - tabelle
 - colonne
 - tipi di dato
