@@ -1261,13 +1261,39 @@ Apache Phoenix è un layer che permette di usare il linguaggio SQL sopra HBase, 
 
 **Apache Kudu** è un **columnar storage engine** per Hadoop.
 
-Kudu in Cloudera serve per memorizzare e gestire dati che devono essere sia letti che scritti velocemente, anche in tempo reale. È un database pensato per analisi veloci: permette di aggiungere, modificare e leggere dati subito, senza dover aspettare lunghi tempi di caricamento. Kudu è ideale quando hai bisogno di aggiornare spesso i dati e fare analisi rapide, ad esempio per dashboard, report o applicazioni che lavorano con dati sempre aggiornati.
+Kudu è un database il quale serve in Cloudera serve per memorizzare e gestire dati che devono essere sia letti che scritti velocemente, anche in tempo reale. È un database pensato per analisi veloci: permette di aggiungere, modificare e leggere dati subito, senza dover aspettare lunghi tempi di caricamento. Kudu è ideale quando hai bisogno di aggiornare spesso i dati e fare analisi rapide, ad esempio per dashboard, report o applicazioni che lavorano con dati sempre aggiornati.
 
 **Caratteristiche:**
-- Storage colonnare (come Parquet, ma mutabile)
+- Memorizza in maniera colonnare i dati (come Parquet, ma mutabile), perchè kudu memorizza i dati organizzandoli per colonne invece che per righe, come fanno i database tradizionali
 - Fast analytics (scan) + fast updates/inserts
 - Integrazione nativa con Impala e Spark
 - ACID compliant
+
+Ecco un esempio schematico di storage colonnare (come in Kudu) rispetto a quello tradizionale (row-based):
+
+Storage per righe (row-based):
+
+
+| ID | Nome   | Età | Città    |
+|----|--------|-----|----------|
+| 1  | Anna   | 30  | Milano   |
+| 2  | Marco  | 25  | Roma     |
+| 3  | Lucia  | 28  | Torino   |
+
+I dati sono memorizzati riga per riga.
+
+Storage per colonne (columnar, come Kudu):
+
+
+Colonna ID:    1, 2, 3
+Colonna Nome:  Anna, Marco, Lucia
+Colonna Età:   30, 25, 28
+Colonna Città: Milano, Roma, Torino
+I dati sono memorizzati colonna per colonna.
+
+Vantaggio:
+Se vuoi analizzare solo la colonna “Età”, Kudu legge solo quella colonna, rendendo le query più veloci ed efficienti.
+
 
 ### 0.19.2 Kudu vs HBase vs HDFS
 
@@ -1306,7 +1332,7 @@ In **In cloudera**, **Hive** e **Impala** non sono alternative, ma **complementa
 
 **Apache Hive** è un **data warehouse distribuito** che fornisce:
 - un livello SQL sopra Hadoop (Consente di scrivere query SQL-like per analizzare i dati in HDFS)
-- è uno strato sopra HDFS (Hive organizza i dati in tabelle e schemi, fornendo una struttura logica ai file grezzi in HDFS)
+- è uno strato sopra HDFS (Hive organizza i dati in tabelle e schemi (Struttura delle tabelle), fornendo una struttura logica ai file grezzi in HDFS)
 - uno schema-on-read (Lo schema viene applicato ai dati solo quando vengono letti (non al momento della scrittura).
 
 Hive **non è un database** e **non è OLTP**.
@@ -1316,8 +1342,8 @@ Hive **non è un database** e **non è OLTP**.
 ## 2.2 Hive come strato semantico del Data Lake
 
 Senza Hive, il Data Lake è solo un insieme di file.  
-Hive introduce:
 
+Hive introduce:
 - tabelle
 - colonne
 - tipi di dato
