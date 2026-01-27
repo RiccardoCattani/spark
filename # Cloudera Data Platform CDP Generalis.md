@@ -1440,6 +1440,7 @@ Svantaggi:
 - Adatto a scansioni complete: Hive lavora bene quando deve leggere e analizzare intere tabelle o grandi porzioni di dati, ad esempio per calcolare totali, medie o altre statistiche su dataset estesi.
 
 - Meno performante su query rapide: Se hai bisogno di risposte immediate su pochi record (come una ricerca puntuale), Hive non è la scelta migliore, perché il suo motore (basato su MapReduce o Tez) ha una latenza di avvio elevata.
+- Hive sfrutta la scrittura parallela su HDFS durante le operazioni batch, ma non consente scritture concorrenti da sessioni diverse sulla stessa tabella gestita (Per evitare inconsistenze).
 
 Ottimizzazioni comuni:
 - Partizionamento: suddivide le tabelle in “parti” (es. per data, paese, ecc.), così le query leggono solo i dati necessari, riducendo i tempi di scansione.
@@ -1454,7 +1455,7 @@ Ottimizzazioni comuni:
 Usa Hive quando:
 - i dati sono molto grandi
 - la latenza non è critica
-- stai facendo ETL o reporting batch
+- stai facendo ETL o reporting batch (non query interattive)
 - la priorità è la scalabilità
 
 ---
@@ -1504,9 +1505,9 @@ Impala:
 ## 3.4 Impala e performance
 
 Impala è molto veloce perché:
-- legge direttamente i file
-- usa memoria
-- sfrutta MPP
+- Legge direttamente i file: Impala accede ai dati su HDFS o altri filesystem distribuiti senza passare da livelli intermedi come MapReduce. Questo elimina la latenza dovuta all’avvio di job batch e permette di eseguire query in modo immediato, sfruttando l’accesso diretto ai file nei formati supportati (Parquet, ORC, ecc.).
+- Usa memoria: Impala elabora i dati principalmente in memoria (in-memory processing), riducendo drasticamente i tempi di lettura e scrittura su disco. Questo consente di ottenere risposte molto rapide, soprattutto per query complesse o su grandi volumi di dati.
+- Sfrutta MPP (Massively Parallel Processing): L’architettura MPP di Impala suddivide le query in task che vengono eseguiti in parallelo su più nodi del cluster. Ogni nodo lavora su una porzione dei dati, permettendo di scalare le prestazioni in base alle risorse disponibili e di gestire grandi dataset in tempi ridotti.
 
 Ma:
 - consuma molte risorse
