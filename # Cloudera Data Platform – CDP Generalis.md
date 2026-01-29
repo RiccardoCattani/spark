@@ -1477,17 +1477,16 @@ Svantaggi:
 
 - Adatto a scansioni complete: Hive lavora bene quando deve leggere e analizzare intere tabelle o grandi porzioni di dati, ad esempio per calcolare totali, medie o altre statistiche su dataset estesi.
 
-- Meno performante su query rapide: Se hai bisogno di risposte immediate su pochi record (come una ricerca puntuale), Hive non è la scelta migliore, perché il suo motore (basato su MapReduce o Tez) ha una latenza di avvio elevata.
+- Meno performante su query rapide: Se hai bisogno di risposte immediate su pochi record (come una ricerca puntuale), Hive non è la scelta migliore, perché il suo motore (basato su MapReduce o Tez) ha una latenza di avvio elevata.In altri termini anche per una semplice ricerca, Hive deve preparare e lanciare un job distribuito.Questo processo può richiedere diversi secondi o minuti, indipendentemente dalla quantità di dati da leggere.Per questo motivo, Hive è ottimo per analisi su grandi volumi di dati, ma non per ottenere risposte immediate su pochi record.
 
 Ottimizzazioni comuni:
 - Partizionamento: suddivide le tabelle in “parti” (es. per data, paese, ecc.), così le query leggono solo i dati necessari, riducendo i tempi di scansione.
 - Formati colonnari (ORC, Parquet): questi formati memorizzano i dati per colonne invece che per righe, migliorando la compressione e la velocità di lettura per le query analitiche.
 - Predicate pushdown: permette di applicare i filtri (WHERE) direttamente durante la lettura dei dati, evitando di caricare dati inutili e velocizzando le query.
 
-
 ---
 
-## 2.7 Quando usare Hive (riassunto da esame)
+## 2.7 Quando usare Hive 
 
 Usa Hive quando:
 - i dati sono molto grandi
@@ -1542,7 +1541,7 @@ Impala:
 ## 3.4 Impala e performance
 
 Impala è molto veloce perché:
-- legge direttamente i file
+- legge direttamente i file. A differenza di Hive, infatti, non avvia un job MapReduce o Tez per ogni query. Invece, accede direttamente ai file dei dati (ad esempio su HDFS o su un Data Lake) e li legge in modo nativo, senza passaggi intermedi.
 - usa memoria
 - sfrutta MPP
 
@@ -1643,7 +1642,6 @@ Sicurezza: riguarda la protezione dei dati e dei sistemi da accessi non autorizz
 Governance: riguarda la gestione, il controllo e la supervisione delle risorse informative e dei processi aziendali. Include la definizione di politiche, ruoli, responsabilità, regole di accesso, conformità normativa e monitoraggio delle attività per assicurare che i dati siano usati in modo corretto, etico e conforme alle leggi.
 
 In sintesi: la sicurezza protegge, la governance gestisce e controlla. Spesso lavorano insieme per garantire un uso sicuro e conforme delle informazioni.
-
 
 **Componenti SDX:**
 - **Apache Ranger** - Authorization 
