@@ -1789,7 +1789,7 @@ CDP Public Cloud supporta **identity federation** con SAML-based IdP.
 - Ping Identity
 - ADFS (Active Directory Federation Services)
 
-### 13.2 Vantaggi SSO
+### 14.2 Vantaggi SSO
 
 ✅ Single sign-on (un login per tutti i servizi)
 ✅ No account Cloudera necessario
@@ -1846,7 +1846,7 @@ CDP Private Cloud integra:
 
 **Navigator Encrypt**:
 - Full-disk encryption per nodi del cluster
-- Cifratura a livello OS (sotto HDFS)
+- Cifratura a livello OS (sotto HDFS), i dati vengono cifrati direttamente dal sistema operativo, indipendentemente da dove sono salvati. Tutti i file sul disco sono protetti, anche quelli non gestiti da HDFS.
 - Protection anche se disco rubato
 - Transparent per applicazioni
 
@@ -1868,8 +1868,12 @@ CDP Private Cloud integra:
 ### 16.1 TLS/SSL
 
 **Transport Layer Security** (TLS 1.2+):
+- Sostituisce SSL
 - Cifratura traffico di rete
-- Certificati X.509
+- Certificati X.509 (I certificati TLS si occupano di
+a)Autenticazione -> verificano che il server (e a volte anche il client) sia davvero chi dice di essere, grazie a una firma digitale rilasciata da una Certification Authority (CA) fidata.
+b)Cifratura -> Cifratura: forniscono le chiavi pubbliche necessarie per avviare la comunicazione cifrata tra client e server.
+c)Integrità -> Aiutano a garantire che i dati scambiati non siano stati alterati durante il trasferimento. )
 - Protection contro man-in-the-middle
 
 **Servizi con TLS:**
