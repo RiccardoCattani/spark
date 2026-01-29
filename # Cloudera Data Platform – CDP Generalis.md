@@ -1711,11 +1711,20 @@ Ranger gestisce accessi per:
 **Apache Atlas** è la piattaforma di **metadata management e data governance**.
 
 **Funzioni:**
-- Metadata repository (catalogo dati)
+- Metadata repository (catalogo dati), è un sistema che memorizza e gestice le informazioni sui dati, non i dati stessi*
 - Data lineage (da dove viene il dato)
 - Data classification (PII, sensibile, pubblico)
 - Business glossary
 - Search & discovery
+
+*In Cloudera, Atlas è il sistema di data governance che gestisce i metadati, la catalogazione e la tracciabilità dei dati, inclusi quelli di Hive. Atlas può raccogliere, arricchire e visualizzare tutte le informazioni sulle tabelle, colonne, permessi, lineage (origine e trasformazioni) e relazioni tra i dati di Hive.
+
+Tuttavia:
+
+Le informazioni tecniche di base (schemi, tabelle, colonne, percorsi) sono memorizzate principalmente nel Metastore di Hive.
+Atlas si integra con il Metastore e aggiunge funzionalità avanzate: catalogo centralizzato, ricerca, lineage, classificazione, policy di sicurezza e auditing.
+Quindi:
+Sì, tutte le informazioni necessarie per la governance, la ricerca e la gestione avanzata dei dati di Hive sono disponibili tramite Atlas, che si appoggia anche al Metastore per i dettagli tecnici.
 
 ### 12.2 Atlas e lineage
 
