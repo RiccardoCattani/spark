@@ -1359,7 +1359,7 @@ In **In cloudera**, **Hive** e **Impala** non sono alternative, ma **complementa
 
 **Apache Hive** è un **data warehouse distribuito** che fornisce:
 - un livello SQL sopra Hadoop (Consente di scrivere query SQL-like per analizzare i dati in HDFS)
-- è uno strato sopra HDFS (Hive organizza i dati in tabelle e schemi (Struttura delle tabelle), fornendo una struttura logica ai file grezzi in HDFS)
+- è uno strato sopra HDFS (Hive organizza i dati in tabelle e schemi, ossia le strutture delle tabelle), fornendo una struttura logica ai file grezzi in HDFS)
 - uno schema-on-read (Lo schema viene applicato ai dati solo quando vengono letti (non al momento della scrittura).
 
 Hive **non è un database** e **non è OLTP**.
