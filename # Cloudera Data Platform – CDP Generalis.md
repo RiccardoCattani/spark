@@ -1269,8 +1269,7 @@ Kudu è un database il quale serve in Cloudera serve per memorizzare e gestire d
 
 Ecco un esempio schematico di storage colonnare (come in Kudu) rispetto a quello tradizionale (row-based):
 
-Storage per righe (row-based):
-
+# Storage per righe (row-based):
 
 | ID | Nome   | Età | Città    |
 |----|--------|-----|----------|
@@ -1280,8 +1279,7 @@ Storage per righe (row-based):
 
 I dati sono memorizzati riga per riga.
 
-Storage per colonne (columnar, come Kudu):
-
+# Storage per colonne (columnar, come Kudu):
 
 Colonna ID:    1, 2, 3
 Colonna Nome:  Anna, Marco, Lucia
@@ -1291,7 +1289,6 @@ I dati sono memorizzati colonna per colonna.
 
 Vantaggio:
 Se vuoi analizzare solo la colonna “Età”, Kudu legge solo quella colonna, rendendo le query più veloci ed efficienti.
-
 
 ### 0.19.2 Kudu vs HBase vs HDFS
 
