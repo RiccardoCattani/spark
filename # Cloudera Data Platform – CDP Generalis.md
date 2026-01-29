@@ -1652,7 +1652,6 @@ In sintesi: la sicurezza protegge, la governance gestisce e controlla. Spesso la
 - **Replication Manager** - Backup & DR
 - **Workload Manager** - Monitoring & optimization
 
-
 ### 9.2 Perché SDX è importante
 
 ✅ **Sicurezza integrata by design**
