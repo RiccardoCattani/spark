@@ -1390,7 +1390,7 @@ Il **Metastore** è il componente più importante di Hive.
 1. **Definizione delle tabelle:**
    - Nomi delle tabelle e dei database.
 2. **Schema delle tabelle:**
-   - Colonne, tipi di dati, vincoli.
+   - Colonne, tipi di dati*, vincoli.
 3. **Partizioni:**
    - Informazioni sulle partizioni delle tabelle (es. `year=2025`, `region=EU`).
 4. **Formati dei file:**
@@ -1399,6 +1399,9 @@ Il **Metastore** è il componente più importante di Hive.
    - Percorso fisico dei dati (es. `hdfs://data/employees`).
 6. **Metadati aggiuntivi:**
    - Statistiche (es. numero di righe, dimensione dei dati).
+
+*le categorie che definiscono la natura dei valori che una colonna può contenere in una tabella (esempi: interi, stringhe, date, booleani)
+**Per vincoli si intendono le regole che limitano o controllano i valori che possono essere inseriti in una colonna o tabella.
 
 ### **Perché è importante per l’esame?**
 - **Concetto chiave:** Il Metastore è il cuore di Hive, senza di esso non è possibile interrogare i dati.
