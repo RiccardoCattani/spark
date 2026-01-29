@@ -1399,13 +1399,14 @@ Il Metastore memorizza:
 Hive applica lo schema **in lettura**, non in scrittura.
 
 Vantaggi:
-- ingestione rapida
-- flessibilità
-- adattabilità a sorgenti diverse
+- Ingestione rapida: Consente di acquisire grandi volumi di dati in tempi brevi, riducendo i tempi di attesa tra la generazione del dato e la sua disponibilità per l’analisi. Questo è fondamentale per scenari in cui la tempestività è un requisito, come il monitoraggio in tempo reale o l’analisi di dati di streaming.
+- Flessibilità: Permette di gestire dati provenienti da fonti eterogenee e con formati diversi (CSV, JSON, Parquet, database, API, ecc.), adattandosi facilmente alle esigenze di business e ai cambiamenti nei requisiti tecnici senza dover modificare pesantemente le pipeline esistenti.
+- Adattabilità a sorgenti diverse: Il sistema può collegarsi e integrare dati da molteplici sorgenti, sia strutturate che non strutturate, facilitando la centralizzazione delle informazioni e la creazione di una vista unificata dei dati aziendali, anche in ambienti complessi o distribuiti.
 
 Svantaggi:
-- errori di schema emergono a query time
-- maggiore responsabilità sullo strato analitico
+- Errori di schema emergono a query time: Poiché i dati vengono spesso caricati senza una validazione rigorosa dello schema in fase di ingestione, eventuali incongruenze o errori di formato vengono rilevati solo quando si eseguono le query. Questo può causare problemi imprevisti durante l’analisi, come fallimenti delle query o risultati errati, rendendo più difficile individuare e correggere tempestivamente le anomalie nei dati.
+- Maggiore responsabilità sullo strato analitico: L’assenza di controlli stringenti in fase di ingestione trasferisce il compito di gestire la qualità, la coerenza e la validazione dei dati agli strumenti e ai processi di analisi. Gli analisti e i data engineer devono quindi implementare logiche aggiuntive per gestire dati sporchi, incompleti o non conformi, aumentando la complessità delle pipeline analitiche e il rischio di errori.
+
 
 👉 **Domanda tipica d’esame**  
 > Hive usa schema-on-read o schema-on-write? → **schema-on-read**
@@ -1436,6 +1437,7 @@ Svantaggi:
 - Adatto a scansioni complete: Hive lavora bene quando deve leggere e analizzare intere tabelle o grandi porzioni di dati, ad esempio per calcolare totali, medie o altre statistiche su dataset estesi.
 
 - Meno performante su query rapide: Se hai bisogno di risposte immediate su pochi record (come una ricerca puntuale), Hive non è la scelta migliore, perché il suo motore (basato su MapReduce o Tez) ha una latenza di avvio elevata.
+- Hive sfrutta la scrittura parallela su HDFS durante le operazioni batch, ma non consente scritture concorrenti da sessioni diverse sulla stessa tabella gestita (Per evitare inconsistenze).
 
 Ottimizzazioni comuni:
 - Partizionamento: suddivide le tabelle in “parti” (es. per data, paese, ecc.), così le query leggono solo i dati necessari, riducendo i tempi di scansione.
@@ -1450,7 +1452,7 @@ Ottimizzazioni comuni:
 Usa Hive quando:
 - i dati sono molto grandi
 - la latenza non è critica
-- stai facendo ETL o reporting batch
+- stai facendo ETL o reporting batch (non query interattive)
 - la priorità è la scalabilità
 
 ---
@@ -1500,9 +1502,9 @@ Impala:
 ## 3.4 Impala e performance
 
 Impala è molto veloce perché:
-- legge direttamente i file
-- usa memoria
-- sfrutta MPP
+- Legge direttamente i file: Impala accede ai dati su HDFS o altri filesystem distribuiti senza passare da livelli intermedi come MapReduce. Questo elimina la latenza dovuta all’avvio di job batch e permette di eseguire query in modo immediato, sfruttando l’accesso diretto ai file nei formati supportati (Parquet, ORC, ecc.).
+- Usa memoria: Impala elabora i dati principalmente in memoria (in-memory processing), riducendo drasticamente i tempi di lettura e scrittura su disco. Questo consente di ottenere risposte molto rapide, soprattutto per query complesse o su grandi volumi di dati.
+- Sfrutta MPP (Massively Parallel Processing): L’architettura MPP di Impala suddivide le query in task che vengono eseguiti in parallelo su più nodi del cluster. Ogni nodo lavora su una porzione dei dati, permettendo di scalare le prestazioni in base alle risorse disponibili e di gestire grandi dataset in tempi ridotti.
 
 Ma:
 - consuma molte risorse
