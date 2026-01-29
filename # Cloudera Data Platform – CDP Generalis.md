@@ -1402,6 +1402,12 @@ Il **Metastore** è il componente più importante di Hive.
 
 *le categorie che definiscono la natura dei valori che una colonna può contenere in una tabella (esempi: interi, stringhe, date, booleani)
 **Per vincoli si intendono le regole che limitano o controllano i valori che possono essere inseriti in una colonna o tabella.
+Ad esempio 
+NOT NULL: la colonna non può avere valori nulli
+UNIQUE: i valori devono essere unici
+PRIMARY KEY: identifica univocamente ogni riga
+FOREIGN KEY: collega una colonna a una chiave primaria di un’altra tabella
+CHECK: impone una condizione sui valori (es. età > 0)
 
 ### **Perché è importante per l’esame?**
 - **Concetto chiave:** Il Metastore è il cuore di Hive, senza di esso non è possibile interrogare i dati.
@@ -1466,7 +1472,8 @@ Svantaggi:
 
 ## 2.6 Hive e performance
 
-- Batch-oriented: Hive è progettato per elaborare grandi quantità di dati in blocco (batch), non per rispondere a singole query in tempo reale. È ideale per analisi massive, come report o aggregazioni su tabelle molto grandi.
+- Batch-oriented: Hive è progettato per elaborare grandi quantità di dati tutti insieme, in grandi blocchi (batch), non per rispondere a singole query in tempo reale. È ideale per analisi massive, come report o aggregazioni su tabelle molto grandi. Hive è pensato per fare analisi su milioni o miliardi di righe tutte in una volta (ad esempio, calcolare la somma delle vendite di tutto l’anno). Non è adatto per ottenere una risposta immediata a una domanda semplice (come “quanti prodotti ha comprato Mario?”).
+È perfetto per creare report, statistiche o aggregazioni su grandi quantità di dati, anche se ci mette qualche minuto a rispondere.
 
 - Adatto a scansioni complete: Hive lavora bene quando deve leggere e analizzare intere tabelle o grandi porzioni di dati, ad esempio per calcolare totali, medie o altre statistiche su dataset estesi.
 
