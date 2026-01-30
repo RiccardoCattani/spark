@@ -2469,7 +2469,35 @@ In sintesi: per replicare HDFS su cloud serve configurare le credenziali cloud e
 Lo **schema** è una definizione strutturale che descrive l'organizzazione e il formato dei dati in un sistema di gestione dei dati. Esso specifica come i dati sono strutturati, quali colonne (O campi) esistono, e quali tipi di dati sono associati a ciascun campo.
 Piu semplicemente lo schema è la struttura della tabella, ossia:
 - quali colonne esistono 
-- e quali tipi di dati sono associati a ciascun campo
+- e quali tipi di dati sono associati a ciascun campo (Con “tipi di dati” si intendono le categorie che definiscono che tipo di valori può contenere una colonna o un campo in una tabella o in un database
+Esempi di tipi di dati:
+INTEGER: numeri interi (es. 5, 100)
+FLOAT/DOUBLE: numeri decimali (es. 3.14)
+STRING/VARCHAR: testo (es. “Mario”)
+DATE: date (es. 2026-01-30)
+BOOLEAN: vero/falso (TRUE/FALSE))
+
+ad es.
+
+CREATE TABLE vendite (
+  id INT,
+  cliente STRING,
+  importo DOUBLE,
+  data_vendita DATE
+)
+STORED AS PARQUET;
+
+In questo esempio:
+
+- La tabella si chiama vendite.
+- Ha quattro colonne: id (intero), cliente (testo), importo (decimale), data_vendita (data).
+- i tipi di dati sono definiti accanto a ciascuna colonna:
+a) id INT → il tipo di dato è INT (numero intero)
+b) cliente STRING → il tipo di dato è STRING (testo)
+c) importo DOUBLE → il tipo di dato è DOUBLE (numero decimale)
+d) data_vendita DATE → il tipo di dato è DATE (data)
+Quindi, ogni colonna ha il suo tipo di dato specificato subito dopo il nome.
+- I dati saranno salvati in formato Parquet (un formato colonnare).
 
 #### **Caratteristiche principali dello Schema:**
 1. **Definizione della struttura:**
