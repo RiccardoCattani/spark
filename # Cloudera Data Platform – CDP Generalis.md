@@ -1,3 +1,4 @@
+
 # INTRODUZIONE: STORIA DI CLOUDERA E EVOLUZIONE VERSO CDP
 
 ## Pre-Cloudera: Il contesto tecnologico (2003-2008)
@@ -2507,7 +2508,10 @@ Quindi, ogni colonna ha il suo tipo di dato specificato subito dopo il nome.
 2. **Tipi di Schema:**
    - **Schema-on-write:**
      - Lo schema è definito prima che i dati vengano scritti nel sistema.
-     - Richiede che i dati rispettino la struttura predefinita.
+     - Richiede che i dati rispettino la struttura predefinita:
+    a) Prima di scrivere i dati, si definiscono le colonne, i tipi di dati e le regole (es: nome STRING, età INT).
+    b) Quando provi a inserire un dato, il database controlla che rispetti questa struttura (es: non puoi mettere un testo nella colonna età se è definita come INT).
+    c) Se i dati non rispettano lo schema, il database rifiuta l’inserimento.
      - Utilizzato nei database relazionali (es. MySQL, PostgreSQL).
    - **Schema-on-read:**
      - Lo schema viene applicato solo al momento della lettura o dell'analisi dei dati.
@@ -2626,7 +2630,11 @@ Si chiamano database relazionali perché organizzano i dati in tabelle che posso
 
 ### Database non relazionali (NoSQL)
 
-I database non relazionali (**NoSQL**) non si basano sul modello tabellare classico e **non richiedono uno schema rigido**. Sono progettati per gestire **grandi volumi di dati**, **alta scalabilità orizzontale** e dati **semi-strutturati o non strutturati**.
+I database non relazionali (**NoSQL**):
+- non si basano sul modello tabellare classico 
+- non utilizzano chiavi esterne formali (Le relazioni tra i dati sono infatti spesso incorporate nei dati stessi oppure gestite a livello applciativo)
+- e **non richiedono uno schema rigido**. 
+Sono progettati per gestire **grandi volumi di dati**, **alta scalabilità orizzontale** e dati **semi-strutturati o non strutturati**.
 
 Non utilizzano chiavi esterne formali e le relazioni tra dati sono spesso:
 
@@ -2807,6 +2815,17 @@ PK = (matricola, id_esame)
 Questa coppia identifica univocamente una singola iscrizione.
 
 ---
+## Il nome della colonna
+Il nome della colonna si chiama attributo
+
+## Valore di una colonna in una riga
+
+Il contenuto di una riga dentro una colonna si chiama **valore** o **dato dell’attributo**. In altre parole, è il valore specifico che quella colonna (attributo) assume per una determinata riga (record o tupla).
+
+**Esempio:**
+- Tabella: Persone
+- Colonna/Attributo: Nome
+- Riga 1, colonna Nome: “Mario” → “Mario” è il valore dell’attributo Nome per quella riga.
 
 ## Confronto con database non relazionali (NoSQL)
 
