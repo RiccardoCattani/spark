@@ -2913,15 +2913,15 @@ Hive Metastore
 
 ### Chiavi primarie in Hive
 
-* Hive **supporta sintatticamente** PRIMARY KEY e FOREIGN KEY
-* **non sono vincoli applicati** (non viene garantita l’unicità)
+* Hive **supporta sintatticamente** PRIMARY KEY e FOREIGN KEY, non sono vincoli applicati** (non viene garantita l’unicità)
+Hive accetta la sintassi, ma non fa nessun controllo: non garantisce l’unicità della primary key, né verifica che la foreign key corrisponda a una chiave primaria in un’altra tabella. Questo significa che il sistema il sistema non controlla davvero che:
+a) I valori della primary key siano unici (cioè che non ci siano duplicati nella colonna dichiarata come chiave primaria)
+b) I valori della foreign key esistano davvero come chiave primaria in un’altra tabella (cioè non viene garantita l’integrità referenziale)
+In pratica, Hive accetta la sintassi ma non applica nessun vincolo: puoi avere duplicati nella primary key o valori “orfani” nella foreign key senza che Hive dia errore. Queste dichiarazioni servono solo come informazione, non come regola obbligatoria.
 * servono principalmente per:
-
-  * documentazione del modello dati
+  * informazione, non come regola obbligatoria.
   * ottimizzazioni del query planner
   * integrazione con strumenti di BI
-
-
 
 👉 In Hive:
 
