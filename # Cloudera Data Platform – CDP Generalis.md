@@ -2941,7 +2941,8 @@ In pratica, Hive accetta la sintassi ma non applica nessun vincolo: puoi avere d
 
 * **RDBMS** → PK/FK = vincoli forti
 * **Hive/Big Data** → PK/FK = informazione logica
-* **Metastore** → “catalogo” delle tabelle, non dei record
+* **Metastore** → “catalogo” delle tabelle, non dei record  (I dati sono nel datalake)
+
 
 -------|----------------------|-------------------|
 | Cosa identifica | Un **record (riga)** | Una **tabella** |
@@ -3102,5 +3103,152 @@ Quindi, anche nei database non relazionali esiste un meccanismo per identificare
 - **Consistenza**: i relazionali offrono transazioni ACID complete; molti non relazionali privilegiano scalabilità e disponibilità, adottando modelli di consistenza configurabili (eventuale o per-partizione).
 - **Scalabilità**: i relazionali scalano tipicamente in verticale o con sharding più complesso; i non relazionali sono progettati per scalare orizzontalmente in modo nativo.
 
-Quindi “non relazionale” non significa che non puoi mettere in relazione in dati in  tabelle diverse, ma che il modo di modellare e interrogare le relazioni è diverso rispetto al modello tabellare con JOIN.
-Piu semplicmente Significa che non usano il modello relazionale a tabelle con schema rigido e JOIN/chiavi esterne. Nei NoSQL le relazioni ci sono, ma si modellano diversamente a seconda del motore: embed/denormalizzazione nei documentali, chiavi composte e clustering nei columnar, archi nei grafi, pattern applicativi nei key-value. Il nome evidenzia che non adottano il paradigma relazionale classico, non che i dati restino isolati.
+Quindi “non relazionale” non significa che non puoi mettere in relazione i dati in  tabelle diverse, ma che il modo di modellare e interrogare le relazioni è diverso rispetto al modello tabellare con JOIN.
+Piu semplicmente significa che non usano il modello relazionale a tabelle con schema rigido e JOIN/chiavi esterne. Nei NoSQL le relazioni ci sono, ma si modellano diversamente a seconda del motore: embed/denormalizzazione nei documentali, chiavi composte e clustering nei columnar, archi nei grafi, pattern applicativi nei key-value. Il nome evidenzia che non adottano il paradigma relazionale classico, non che i dati restino isolati.
+
+
+# Documento riassuntivo
+# File, Oggetto logico, DistCp e Replication
+
+# 1.Cos’è un file
+
+Un file è un oggetto fisico gestito dal filesystem del sistema operativo.
+
+# Definizione:
+
+Un file è una sequenza di byte memorizzata su un supporto fisico, identificata da un nome e da un percorso, e gestita dal filesystem.
+
+Caratteristiche:
+
+- Oggetto fisico
+
+- Gestito dal sistema operativo
+
+- Non ha significato sul contenuto
+
+- Contiene solo dati grezzi (byte)
+
+Esempi:
+
+/data/clienti.csv
+
+/warehouse/db/table/part-0001.parquet
+
+# 2. Cos’è un oggetto logico
+
+Un oggetto logico è un’unità di dati definita dal sistema applicativo, indipendente dalla sua rappresentazione fisica su file.
+
+Definizione:
+
+Un oggetto logico è un’entità concettuale che ha significato per il sistema che la gestisce (database, HDFS, Hive, Kafka).
+
+Esempi di oggetti logici:
+
+- Database
+
+- Tabella
+
+- Record
+
+- Topic Kafka
+
+- Partizione Hive
+
+👉 Anche se fisicamente sono salvati come file, logicamente non sono file.
+
+# 3.Il database: è logico o fisico?
+
+Il database è un oggetto logico, questo perché:
+
+- È definito da schema, tabelle, vincoli
+
+- È gestito dal DBMS
+
+- Non coincide con un singolo file
+
+Parte fisica:
+
+- File di dati
+
+- File di log
+
+- File di indice
+
+👉 I file sono rappresentazione fisica, non il database in sé.
+
+# 4️.DistCp (Distributed Copy)
+Cos’è
+
+DistCp è uno strumento di copia distribuita che lavora a livello di filesystem.
+
+Oggetto trattato
+
+File
+
+Directory
+
+👉 DistCp non conosce oggetti logici.
+
+Copia:
+
+- File e cartelle
+
+- Dati grezzi
+
+- (opzionalmente) permessi e timestamp
+
+Cosa NON copia:
+
+- Database logici
+
+- Tabelle come entità
+
+- Schema
+
+- Metadati applicativi
+
+📌 DistCp copia una fotografia dei dati, non mantiene sincronizzazione.
+
+5️⃣ Replication
+Cos’è
+
+La replication è un meccanismo automatico e continuo per mantenere più copie coerenti dei dati.
+
+Oggetto trattato:
+
+Oggetti logici del sistema
+
+Esempi:
+
+Database → tabelle, record
+
+HDFS → blocchi
+
+Kafka → topic, partizioni
+
+Caratteristiche:
+
+- Automatica
+
+- continua
+
+Mantiene i dati aggiornati
+
+Gestisce metadati e coerenza
+
+6️⃣ Confronto finale: DistCp vs Replication
+Aspetto	DistCp |	Replication
+Livello	Filesystem |	Logico / applicativo
+Oggetto	File / directory | Oggetto logico
+Schema	❌ No | ✅ Sì
+Aggiornamenti	❌ No | ✅ Sì
+Uso tipico	Migrazione, backup	Alta disponibilità
+7️⃣ Frasi pronte da esame
+
+Il file è un oggetto fisico del filesystem.
+
+Il database è un oggetto logico gestito dal DBMS.
+
+DistCp copia file, non oggetti logici.
+
+La replication replica oggetti logici mantenendoli sincronizzati.
