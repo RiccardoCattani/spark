@@ -1955,7 +1955,7 @@ Ogni VW può scalare indipendentemente.
 
 ### 19.1 Cos'è COD
 
-**Cloudera Operational Database** è un servizio per **database operazionali real-time, scalabili e always-available**.
+**Cloudera Operational Database** è un servizio di **database operazionali real-time, scalabili e always-available**, è un servizio di database operativo, progettato per gestire dati in tempo reale, con accessi rapidi, scritture e letture immediate, alta disponibilità e scalabilità automatica. È pensato per applicazioni che richiedono risposte istantanee (es. app, transazioni, sistemi online). Al contrario HDFS (Hadoop Distributed File System) è un file system distribuito, usato per archiviare grandi quantità di dati in modo affidabile e scalabile, ma non è ottimizzato per accessi in tempo reale o per gestire transazioni rapide. È ideale per analisi batch, data lake e archiviazione di file di grandi dimensioni.
 
 **Tecnologie:**
 - Powered by **Apache HBase** (storage)
@@ -2342,6 +2342,18 @@ Cloudera Manager richiede un database esterno per:
 - Disaster Recovery (DR)
 - Cloud migration
 
+Ecco la differenza tra distcp e Replication Manager in Cloudera:
+
+distcp (Distributed Copy) è un comando da riga di comando usato per copiare grandi quantità di dati tra cluster Hadoop o all’interno dello stesso cluster. È manuale: devi avviarlo tu, specificando sorgente e destinazione. È utile per trasferimenti una tantum o occasionali.
+
+Replication Manager è uno strumento di Cloudera Manager che permette di gestire, pianificare e monitorare la replica dei dati tra cluster in modo automatico e centralizzato. Offre funzionalità avanzate come la pianificazione, il monitoraggio, la gestione degli errori e la reportistica. È pensato per repliche regolari, continue e affidabili.
+
+In sintesi:
+
+distcp = copia manuale, da terminale, per operazioni singole
+Replication Manager = gestione automatica e centralizzata delle repliche, con interfaccia grafica e funzionalità avanzate
+
+
 ---
 
 ### 27.2 Replication Manager – Private Cloud
@@ -2364,6 +2376,15 @@ Cloudera Manager richiede un database esterno per:
 ---
 
 ### 27.4 HDFS Replication Policies
+
+Quando vuoi replicare dati HDFS su uno storage cloud (come S3, ADLS, GCS) usando Replication Manager, ci sono alcuni requisiti fondamentali:
+
+Devi registrare le credenziali cloud (cloud credentials) in Replication Manager, così il sistema può accedere allo storage di destinazione.
+Devi verificare che il cluster abbia accesso al cloud e che le porte di rete minime siano configurate correttamente.
+Non serve configurare Hive, perché la replica riguarda solo i dati HDFS, non le tabelle Hive.
+Non è vero che “funziona senza configurazione”: serve sempre configurare almeno le credenziali e l’accesso.
+In sintesi: per replicare HDFS su cloud serve configurare le credenziali cloud e l’accesso del cluster, ma non serve configurare Hive.
+
 
 **Requirements per replicare HDFS su cloud storage:** (domanda campione esame)
 - ✅ **Register cloud credentials** in Replication Manager
@@ -2448,7 +2469,7 @@ Cloudera Manager richiede un database esterno per:
 Lo **schema** è una definizione strutturale che descrive l'organizzazione e il formato dei dati in un sistema di gestione dei dati. Esso specifica come i dati sono strutturati, quali colonne (O campi) esistono, e quali tipi di dati sono associati a ciascun campo.
 Piu semplicemente lo schema è la struttura della tabella, ossia:
 - quali colonne esistono 
-- e quali tipi di dati sono associati a ciascun camppo
+- e quali tipi di dati sono associati a ciascun campo
 
 #### **Caratteristiche principali dello Schema:**
 1. **Definizione della struttura:**
