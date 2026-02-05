@@ -37,7 +37,7 @@ I dati relazionali sono organizzati in un formato strutturato, seguendo uno sche
    - Inventari di prodotti (ID prodotto, quantità, prezzo).
 
 3. **Database relazionali (RDBMS)**:
-   - MySQL, PostgreSQL, Oracle Database, Microsoft SQL Server.
+   - MySQL, PostgreSQL, Oracle Database, Microsoft SQL Server, Maria DB
 
 4. **Vantaggi**:
    - **Integrità dei dati**: Garantita da vincoli (es. chiavi primarie, univocità).
