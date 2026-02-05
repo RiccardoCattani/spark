@@ -3162,7 +3162,7 @@ Il database è un oggetto logico, questo perché:
 
 - È definito da schema, tabelle, vincoli
 
-- È gestito dal DBMS
+- È gestito dal DBMS (Un DBMS (Database Management System, ovvero Sistema di Gestione di Basi di Dati) è un software che consente la creazione, gestione, manipolazione e interrogazione di database)
 
 - Non coincide con un singolo file
 
@@ -3175,6 +3175,8 @@ Parte fisica:
 - File di indice
 
 👉 I file sono rappresentazione fisica, non il database in sé.
+
+Un database è costituito quindi anche da file. I dati, gli indici, i log delle transazioni e i metadati di un database vengono fisicamente memorizzati su uno o più file gestiti dal DBMS. Tuttavia, questi file sono organizzati e gestiti in modo strutturato dal DBMS, che fornisce funzionalità avanzate di accesso, sicurezza e integrità, rendendo il database molto più di una semplice raccolta di file.
 
 # 4️.DistCp (Distributed Copy)
 Cos’è
@@ -3252,3 +3254,13 @@ Il database è un oggetto logico gestito dal DBMS.
 DistCp copia file, non oggetti logici.
 
 La replication replica oggetti logici mantenendoli sincronizzati.
+
+con distcp puoi spostare solo file e cartelle a livello di filesystem distribuito (come HDFS), ma non puoi spostare un database nel senso logico gestito da un DBMS. Spostando solo i file, non vengono trasferite le informazioni di metadati, permessi, configurazioni e strutture interne che il DBMS gestisce. Per spostare un database in modo corretto, occorre utilizzare strumenti specifici del DBMS (come dump, export/import, backup/restore) che garantiscono la coerenza e l’integrità dei dati e dei metadati.
+Questo perché un database non è solo un insieme di file, ma comprende anche metadati, strutture interne, permessi, configurazioni e informazioni di gestione che sono mantenute dal DBMS. Spostando solo i file con distcp, questi elementi non vengono trasferiti o ricostruiti correttamente, rischiando di compromettere la coerenza, l’integrità e la funzionalità del database. Solo gli strumenti specifici del DBMS garantiscono che tutti i componenti necessari vengano esportati e importati in modo sicuro e completo.
+Metadati, strutture interne, permessi, configurazioni e informazioni di gestione di un database sono generalmente contenuti:
+All’interno di file specifici gestiti dal DBMS, separati dai dati veri e propri.
+In tabelle di sistema (dette anche cataloghi o system tables) che il DBMS utilizza per memorizzare informazioni su tabelle, indici, utenti, permessi, configurazioni e struttura del database.
+In file di configurazione esterni (ad esempio, file .conf o .ini) per parametri di funzionamento del DBMS.
+Nei log di sistema e di transazione, che tengono traccia delle operazioni e garantiscono il recupero e la coerenza.
+Questi elementi sono gestiti in modo trasparente dal DBMS e non sono accessibili o modificabili direttamente come semplici file di dati.
+La replica a livello di DBMS (ad esempio, la replica integrata di un database) garantisce la coerenza e l’integrità di dati e metadati, perché avviene tramite meccanismi controllati dal DBMS stesso. Invece, la semplice replica o copia dei file a livello di filesystem (come con distcp) non garantisce la corretta replica di tutte le informazioni necessarie al funzionamento del database. Solo la replica gestita dal DBMS assicura che il database sia utilizzabile e integro nella destinazione.
