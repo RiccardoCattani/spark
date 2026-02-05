@@ -95,7 +95,7 @@ In sintesi: il filesystem gestisce file, il database gestisce dati strutturati.
 | **Caratteristica**       | **Relazionale**                     | **Non Relazionale**               |
 |---------------------------|-------------------------------------|----------------------------------|
 | **Struttura**             | Tabelle (righe e colonne)          | Documenti, grafi, colonne, chiavi-valori |
-| **Schema**                | Rigido (schema-on-write)*           | Flessibile (schema-on-read)       |
+| **Schema**                | Rigido (schema-on-write)*           | Flessibile (schema-on-read)      |
 | **Scalabilità**           | Verticale                          | Orizzontale                       |
 | **Adatto per**            | Dati strutturati                   | Dati non strutturati/semi-strutturati |
 | **Esempi di database**    | MySQL, PostgreSQL, Oracle          | MongoDB, Cassandra, Neo4j         |
@@ -112,17 +112,15 @@ In pratica:
 
 Tipologie di Schema
 Nel contesto dei dati e dei database, esistono diverse tipologie di schema:
-
-Schema-on-write: Lo schema viene applicato ai dati al momento della scrittura. I dati devono rispettare una struttura predefinita (tipico dei database relazionali).
-Schema-on-read: Lo schema viene applicato solo quando i dati vengono letti. I dati possono essere archiviati in modo flessibile e la struttura viene imposta solo in fase di query (tipico di Hive, HDFS, sistemi Big Data).
-Schema rigido: Struttura fissa e obbligatoria, difficile da modificare (es. RDBMS).
-Schema flessibile/dinamico: Struttura variabile, adattabile a dati diversi (es. NoSQL, MongoDB).
+- Schema-on-write: Lo schema viene applicato ai dati al momento della scrittura. I dati devono rispettare una struttura predefinita (tipico dei database relazionali).
+- Schema-on-read: Lo schema viene applicato solo quando i dati vengono letti. I dati possono essere archiviati in modo flessibile e la struttura viene imposta solo in fase di query (tipico di Hive, HDFS, sistemi Big Data).
+- Schema rigido: Struttura fissa e obbligatoria, difficile da modificare (es. RDBMS).
+- Schema flessibile/dinamico: Struttura variabile, adattabile a dati diversi (es. NoSQL, MongoDB).
 Nei Data Warehouse:
-Star Schema: Tabella dei fatti centrale collegata a tabelle di dimensione.
-Snowflake Schema: Variante normalizzata dello star schema, con dimensioni suddivise in più tabelle.
-Fact Constellation (Galaxy Schema): Più tabelle dei fatti che condividono dimensioni comuni.
+- Star Schema: Tabella dei fatti centrale collegata a tabelle di dimensione.
+- Snowflake Schema: Variante normalizzata dello star schema, con dimensioni suddivise in più tabelle.
+- Fact Constellation (Galaxy Schema): Più tabelle dei fatti che condividono dimensioni comuni.
 Queste tipologie influenzano la flessibilità, la scalabilità e le modalità di gestione dei dati nei diversi sistemi.
-
 In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradizionali con dati strutturati, mentre i dati non relazionali sono più adatti per scenari moderni che richiedono flessibilità e scalabilità.
 
 ---
@@ -137,7 +135,7 @@ In sintesi, i dati relazionali sono ideali per applicazioni aziendali tradiziona
 - Raggruppa più tabelle correlate (namespace Hive)
 - Esempio: `hive_warehouse`, `analytics_db`
 
-**Schema:**
+ **Schema:**
 - È la **struttura** di una singola tabella
 - Definisce colonne, tipi di dati, vincoli
 - È l'**intestazione** di una tabella
@@ -186,7 +184,7 @@ INSERT INTO employees VALUES (1, 'John', 50000);
 
 #### **Differenze chiave:**
 
-| **Aspetto**        | **Database**                      | **Schema**                          
+| **Aspetto**       | **Database**                     | **Schema**                         |  
 | **Cos'è?**        | Contenitore/namespace            | Struttura di una singola tabella   |
 | **Livello**       | Alto (raggruppa tabelle)         | Basso (singola tabella)            |
 | **Comando SQL**   | `CREATE DATABASE mydb;`          | `CREATE TABLE mydb.mytable (...)`  |
@@ -255,7 +253,7 @@ Google pubblicò un paper rivoluzionario sul **Google File System**.
    - Fault tolerance: retry automatico dei task falliti
 - Google non rilascia codice open source, solo paper.
 
-**2005–2006: Nasce Hadoop**
+**2005–2006: Nasce Hadoop, implementazione open source di GFS**
 - Doug Cutting (su Apache Nutch) crea l’implementazione open source ispirata ai paper di Google:
    - HDFS (da GFS)
    - MapReduce (da Google MapReduce)
@@ -275,7 +273,7 @@ HDFS (Hadoop Distributed File System): file system distribuito che memorizza i d
 MapReduce: modello di programmazione per elaborare dati in parallelo.
 Altri componenti: YARN (gestione delle risorse), Hive, Pig, ecc.
 ---
-*Un framework è una piattaforma software composta da un insieme di componenti utilizzabili(librerie, strumenti, regole e convenzioni) che fornisce una struttura di base per sviluppare applicazioni in modo più semplice, veloce e standardizzato.
+*Un framework è una piattaforma software composta da un insieme di componenti utilizzabili (librerie, strumenti, regole e convenzioni) che fornisce una struttura di base per sviluppare applicazioni in modo più semplice, veloce e standardizzato.
 In pratica, un framework:
 - Definisce l’architettura e il “modello” dell’applicazione.
 - Fornisce funzionalità già pronte (es. gestione database, sicurezza, interfaccia utente).
@@ -555,7 +553,7 @@ In sintesi, i data services permettono di rendere i dati disponibili, affidabili
 
 CDH/HDP non avevano servizi modulari cloud-native.
 
-CDP introduce:
+CDP introduce i seguenti servizi modulari cloude-native:
 - **CDE** (Cloudera Data Engineering) - Spark as a Service
 - **CDW** (Cloudera Data Warehouse) - Hive/Impala virtual warehouses
 - **COD** (Cloudera Operational DB) - HBase as a Service
@@ -607,17 +605,17 @@ Storage e compute sono SEPARATI (decoupled)
 ┌─────────────────────────────────────────────────────────┐
 │  CDP Public Cloud Architecture                          │
 │                                                         │
-│  ┌─────────────────┐         ┌──────────────────────┐  │
-│  │  Compute Layer  │   ←→    │  Storage Layer       │  │
-│  │  (Ephemeral)    │         │  (Persistent)        │  │
-│  │                 │         │                      │  │
-│  │ • CDE (Spark)   │         │ • S3 (AWS)           │  │
-│  │ • CDW (Hive)    │         │ • ADLS (Azure)       │  │
-│  │ • CML (ML)      │         │ • GCS (Google Cloud) │  │
-│  │ • COD (HBase)   │         │                      │  │
-│  │                 │         │ Object Storage       │  │
-│  │ Auto-scaling    │         │ Durable, scalable    │  │
-│  └─────────────────┘         └──────────────────────┘  │
+│  ┌─────────────────┐         ┌──────────────────────┐   │
+│  │  Compute Layer  │   ←→    │  Storage Layer       │   │
+│  │  (Ephemeral)    │         │  (Persistent)        │   │
+│  │                 │         │                      │   │
+│  │ • CDE (Spark)   │         │ • S3 (AWS)           │   │
+│  │ • CDW (Hive)    │         │ • ADLS (Azure)       │   │
+│  │ • CML (ML)      │         │ • GCS (Google Cloud) │   │
+│  │ • COD (HBase)   │         │                      │   │
+│  │                 │         │ Object Storage       │   │
+│  │ Auto-scaling    │         │ Durable, scalable    │   │
+│  └─────────────────┘         └──────────────────────┘   │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -631,7 +629,7 @@ Storage e compute sono SEPARATI (decoupled)
 - 🚀 **Elasticità totale:** scala compute senza toccare storage
 - 💰 **Costi ottimizzati:** paghi compute solo quando lo usi
 - 🔒 **Durabilità:** dati persistono anche cancellando cluster
-- ♻️ **Multi-workload:** stessi dati accessibili da CDE, CDW, CML simultaneamente
+- ♻️ **Multi-workload:** stessi dati accessibili da CDE, CDW, CML simultaneamente (Dai micro servizi visti ora)
 - 🌍 **Global:** replica dati cross-region facilmente
 
 **Esempio pratico:**
@@ -656,22 +654,22 @@ Data Lake su S3 (us-east-1)
 ```
 ┌─────────────────────────────────────────────────────────┐
 │  CDP Private Cloud Base Architecture                    │
-│                                                          │
+│                                                         │
 │  Ogni nodo ha STORAGE + COMPUTE insieme                 │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ Nodo 1: HDFS DataNode + YARN NodeManager        │  │
-│  │         [Storage locale] + [Compute]             │  │
-│  └──────────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ Nodo 2: HDFS DataNode + YARN NodeManager        │  │
-│  │         [Storage locale] + [Compute]             │  │
-│  └──────────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ Nodo 3: HDFS DataNode + YARN NodeManager        │  │
-│  │         [Storage locale] + [Compute]             │  │
-│  └──────────────────────────────────────────────────┘  │
-│                                                          │
+│                                                         │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │ Nodo 1: HDFS DataNode + YARN NodeManager         │   │
+│  │         [Storage locale] + [Compute]             │   │
+│  └──────────────────────────────────────────────────┘   │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │ Nodo 2: HDFS DataNode + YARN NodeManager         │   │
+│  │         [Storage locale] + [Compute]             │   │
+│  └──────────────────────────────────────────────────┘   │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │ Nodo 3: HDFS DataNode + YARN NodeManager         │   │
+│  │         [Storage locale] + [Compute]             │   │
+│  └──────────────────────────────────────────────────┘   │
+│                                                         │
 │  On-premise, bare metal servers                         │
 └─────────────────────────────────────────────────────────┘
 ```
