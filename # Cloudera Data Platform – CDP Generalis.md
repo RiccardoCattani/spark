@@ -27,7 +27,7 @@ I dati relazionali sono organizzati in un formato strutturato, seguendo uno sche
 
 #### **Caratteristiche principali:**
 1. **Struttura**:
-   - Organizzati in tabelle con righe e colonne.
+   - Organizzano i dati in tabelle con righe e colonne.
    - Ogni tabella ha uno schema predefinito (schema-on-write).
    - Le relazioni tra i dati sono definite tramite chiavi primarie e chiavi esterne.
 
@@ -56,8 +56,8 @@ I dati non relazionali sono più flessibili e non seguono uno schema rigido.
 
 #### **Caratteristiche principali:**
 1. **Struttura**:
-   - Non organizzati in tabelle (IMP).
-   - Possono essere archiviati in formati come documenti, grafi, colonne o chiavi-valori.
+   - Non usano tabelle (IMP).
+   - organizzano i dati in documenti, grafi, colonne o chiavi-valori.
    - Schema dinamico o assente (schema-on-read).
 
 2. **Esempi di dati**:
