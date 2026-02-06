@@ -1370,11 +1370,23 @@ I dati simili (della stessa colonna) sono memorizzati insieme, facilitando la co
 3. Accesso sequenziale:
 Le colonne sono memorizzate in blocchi contigui, permettendo letture sequenziali più rapide dal disco.
 
+Piccola digressione:
+L’alternativa principale alle letture sequenziali è la lettura random (o accesso casuale). Invece di leggere i dati in ordine, la lettura random permette di accedere direttamente a qualsiasi posizione del file o dataset.
+
+Differenze:
+Lettura sequenziale: i dati vengono letti uno dopo l’altro, dall’inizio alla fine.
+Lettura random: si può leggere direttamente da qualsiasi punto, senza seguire l’ordine.
+Esempi:
+
+- Accesso a record specifici in un database
+- Uso di seek() in Python per spostarsi in un file
+- File system che supportano accesso casuale
+
 Principi di una lettura colonnare:
 
 - Si selezionano solo le colonne necessarie.
 - Si leggono blocchi di dati compressi.
-- Si sfrutta la località dei dati (tutti i valori di una colonna sono vicini tra loro).il sistema può accedere rapidamente a tutti i dati perché sono vicini fisicamente, senza dover saltare tra diverse parti del disco. Questo rende le letture sequenziali molto più veloci, soprattutto per analisi su grandi quantità di dati.
+- Si sfrutta la località dei dati (tutti i valori di una colonna sono vicini tra loro).Il sistema può accedere rapidamente a tutti i dati perché sono vicini fisicamente, senza dover saltare tra diverse parti del disco. Questo rende le letture sequenziali molto più veloci, soprattutto per analisi su grandi quantità di dati.
 - Si evita di caricare dati inutili (le altre colonne).
 Questo rende i database colonnari ideali per analisi e reportistica, dove spesso si lavora su poche colonne ma molte righe.
 
