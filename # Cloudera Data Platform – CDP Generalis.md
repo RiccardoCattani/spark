@@ -1166,13 +1166,42 @@ Le attività principali sono: ingestione dati da molteplici sorgenti, orchestraz
 **Apache HBase** è un **database NoSQL* distribuito** per accesso real-time a big data.
 
 **Caratteristiche:**
-- Modello wide-column* (colonne sparse)
+- Modello NoSQL wide-column* (colonne sparse)
 - Accesso random read/write veloce
 - Scalabilità orizzontale automatica
 - Consistency strong (non eventual)
 
 *Il “modello wide-column” (colonne sparse) è un tipo di database non relazionale in cui i dati sono organizzati in tabelle, ma ogni riga può avere un numero e tipo diverso di colonne. Le colonne non sono fisse come nei database relazionali: ogni riga può avere solo alcune colonne valorizzate (le altre restano “sparse”, cioè vuote).
 Questo modello è usato, ad esempio, in Apache Cassandra e Google Bigtable, ed è molto flessibile per gestire grandi quantità di dati eterogenei.
+
+Dovresti usare un database NoSQL come HBase invece di un database relazionale quando hai queste esigenze:
+
+- Gestire grandi volumi di dati (scalabilità orizzontale su molti server)
+- Dati non strutturati o con schema flessibile (colonne variabili per riga)
+- Scritture e letture molto veloci, anche su singole righe o colonne
+- Aggiornamenti frequenti e accesso in tempo reale ai dati
+- Necessità di gestire dati “sparse” (molte colonne vuote)
+- Non hai bisogno di transazioni complesse o join tra tabelle
+HBase è ideale per casi come: log di eventi, dati di sensori IoT, profili utente dinamici, sistemi di raccomandazione, o quando i dati crescono rapidamente e non puoi prevedere la struttura in anticipo.
+
+Hbase rispetto ad Hive e Impala
+
+Devi usare HBase invece di Hive o Impala quando:
+
+- Hai bisogno di scritture e letture in tempo reale, su singole righe o colonne.
+Perché HBase è progettato per offrire accesso molto rapido a dati specifici (singole righe o colonne), anche quando il database è enorme. Questo è utile, ad esempio, quando devi aggiornare o leggere velocemente il profilo di un utente, lo stato di un sensore, o un singolo record tra miliardi di dati.
+
+Hive e Impala, invece, sono ottimizzati per analisi su grandi insiemi di dati (query su molte righe), ma non sono efficienti per operazioni frequenti e veloci su singoli record. HBase è ideale quando serve “real-time” e accesso puntuale.
+- I dati cambiano spesso e devono essere aggiornati rapidamente.
+Questo perché HBase è ottimizzato per gestire aggiornamenti frequenti e veloci: puoi modificare, aggiungere o cancellare dati in tempo reale senza rallentamenti, anche su grandi volumi.
+
+Al contrario, sistemi come Hive o Impala sono pensati per analisi su dati “statici” (che cambiano poco), perché ogni aggiornamento richiede operazioni più lente su file di grandi dimensioni. HBase, invece, gestisce ogni modifica come un’operazione rapida e indipendente, ideale quando i dati si aggiornano spesso.
+- Gestisci dati con schema flessibile o “sparse” (molte colonne vuote o variabili).
+Rispetto a Hive e Impala, HBase offre uno schema molto più flessibile: ogni riga può avere colonne diverse e non è necessario definire tutte le colonne in anticipo. In Hive e Impala, invece, la struttura delle tabelle è fissa: tutte le righe devono avere le stesse colonne (anche se vuote). Questo rende HBase più adatto a dati variabili o incompleti, mentre Hive e Impala sono migliori per dati strutturati e analisi SQL su tabelle regolari.
+Rispetto a Hive e Impala, HBase offre uno schema molto più flessibile: ogni riga può avere colonne diverse e non è necessario definire tutte le colonne in anticipo. In Hive e Impala, invece, la struttura delle tabelle è fissa: tutte le righe devono avere le stesse colonne (anche se vuote). Questo rende HBase più adatto a dati variabili o incompleti, mentre Hive e Impala sono migliori per dati strutturati e analisi SQL su tabelle regolari.
+- Ti serve scalabilità orizzontale per grandi volumi di dati non strutturati.
+- Non ti servono query SQL complesse, join o analisi batch.
+- Hive e Impala sono migliori per analisi dati, query SQL complesse e report su grandi dataset statici, ma non sono adatti per accesso in tempo reale o aggiornamenti frequenti come HBase.
 
 ### 0.17.2 HBase use cases
 - Time-series data
@@ -1252,9 +1281,9 @@ Hive = SQL, analisi batch, alta latenza
 
 ### 0.17.3 Cos'è Phoenix
 
-**Apache Phoenix** è un **layer SQL sopra HBase**.
+**Apache Phoenix** è un **layer SQL sopra HBase che è un database nosql**.
 
-Apache Phoenix è un layer che permette di usare il linguaggio SQL sopra HBase, trasformando il database NoSQL in una piattaforma interrogabile con query simili a quelle di un database relazionale.
+Apache Phoenix è un layer che permette di usare il linguaggio SQL sopra HBase (Che abbiamo visto essere un database nosql), trasformando il database NoSQL in una piattaforma interrogabile con query simili a quelle di un database relazionale.
 
 ** Funzionalità principali di Phoenix:
 - Consente di creare, modificare e interrogare tabelle HBase usando SQL standard (SELECT, INSERT, UPDATE, DELETE).
@@ -1274,9 +1303,9 @@ Apache Phoenix è un layer che permette di usare il linguaggio SQL sopra HBase, 
 
 ### 0.19.1 Cos'è Kudu
 
-**Apache Kudu** è un **columnar storage engine** per Hadoop.
+**Apache Kudu** è un è un database per Hadoop.
 
-Kudu è un database il quale serve in Cloudera serve per memorizzare e gestire dati che devono essere sia letti che scritti velocemente, anche in tempo reale. È un database pensato per analisi veloci: permette di aggiungere, modificare e leggere dati subito, senza dover aspettare lunghi tempi di caricamento. Kudu è ideale quando hai bisogno di aggiornare spesso i dati e fare analisi rapide, ad esempio per dashboard, report o applicazioni che lavorano con dati sempre aggiornati.
+Kudu è un database il quale in Cloudera serve per memorizzare e gestire dati che devono essere sia letti che scritti velocemente, anche in tempo reale. È un database pensato per analisi veloci: permette di aggiungere, modificare e leggere dati subito, senza dover aspettare lunghi tempi di caricamento. Kudu è ideale quando hai bisogno di aggiornare spesso i dati e fare analisi rapide, ad esempio per dashboard, report o applicazioni che lavorano con dati sempre aggiornati.
 I dati vengono memorizzati in formato "colonnare" (orientato alle colonne), anziché "row-oriented" (orientato alle righe) come nei database tradizionali. In un database colonnare, i valori di ciascuna colonna sono memorizzati insieme, il che rende molto efficiente leggere solo alcune colonne di una tabella, tipico nelle analisi dati.
 
 **Caratteristiche:**
@@ -1323,6 +1352,12 @@ Se vuoi analizzare solo la colonna “Età”, Kudu legge solo quella colonna, r
 > Kudu sostituisce HDFS? → **No, è complementare**
 
 ---
+
+La differenza principale tra Kudu e HBase è nel modello di dati e nelle prestazioni:
+
+- Kudu è un database colonnare progettato per supportare sia letture che scritture veloci su dati strutturati, con accesso efficiente sia a dati recenti che storici. È ottimo per analisi in tempo reale e aggiornamenti frequenti, e permette query SQL tramite Impala.
+
+- HBase è un database wide-column NoSQL, ottimizzato per scritture e letture rapide su singole righe o colonne di dati non strutturati o sparse, ma meno efficiente per analisi complesse o query SQL. 
 
 # La lettura è più veloce nei database colonnari (come Kudu) perché:
 
