@@ -1096,11 +1096,9 @@ In tutti questi casi, Kafka funge da “ponte” tra chi produce i dati e chi li
 
 In sintesi, Kafka è usato principalmente per gestire flussi di dati in tempo reale, logging, monitoraggio, analisi e integrazione tra microservizi.
 
-Con Apache Kafka, i messaggi vengono distribuiti principalmente da server (broker Kafka) a client (consumer), ma anche da client (producer) a server (broker Kafka)
-
 Sì, puoi dire che in Kafka i messaggi vengono “messi” (inviati, pubblicati) dai producer e “letti” (ricevuti, consumati) dai consumer.
 
-Il producer mette (scrive) i messaggi nel broker Kafka, e i consumer li leggono (prelevano) dal broker. Questa terminologia è semplice e corretta per descrivere il funzionamento di Kafka.
+Il producer mette (scrive) i messaggi nel broker Kafka, e i consumer li leggono (prelevano) dal broker. 
 
 👉 **Domanda tipica d'esame**
 > Kafka è storage o processing? → **Entrambi (memorizza + distribuisce)**
@@ -1168,13 +1166,15 @@ Le attività principali sono: ingestione dati da molteplici sorgenti, orchestraz
 **Apache HBase** è un **database NoSQL* distribuito** per accesso real-time a big data.
 
 **Caratteristiche:**
-- Modello wide-column (colonne sparse)
+- Modello wide-column* (colonne sparse)
 - Accesso random read/write veloce
 - Scalabilità orizzontale automatica
 - Consistency strong (non eventual)
 
-### 0.17.2 HBase use cases
+*Il “modello wide-column” (colonne sparse) è un tipo di database non relazionale in cui i dati sono organizzati in tabelle, ma ogni riga può avere un numero e tipo diverso di colonne. Le colonne non sono fisse come nei database relazionali: ogni riga può avere solo alcune colonne valorizzate (le altre restano “sparse”, cioè vuote).
+Questo modello è usato, ad esempio, in Apache Cassandra e Google Bigtable, ed è molto flessibile per gestire grandi quantità di dati eterogenei.
 
+### 0.17.2 HBase use cases
 - Time-series data
 - Real-time analytics
 - Messaggistica e social media feed
@@ -1222,6 +1222,7 @@ In sintesi:
 
 NoSQL è scelto per attività che richiedono alta scalabilità, gestione di grandi volumi di dati variabili, real-time e flessibilità.
 SQL è scelto per attività che richiedono integrità dei dati, transazioni sicure e relazioni complesse tra dati.
+In un database relazionale, tutte le righe devono avere le stesse colonne (anche se vuote). Nei database wide-column, invece, ogni riga può avere solo alcune colonne valorizzate, e le altre possono non esistere affatto per quella riga.
 
 ## Ecco la comparazione tra HBase, Impala e Hive:
 
