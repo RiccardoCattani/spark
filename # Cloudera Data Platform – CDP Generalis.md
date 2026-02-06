@@ -698,24 +698,24 @@ Data Lake su S3 (us-east-1)
 ```
 ┌─────────────────────────────────────────────────────────┐
 │  CDP Private Cloud Data Services Architecture           │
-│                                                          │
-│  ┌─────────────────┐         ┌──────────────────────┐  │
-│  │  Compute Layer  │   ←→    │  Storage Layer       │  │
-│  │  (Kubernetes)   │         │  (Object Storage)    │  │
-│  │                 │         │                      │  │
-│  │ • CDE Pods      │         │ • Ozone              │  │
-│  │ • CDW Pods      │         │ • MinIO              │  │
-│  │ • CML Pods      │         │ • NetApp StorageGRID │  │
-│  │                 │         │ • Dell ECS           │  │
-│  │ OpenShift/ECS   │         │                      │  │
-│  └─────────────────┘         └──────────────────────┘  │
-│                                                          │
+│                                                         │
+│  ┌─────────────────┐         ┌──────────────────────┐   │
+│  │  Compute Layer  │   ←→    │  Storage Layer       │   │
+│  │  (Kubernetes)   │         │  (Object Storage)    │   │
+│  │                 │         │                      │   │
+│  │ • CDE Pods      │         │ • Ozone              │   │
+│  │ • CDW Pods      │         │ • MinIO              │   │
+│  │ • CML Pods      │         │ • NetApp StorageGRID │   │
+│  │                 │         │ • Dell ECS           │   │
+│  │ OpenShift/ECS   │         │                      │   │
+│  └─────────────────┘         └──────────────────────┘   │
+│                                                         │
 │  On-premise, but cloud-native architecture              │
 └─────────────────────────────────────────────────────────┘
 ```
 
 **Caratteristiche:**
-- **Storage:** Object storage on-premise (Ozone, MinIO, NetApp, Dell ECS)
+- **Storage:** Object storage on-premise (Ozone, MinIO, NetApp, Dell ECS),i dati risiedono in sistemi di object storage esterni, separati dal cluster di calcolo
 - **Compute:** Container orchestration (Kubernetes: OpenShift o ECS Anywhere)
 - **Architettura:** Separata, cloud-native in data center
 - **Location:** On-premise ma con modello cloud
@@ -885,8 +885,9 @@ DataNode (worker)
 - Esegue letture/scritture su richiesta client
 ```
 
-*“Gestisce namespace del file system” significa che il sistema (ad esempio HDFS) si occupa di organizzare e tenere traccia della struttura delle cartelle e dei file, dei loro nomi, delle gerarchie e dei percorsi. In pratica, il namespace è l’insieme di tutti i nomi (file e directory) e la loro organizzazione all’interno del file system, come una mappa che dice dove si trova ogni file o cartella.
-**Il file system è il componente di un sistema operativo (o di una piattaforma come HDFS) che organizza, gestisce e memorizza i file e le cartelle su un dispositivo di archiviazione (come disco, SSD, ecc.). Permette di salvare, leggere, modificare e cancellare file, mantenendo la struttura gerarchica (cartelle, sottocartelle, percorsi) e gestendo i nomi e i permessi di accesso. In sintesi, è il “sistema” che tiene in ordine tutti i dati su un computer o cluster
+***“Gestisce namespace del file system” significa che il sistema (ad esempio HDFS) si occupa di organizzare e tenere traccia della struttura delle cartelle e dei file, dei loro nomi, delle gerarchie e dei percorsi. In pratica, il namespace è l’insieme di tutti i nomi (file e directory) e la loro organizzazione all’interno del file system, come una mappa che dice dove si trova ogni file o cartella.
+**Il file system è il componente di un sistema operativo (o di una piattaforma come HDFS), ossia la componente logica che organizza, gestisce e memorizza i file e le cartelle su un dispositivo di archiviazione (come disco, SSD, ecc.). Permette di salvare, leggere, modificare e cancellare file, mantenendo la struttura gerarchica (cartelle, sottocartelle, percorsi) e gestendo i nomi e i permessi di accesso. In sintesi, è il “sistema” che tiene in ordine tutti i dati su un computer o cluster.
+Si differenzia dal supporto di memorizzazione che è la parte fisica.
 
 ### 0.3 Concetti chiave HDFS
 
