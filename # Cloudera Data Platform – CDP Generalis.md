@@ -1372,10 +1372,10 @@ Le colonne sono memorizzate in blocchi contigui, permettendo letture sequenziali
 
 Principi di una lettura colonnare:
 
-Si selezionano solo le colonne necessarie.
-Si leggono blocchi di dati compressi.
-Si sfrutta la località dei dati (tutti i valori di una colonna sono vicini tra loro).
-Si evita di caricare dati inutili (le altre colonne).
+- Si selezionano solo le colonne necessarie.
+- Si leggono blocchi di dati compressi.
+- Si sfrutta la località dei dati (tutti i valori di una colonna sono vicini tra loro).il sistema può accedere rapidamente a tutti i dati perché sono vicini fisicamente, senza dover saltare tra diverse parti del disco. Questo rende le letture sequenziali molto più veloci, soprattutto per analisi su grandi quantità di dati.
+- Si evita di caricare dati inutili (le altre colonne).
 Questo rende i database colonnari ideali per analisi e reportistica, dove spesso si lavora su poche colonne ma molte righe.
 
 # Ecco perché, in uno storage per righe, la lettura di una singola colonna è meno efficiente:
