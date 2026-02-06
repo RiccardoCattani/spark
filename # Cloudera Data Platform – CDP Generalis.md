@@ -1098,6 +1098,10 @@ In sintesi, Kafka è usato principalmente per gestire flussi di dati in tempo re
 
 Con Apache Kafka, i messaggi vengono distribuiti principalmente da server (broker Kafka) a client (consumer), ma anche da client (producer) a server (broker Kafka)
 
+Sì, puoi dire che in Kafka i messaggi vengono “messi” (inviati, pubblicati) dai producer e “letti” (ricevuti, consumati) dai consumer.
+
+Il producer mette (scrive) i messaggi nel broker Kafka, e i consumer li leggono (prelevano) dal broker. Questa terminologia è semplice e corretta per descrivere il funzionamento di Kafka.
+
 👉 **Domanda tipica d'esame**
 > Kafka è storage o processing? → **Entrambi (memorizza + distribuisce)**
 > Kafka è persistente? → **Sì, retention configurabile**
