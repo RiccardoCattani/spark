@@ -963,6 +963,10 @@ YARN gestisce risorse per:
 - Spark
 - Tez (Hive)
 
+Al contrario, Impala non ha bisogno di YARN per funzionare, perché Impala è composto da processi (daemon) che restano sempre attivi sui nodi del cluster.
+
+YARN serve a gestire e schedulare risorse per applicazioni temporanee (come Spark o MapReduce), mentre Impala lavora come servizio sempre attivo, gestendo le query direttamente senza passare da YARN.
+
 👉 **Domanda tipica d'esame**
 > YARN gestisce storage o compute? → **Compute (CPU/RAM)**
 > YARN è necessario per Impala? → **No, Impala è long-running daemon**
