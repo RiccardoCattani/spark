@@ -981,10 +981,11 @@ YARN serve a gestire e schedulare risorse per applicazioni temporanee (come Spar
 
 **Caratteristiche:**
 - Elaborazione in-memory (10-100x più veloce di MapReduce)
-- API unificata: batch*, streaming, ML, SQL, graph
+- API unificata*: batch**, streaming, ML, SQL, graph
 - Supporta Scala, Java, Python, R
-
-* è un’operazione che esegue una serie di comandi o elaborazioni automaticamente, senza intervento umano, spesso su grandi quantità di dati.
+*permette di usare lo stesso insieme di comandi o funzioni per lavorare con diversi tipi di elaborazione dati: batch (dati statici), streaming (dati in tempo reale), machine learning (ML), SQL (query sui dati) e graph (analisi di grafi).
+In pratica, con una sola interfaccia puoi gestire vari scenari e tecnologie senza dover imparare strumenti diversi per ogni tipo di elaborazione
+** è un’operazione che esegue una serie di comandi o elaborazioni automaticamente, senza intervento umano, spesso su grandi quantità di dati.
 
 ### 0.9.2 Componenti Spark
 
@@ -1060,6 +1061,7 @@ Oozie supporta:
 - Fault tolerance e replication
 
 *Publish-subscribe messaging: è un modello di comunicazione asincrona in cui i produttori (publisher) inviano messaggi a un canale o argomento (topic), senza conoscere i destinatari. I consumatori (subscriber) si iscrivono a uno o più topic e ricevono solo i messaggi di loro interesse. Questo modello permette un forte disaccoppiamento tra chi produce e chi consuma i dati, ed è molto usato in sistemi distribuiti, streaming e big data (es. Apache Kafka, RabbitMQ, Google Pub/Sub).
+Un esempio concreto: in una piattaforma di e-commerce, quando un cliente effettua un ordine, il sistema invia un messaggio a un topic “ordini”. Diversi servizi (spedizioni, fatturazione, notifiche) sono iscritti a questo topic e ricevono automaticamente il messaggio per avviare le loro attività, senza che il sistema di ordini debba conoscere i dettagli di ciascun servizio. Questo è possibile grazie a tecnologie come Apache Kafka o Google Pub/Sub.
 
 ### 0.13.2 Concetti chiave Kafka
 
@@ -1080,14 +1082,20 @@ Oozie supporta:
 
 Ecco come Apache Kafka è integrato nelle funzionalità di alcune aziende famose:
 
-LinkedIn: Kafka gestisce il flusso di attività degli utenti, la raccolta di log, le notifiche, la messaggistica interna e l’analisi in tempo reale.
-Netflix: Kafka è usato per il monitoraggio dei sistemi, la raccolta di log, la gestione degli eventi e la distribuzione di dati tra microservizi.
-Uber: Kafka supporta il tracciamento delle corse, la gestione degli eventi in tempo reale, la fatturazione e l’analisi dei dati.
-Spotify: Kafka è integrato per la raccolta di dati di ascolto, la raccomandazione musicale, il monitoraggio e la pipeline di dati.
-Airbnb: Kafka gestisce la pipeline di dati per analisi, monitoraggio delle attività degli utenti e integrazione tra servizi.
-Twitter: Kafka viene usato per la gestione degli stream di tweet, la raccolta di log e la distribuzione di eventi tra sistemi.
+LinkedIn: quando un utente aggiorna il profilo, l’evento viene inviato da un producer (il servizio che gestisce i profili) a Kafka. Diversi consumer (ad esempio, sistemi di raccomandazione, notifiche, analytics) leggono questi eventi per aggiornare feed, suggerimenti o statistiche in tempo reale.
+
+Netflix: i dati di visualizzazione degli utenti (cosa guardano, quando mettono in pausa, ecc.) vengono inviati dai servizi di streaming (producer) a Kafka. I consumer analizzano questi dati per suggerire nuovi contenuti o monitorare la qualità del servizio.
+
+Uber: ogni volta che un utente richiede una corsa, l’evento viene pubblicato su Kafka. I consumer (servizi di calcolo prezzi, assegnazione autisti, notifiche) leggono questi messaggi per gestire la richiesta in tempo reale.
+
+Airbnb: le attività degli utenti (prenotazioni, recensioni, ricerche) sono inviate a Kafka dai vari servizi. I consumer usano questi dati per aggiornare la disponibilità, inviare conferme o analizzare le tendenze.
+
+Twitter: i tweet, i like e i retweet sono inviati a Kafka dai servizi web (producer). I consumer (feed, analytics, sistemi di moderazione) leggono questi eventi per aggiornare le timeline e monitorare i contenuti.
+
+In tutti questi casi, Kafka funge da “ponte” tra chi produce i dati e chi li consuma, garantendo scalabilità e affidabilità.
 
 In sintesi, Kafka è usato principalmente per gestire flussi di dati in tempo reale, logging, monitoraggio, analisi e integrazione tra microservizi.
+
 Con Apache Kafka, i messaggi vengono distribuiti principalmente da server (broker Kafka) a client (consumer), ma anche da client (producer) a server (broker Kafka)
 
 👉 **Domanda tipica d'esame**
