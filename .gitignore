@@ -43,3 +43,9 @@ log/
 *.db
 *.log
 log/
+
+
+# SBT/Scala/Spark build output
+target/
+project/target/
+project/project/target/
