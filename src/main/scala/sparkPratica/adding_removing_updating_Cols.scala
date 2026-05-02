@@ -1,4 +1,4 @@
-package sparkPractise
+package sparkPratica
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
@@ -8,7 +8,7 @@ import org.apache.spark.sql.functions._
 
 object adding_removing_updating_Cols {
   def main(arg: Array[String]): Unit = {
-    val conf = new SparkConf().setAppName("bank_Trans").setMaster("local[*]")
+  val conf = new SparkConf().setAppName("bank_Trans").setMaster("local[*]")
     val sc = new SparkContext(conf)
     sc.setLogLevel("Error")
 

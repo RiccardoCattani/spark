@@ -3,7 +3,7 @@ import org.apache.spark.sql.{SparkSession}
 import org.apache.spark.sql.functions.trim
 import org.apache.spark.sql.types._
 
-object ReadingFileWithoutHeader {
+object ReadingFileWithoutHeader2 {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("depl").setMaster("local[*]")
     val spark = SparkSession.builder().config(conf).getOrCreate()
