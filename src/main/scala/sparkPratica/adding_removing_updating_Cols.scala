@@ -14,4 +14,14 @@ object adding_removing_updating_Cols {
 
     val spark = SparkSession.builder().getOrCreate()
     import spark.implicits._
+
+    val read_csv_df = spark.read.format("csv").option("header", "true").option("inferSchema", "true").load("C:\\Users\\Riccardo\\Downloads\\2010-12-01.csv")
+
+    read_csv_df.printSchema()
+    read_csv_df.persist()
+    read_csv_df.show()
   }
+
+
+}
+
