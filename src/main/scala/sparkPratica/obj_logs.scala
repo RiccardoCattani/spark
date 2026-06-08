@@ -1,4 +1,8 @@
 
+// In breve: legge il file Hadoop_2k.log, conta tutte le righe, poi filtra e conta solo le righe che contengono WARN e ERROR.
+// Alla fine unisce le righe WARN + ERROR, conta quante sono in totale e stampa una riga di esempio tra quelle filtrate.
+// Per eseguire questo codice, assicurati di avere un ambiente Spark configurato e un file di log disponibile al percorso specificato.
+// for run sbt "runMain sparkPractise.obj_Logs"
 // Definisce il package del progetto
 package sparkPractise
 
@@ -15,15 +19,20 @@ object obj_Logs {
     {
         // Crea la configurazione Spark, imposta nome e master
         val conf = new SparkConf().setAppName("TestLog").setMaster("local[*]")
+       
         // Crea lo SparkContext per gestire il job Spark
         val sc = new SparkContext(conf)
+       
         // Imposta il livello di log su Error per meno output
         sc.setLogLevel("Error")
+       
         // Legge il file di testo e crea un RDD, ogni elemento è una riga del file
-        val inputRDD = sc.textFile("file:///mnt/nvme_storage/download/Hadoop_2k.log")
+        val inputRDD = sc.textFile("C:\\repository\\spark\\1.input\\Hadoop_2k.log")
         println("The input count is " + inputRDD.count())
+       
         // Stampa ogni riga del file
         inputRDD.foreach(println)
+       
         // Filtra le righe che contengono "WARN"
         val warnRDD = inputRDD.filter(w => w.contains("WARN"))
         warnRDD.foreach(println)
@@ -36,14 +45,18 @@ object obj_Logs {
         val ErrorRDD = inputRDD.filter(w => w.contains("ERROR"))
         ErrorRDD.foreach(println)
         println("The ERROR count is " + ErrorRDD.count())
+       
         // Unisce i due RDD di log filtrati
         val unionRDD = warnRDD.union(ErrorRDD)
+       
         //unionRDD.foreach(println)
         println("The error + WARN count is " + unionRDD.count())
+       
         // Stampa alcune righe dell'RDD unito
-        //unionRDD.take(5).foreach(println)
+        unionRDD.take(5).foreach(println)
         // Restituisce tutte le righe dell'RDD unito al driver
         val x=unionRDD.collect()
+       
         // Stampa la seconda riga dell'RDD unito
         println(x(1))
     }

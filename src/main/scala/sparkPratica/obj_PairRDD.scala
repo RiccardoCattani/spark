@@ -1,30 +1,37 @@
 // Definisce il package in cui si trova questo oggetto
 package sparkPratica
 
-
 // Importa le classi necessarie di Spark
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 
 // Oggetto principale che contiene il metodo main
 object obj_PairRDD {
+  
   // Metodo main, punto di ingresso del programma
   def main(arg: Array[String]): Unit = {
+  
     // Crea una configurazione Spark con nome applicazione e master locale
     val conf = new SparkConf().setAppName("TestLog").setMaster("local[*]")
+  
     // Crea un nuovo SparkContext usando la configurazione
     val sc = new SparkContext(conf)
+  
     // Imposta il livello di log su "Error" per ridurre l'output
     sc.setLogLevel("Error")
+  
     // Carica il file di testo come RDD da un percorso specificato
-    val inputRDD = sc.textFile("/home/riccardo/Documenti/spark/sales.txt")
+    val inputRDD = sc.textFile("C:\\repository\\spark\\1.input\\sales.txt")
+  
     // Crea una Pair RDD (chiave, valore) dove la chiave è il primo campo e valore il secondo
     val pairRDD = inputRDD.map { x =>
-      val arr = x.split(" ")
-      (arr(1), arr(2).toInt)
+      val arr = x.trim.split("\\s+")
+      (arr(0), arr(1).toInt)
     }
+  
     // Colleziona gli elementi della Pair RDD in un array locale
     val co = pairRDD.collect()
+  
     // Stampa ogni elemento della collezione
     for (i <- co) {
       println(i)
@@ -56,6 +63,13 @@ object obj_PairRDD {
     println("**********GroupByKey**********")
     val gr = pairRDD.groupByKey().collect()
     for (i <- gr) {
+      println(i)
+    }
+
+    // CountByKey: conta quanti elementi ci sono per ogni chiave
+    println("**********CountByKey**********")
+    val count_by = pairRDD.countByKey()
+    for (i <- count_by) {
       println(i)
     }
 

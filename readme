@@ -133,4 +133,41 @@ import spark.implicits._
 val df = spark.read.option("delimiter", ",").csv("India.txt").toDF("Stato", "Capitale", "Lingua")
 df.filter($"Lingua" === "Hindi").show()
 
+# Uso con Docker
+
+Per usare Spark e SBT dentro un container persistente:
+
+- Costruisci l'immagine:
+
+```bash
+docker compose build
+```
+
+- Avvia il container in background:
+
+```bash
+docker compose up -d
+```
+
+- Entra nel container per eseguire comandi:
+
+```bash
+docker compose exec spark bash
+```
+
+- Esegui il progetto con SBT:
+
+```bash
+sbt run
+```
+
+- Oppure esegui una jar con Spark direttamente:
+
+```bash
+/opt/spark/bin/spark-submit --class sparkPratica.rdd_Oggetto --master local[*] target/scala-2.12/sparkpractice_2.12-0.1.jar
+```
+
+La cartella del progetto è montata in `/workspace`, quindi i sorgenti e la cartella `target` rimangono persistenti sul tuo host. La directory `./data` nel progetto è montata come volume Docker su `spark-data`, per mantenere i dati tra i riavvii del container.
+
+
 

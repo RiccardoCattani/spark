@@ -1,0 +1,7 @@
+helmet 20
+socks 22
+helmet 10
+helmet 50
+socks 35
+shoes 40
+shoes 40
