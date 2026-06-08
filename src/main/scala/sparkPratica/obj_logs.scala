@@ -54,6 +54,7 @@ object obj_Logs {
        
         // Stampa alcune righe dell'RDD unito
         unionRDD.take(5).foreach(println)
+        
         // Restituisce tutte le righe dell'RDD unito al driver
         val x=unionRDD.collect()
        
