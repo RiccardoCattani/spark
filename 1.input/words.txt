@@ -1,0 +1,3 @@
+hadoop user class hadoop spark hive
+hadoop hive xls class spark
+hive class bigdata
