@@ -49,3 +49,39 @@ log/
 target/
 project/target/
 project/project/target/
+
+
+# IDE / language server
+.bsp/
+.scala-build/
+project/metals.sbt
+project/project/metals.sbt
+
+# SBT generated nested files
+project/project/target/
+project/project/project/
+
+# Spark local runtime/output
+spark-warehouse/
+metastore_db/
+derby.log
+checkpoint/
+checkpoints/
+*.crc
+_SUCCESS
+.part-*
+*.snappy.parquet
+*.parquet
+
+# Output generati dagli esercizi
+2.output/
+output/
+output_one_dir/
+output_by_country/
+output_by_country_language/
+output_xml/
+
+# Log e file grandi locali
+*.log
+*.tmp
+*.bak
