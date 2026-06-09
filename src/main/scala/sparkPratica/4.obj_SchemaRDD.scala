@@ -1,3 +1,6 @@
+// per lanciare: sbt "runMain sparkPractise.obj_SchemaRDD"
+// Questo file contiene un esempio di come creare un DataFrame con schema a partire da un file di testo, utilizzando sia una case class che Row + StructType. Assicurati di avere un file di testo chiamato "india.txt" nella directory specificata, o modifica il percorso del file di conseguenza. Il file dovrebbe essere strutturato con righe del tipo: "state,capital,language,country".
+
 package sparkPractise
 
 import org.apache.spark.SparkConf
@@ -11,6 +14,7 @@ case class FileDml(state: String, capital: String, language: String, country: St
 
 object obj_SchemaRDD {
   def main(arg: Array[String]): Unit = {
+    // SparkContext legge i dati come RDD, SparkSession abilita DataFrame e SQL.
     val conf = new SparkConf().setAppName("TestLog").setMaster("local[*]")
     val sc   = new SparkContext(conf)
     sc.setLogLevel("Error")
@@ -18,14 +22,17 @@ object obj_SchemaRDD {
     import spark.implicits._
 
     // Percorso di input; aggiorna se il file si trova altrove
-    val inputFile = sc.textFile("/home/riccardo/Documenti/spark/countries.txt")
+    val inputFile = sc.textFile("C:\\repository\\spark\\1.input\\india.txt")
 
     // Split per colonna e mapping in case class
     val inputSplit   = inputFile.map(x => x.split(","))
+
+    // La case class produce un DataFrame con schema implicito: colonne = campi della case class.
     val inputColumns = inputSplit.map(x => FileDml(x(0), x(1), x(2), x(3)))
     inputColumns.foreach(println)
 
     // DataFrame con schema (classe case)
+    // cache evita di ricalcolare il DataFrame quando viene usato in piu action successive.
     val df = inputColumns.toDF().cache()
     df.printSchema()
 
@@ -37,20 +44,25 @@ object obj_SchemaRDD {
     englishDf.show(truncate = false)
 
     println("Query SQL su temp view (schema DataFrame)")
+    // La temp view consente di interrogare il DataFrame con sintassi SQL.
     df.createOrReplaceTempView("country_table")
     spark.sql("SELECT state, capital, language, country FROM country_table WHERE language = 'Hindi'").show(truncate = false)
 
     // Salva i risultati in un unico file; aggiorna il path per Windows/Linux
-    val outputPath = "/home/riccardo/Documenti/spark/output/English_1"
+    val outputPath = "C:\\repository\\spark\\2.outputEnglish_1"
     val fs         = FileSystem.get(sc.hadoopConfiguration)
     val path       = new Path(outputPath)
     if (fs.exists(path)) {
       fs.delete(path, true) // elimina l'output precedente se già esiste
     }
+    
+    // coalesce(1) produce un solo file dati in output; comodo per esercizi, meno adatto a grandi dataset.
     englishDf.coalesce(1).write.mode("overwrite").csv(outputPath)
 
     // DataFrame costruito da Row e StructType
+    // Questo approccio e' utile quando non vuoi o non puoi definire una case class.
     val rowRdd = inputSplit.map(x => Row(x(0), x(1), x(2), x(3)))
+    // Definisce lo schema del DataFrame usando StructType e StructField, specificando i nomi e i tipi delle colonne.
     val structSchema = StructType(
       List(
         StructField("state", StringType, nullable = true),
