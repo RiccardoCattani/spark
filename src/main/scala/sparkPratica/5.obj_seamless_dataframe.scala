@@ -1,3 +1,83 @@
+/*
+  Esecuzione:
+    sbt "runMain obj_SeamlessDataframe"
+
+  Scopo dello script
+  ------------------
+  Questo script e' un esempio pratico di lavoro "seamless" con i DataFrame Spark:
+  mostra come Spark possa leggere dati da un formato sorgente, rappresentarli come
+  DataFrame e poi scriverli in formati diversi senza cambiare il modello logico dei dati.
+
+  In particolare lo script dimostra:
+    1. Lettura di un file CSV classico separato da virgola.
+    2. Lettura di un file CSV separato da pipe, cioe' con delimitatore "|".
+    3. Ispezione dettagliata dei DataFrame letti:
+       - numero di colonne;
+       - elenco dei nomi colonna;
+       - numero totale di righe;
+       - schema Spark;
+       - dati mostrati in console, fino a un massimo configurato.
+    4. Scrittura dello stesso DataFrame in piu formati:
+       - CSV con delimitatore diverso, in questo caso "~";
+       - ORC;
+       - Parquet;
+       - JSON.
+    5. Rilettura degli output ORC, Parquet e JSON per verificare che Spark riesca
+       a ricostruire correttamente i DataFrame dai file generati.
+
+  Concetto importante
+  -------------------
+  Il punto centrale e' che il DataFrame fa da rappresentazione comune dei dati.
+  Una volta letto il file `india_pipe.txt` come DataFrame, lo stesso contenuto puo'
+  essere salvato in formati fisici diversi. Cambia il formato su disco, ma le operazioni
+  Spark rimangono molto simili: `read.format(...).load(...)` per leggere e
+  `write.format(...).save(...)` per scrivere.
+
+  Differenza tra i formati usati
+  ------------------------------
+  CSV:
+    Formato testuale, facile da aprire e leggere manualmente. Non conserva bene i tipi
+    complessi e di solito richiede opzioni come `header` e `delimiter`.
+
+  ORC:
+    Formato colonnare ottimizzato per query analitiche. E' efficiente per leggere solo
+    alcune colonne e per comprimere grandi dataset.
+
+  Parquet:
+    Altro formato colonnare molto diffuso nell'ecosistema big data. E' usato spesso con
+    Spark, Hive, Impala, Presto/Trino e data lake moderni.
+
+  JSON:
+    Formato testuale semi-strutturato. E' piu flessibile del CSV per dati annidati,
+    ma in genere meno efficiente di ORC/Parquet per analisi massive.
+
+  Dettagli sull'output in console
+  -------------------------------
+  La funzione `showDataFrameDetails` evita stampe troppo povere come un semplice `show(5)`.
+  Per ogni DataFrame stampa una sezione leggibile con conteggio righe, colonne, schema
+  e dati di esempio. Se il DataFrame contiene piu di 100 righe, lo script mostra solo
+  le prime 100 per non riempire troppo la console.
+
+  Percorsi usati
+  --------------
+  I path sono locali Windows e puntano a `C:/data/...`.
+  Per eseguire lo script senza modifiche devono esistere:
+    - file:///C:/data/train.csv
+    - file:///C:/data/india_pipe.txt
+
+  Gli output vengono creati sotto:
+    - file:///C:/data/output/file_india_csv
+    - file:///C:/data/output/file_india_orc
+    - file:///C:/data/output/file_india_parquet
+    - file:///C:/data/output/file_india_json
+
+  Nota su mode("overwrite")
+  -------------------------
+  Tutte le scritture usano `mode("overwrite")`: se la cartella di destinazione esiste
+  gia', Spark la sostituisce. Questo e' comodo negli esercizi, ma in produzione va usato
+  con attenzione per evitare di cancellare dati utili.
+*/
+
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
