@@ -1,87 +1,126 @@
-*.json
-# Ignora la cartella streams e tutto il suo contenuto
-streams/
-# Ignora il file obj_PairRDD.scala
-src/main/scala/sparkPratica/obj_PairRDD.scala
-# Scala/Spark/Metals/Bloop
-.bloop/
-.metals/
-target/
-project/target/
-project/project/
-*.class
-*.log
-*.lock.db
-*.mv.db
-**/*.semanticdb
-.idea/
-.DS_Store
-*.iml
-*.swp
-*.swo
-*.xml
-output_xml/
-project/target/streams/**/out
-project/project/target/streams/**/out
-target/streams/**/out
-*.bin
-*.db
-*.bak
-*.tmp
-# VSCode
-.vscode/
-# WireGuard keys (se usi WireGuard qui)
-*.key
-out/
-output/
-*.out
-*.bin
-
-# Ignora cartelle di database e log
-db/
-log/
-*.db
-*.log
-log/
-
-
-# SBT/Scala/Spark build output
+# ============================================================
+# Scala / sbt / build output
+# ============================================================
 target/
 project/target/
 project/project/target/
+project/project/project/
 
+*.class
+*.tasty
+*.semanticdb
+**/*.semanticdb
 
-# IDE / language server
+# File generati da sbt/Metals/Bloop
+.bloop/
+project/.bloop/
 .bsp/
+.metals/
 .scala-build/
 project/metals.sbt
 project/project/metals.sbt
 
-# SBT generated nested files
-project/project/target/
-project/project/project/
+# Cache e stream incrementali sbt
+**/target/
+**/streams/
 
-# Spark local runtime/output
-spark-warehouse/
-metastore_db/
+
+# ============================================================
+# IDE / editor locali
+# ============================================================
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+*.swp
+*.swo
+*.tmp
+*.bak
+*~
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+
+# ============================================================
+# Log, database locali e lock file
+# ============================================================
+*.log
+log/
+logs/
+
+*.db
+*.db-shm
+*.db-wal
+*.lock.db
+*.mv.db
+
 derby.log
-checkpoint/
-checkpoints/
-*.crc
-_SUCCESS
-.part-*
-*.snappy.parquet
-*.parquet
+metastore_db/
+spark-warehouse/
 
-# Output generati dagli esercizi
+
+# ============================================================
+# Output Spark / Hadoop generati dagli esercizi
+# ============================================================
 2.output/
+2.output*/
 output/
+output*/
+out/
+percorso/output/
+
 output_one_dir/
 output_by_country/
 output_by_country_language/
 output_xml/
 
-# Log e file grandi locali
-*.log
-*.tmp
-*.bak
+checkpoint/
+checkpoints/
+
+_SUCCESS
+_temporary/
+*.crc
+.*.crc
+part-*
+.part-*
+*.snappy.parquet
+*.parquet
+*.orc
+
+
+# ============================================================
+# File compressi o binari generati/locali
+# ============================================================
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+*.7z
+*.rar
+*.bin
+*.out
+
+
+# ============================================================
+# Segreti e configurazioni locali
+# ============================================================
+.env
+.env.*
+!.env.example
+
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+
+
+# ============================================================
+# File specifici del progetto da non versionare
+# ============================================================
+src/main/scala/sparkPratica/obj_PairRDD.scala
