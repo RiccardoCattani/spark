@@ -2,15 +2,15 @@
     "version": "1.4.0",
     "project": {
         "name": "spark-build",
-        "directory": "C:\\repository\\spark\\project",
-        "workspaceDir": "C:\\repository\\spark\\project",
+        "directory": "C:\\Repository\\spark\\project",
+        "workspaceDir": "C:\\Repository\\spark\\project",
         "sources": [
-            "C:\\repository\\spark\\project\\src\\main\\scala",
-            "C:\\repository\\spark\\project\\src\\main\\scala-2.12",
-            "C:\\repository\\spark\\project\\src\\main\\scala-2",
-            "C:\\repository\\spark\\project\\src\\main\\java",
-            "C:\\repository\\spark\\project\\src\\main\\scala-sbt-1.0",
-            "C:\\repository\\spark\\project\\target\\scala-2.12\\sbt-1.0\\src_managed\\main"
+            "C:\\Repository\\spark\\project\\src\\main\\scala",
+            "C:\\Repository\\spark\\project\\src\\main\\scala-2.12",
+            "C:\\Repository\\spark\\project\\src\\main\\scala-2",
+            "C:\\Repository\\spark\\project\\src\\main\\java",
+            "C:\\Repository\\spark\\project\\src\\main\\scala-sbt-1.0",
+            "C:\\Repository\\spark\\project\\target\\scala-2.12\\sbt-1.0\\src_managed\\main"
         ],
         "dependencies": [
             
@@ -104,11 +104,11 @@
             "C:\\Users\\Riccardo\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\net\\java\\dev\\jna\\jna-platform\\5.12.0\\jna-platform-5.12.0.jar",
             "C:\\Users\\Riccardo\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\config\\1.4.2\\config-1.4.2.jar"
         ],
-        "out": "C:\\repository\\spark\\project\\.bloop\\spark-build",
-        "classesDir": "C:\\repository\\spark\\project\\.bloop\\spark-build\\scala-2.12\\sbt-1.0\\classes",
+        "out": "C:\\Repository\\spark\\project\\.bloop\\spark-build",
+        "classesDir": "C:\\Repository\\spark\\project\\.bloop\\spark-build\\scala-2.12\\sbt-1.0\\classes",
         "resources": [
-            "C:\\repository\\spark\\project\\src\\main\\resources",
-            "C:\\repository\\spark\\project\\target\\scala-2.12\\sbt-1.0\\resource_managed\\main"
+            "C:\\Repository\\spark\\project\\src\\main\\resources",
+            "C:\\Repository\\spark\\project\\target\\scala-2.12\\sbt-1.0\\resource_managed\\main"
         ],
         "scala": {
             "organization": "org.scala-lang",
@@ -213,22 +213,22 @@
         "platform": {
             "name": "jvm",
             "config": {
-                "home": "C:\\Program Files\\Zulu\\zulu-21",
+                "home": "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.19.10-hotspot",
                 "options": [
-                    "-Duser.dir=C:\\repository\\spark\\project"
+                    "-Duser.dir=C:\\Repository\\spark\\project"
                 ]
             },
             "mainClass": [
                 
             ],
             "runtimeConfig": {
-                "home": "C:\\Program Files\\Zulu\\zulu-21",
+                "home": "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.19.10-hotspot",
                 "options": [
-                    "-Duser.dir=C:\\repository\\spark\\project"
+                    "-Duser.dir=C:\\Repository\\spark\\project"
                 ]
             },
             "classpath": [
-                "C:\\repository\\spark\\project\\.bloop\\spark-build\\scala-2.12\\sbt-1.0\\classes",
+                "C:\\Repository\\spark\\project\\.bloop\\spark-build\\scala-2.12\\sbt-1.0\\classes",
                 "C:\\Users\\Riccardo\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\ch\\epfl\\scala\\sbt-bloop_2.12_1.0\\2.0.19\\sbt-bloop_2.12_1.0-2.0.19.jar",
                 "C:\\Users\\Riccardo\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\ch\\epfl\\scala\\bloop-config_2.12\\2.3.3\\bloop-config_2.12-2.3.3.jar",
                 "C:\\Users\\Riccardo\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\github\\plokhotnyuk\\jsoniter-scala\\jsoniter-scala-core_2.12\\2.13.5.2\\jsoniter-scala-core_2.12-2.13.5.2.jar",

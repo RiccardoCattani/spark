@@ -22,13 +22,17 @@ object obj_SchemaRDD {
     import spark.implicits._
 
     // Percorso di input; aggiorna se il file si trova altrove
-    val inputFile = sc.textFile("C:\\repository\\spark\\1.input\\india.txt")
+    val inputFile = sc.textFile("C:\\repository\\spark\\1.input\\India.txt")
 
     // Split per colonna e mapping in case class
-    val inputSplit   = inputFile.map(x => x.split(","))
+    // Se il file ha solo 3 colonne, assegniamo un valore di default a country.
+    val inputSplit = inputFile.map(line => line.split(",", -1).map(_.trim))
 
     // La case class produce un DataFrame con schema implicito: colonne = campi della case class.
-    val inputColumns = inputSplit.map(x => FileDml(x(0), x(1), x(2), x(3)))
+    val inputColumns = inputSplit.map { cols =>
+      val countryValue = if (cols.length >= 4 && cols(3).nonEmpty) cols(3) else "N/A"
+      FileDml(cols(0), cols(1), cols(2), countryValue)
+    }
     inputColumns.foreach(println)
 
     // DataFrame con schema (classe case)
@@ -61,7 +65,10 @@ object obj_SchemaRDD {
 
     // DataFrame costruito da Row e StructType
     // Questo approccio e' utile quando non vuoi o non puoi definire una case class.
-    val rowRdd = inputSplit.map(x => Row(x(0), x(1), x(2), x(3)))
+    val rowRdd = inputSplit.map { cols =>
+      val countryValue = if (cols.length >= 4 && cols(3).nonEmpty) cols(3) else "N/A"
+      Row(cols(0), cols(1), cols(2), countryValue)
+    }
     // Definisce lo schema del DataFrame usando StructType e StructField, specificando i nomi e i tipi delle colonne.
     val structSchema = StructType(
       List(
