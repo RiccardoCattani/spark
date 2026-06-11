@@ -2,42 +2,49 @@ package sparkPratica
 
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
+import org.apache.spark.rdd.RDD
 
 object rdd_Oggetto {
+    private val MaxRowsToShow = 100
+
+    private def printSection(title: String): Unit = {
+        println()
+        println("=" * 90)
+        println(title)
+        println("=" * 90)
+    }
+
+    private def showRddSample(title: String, rdd: RDD[String], limit: Int = MaxRowsToShow): Unit = {
+        printSection(title)
+        val totalRows = rdd.count()
+        val rowsToShow = math.min(totalRows, limit).toInt
+        println(s"Numero righe: $totalRows")
+        println(s"Righe mostrate: $rowsToShow")
+        rdd.take(rowsToShow).zipWithIndex.foreach {
+            case (row, index) => println(f"${index + 1}%3d | $row")
+        }
+    }
+
     def main(args: Array[String]): Unit = {
-        // Configura un job Spark locale dedicato al dataset BigBasket.
-        // Il nome dell'app serve per riconoscere il job nei log o nella Spark UI;
-        // local[*] usa tutti i core disponibili sulla macchina.
         val conf = new SparkConf().setAppName("BigBasketJob").setMaster("local[*]")
-
-        // SparkContext e' il punto di ingresso dell'API RDD.
-        // Gestisce la creazione degli RDD e l'esecuzione delle action.
         val sc = new SparkContext(conf)
-
-        // Riduce il rumore dei log Spark, lasciando visibili solo gli errori.
         sc.setLogLevel("ERROR")
 
-        // Legge il CSV come file di testo: ogni elemento dell'RDD e' una riga completa.
-        // Non viene interpretato lo schema CSV; i filtri successivi sono semplici ricerche
-        // di sottostringhe dentro la riga. Per parsing robusto di colonne CSV sarebbe meglio
-        // usare la DataFrame API con spark.read.option("header", ...).csv(...).
-        val data = sc.textFile("file:///home/riccardo/datasets/bigbasket_products.csv")
+        val data = sc.textFile("file:///home/riccardo/datasets/bigbasket_products.csv").cache()
+        showRddSample("Input BigBasket CSV letto come RDD di righe", data, limit = 20)
 
-        // Primo filtro: conserva solo le righe che contengono la categoria "Beauty".
-        // contains e' case-sensitive, quindi "beauty" minuscolo non verrebbe trovato.
-        val fil_category = data.filter(x => x.contains("Beauty"))
+        val fil_category = data.filter(x => x.contains("Beauty")).cache()
+        showRddSample("Filtro categoria: righe che contengono Beauty", fil_category)
 
-        // Secondo filtro applicato al risultato precedente: restringe il dataset
-        // alla sottocategoria "Skin Care".
-        val fil_subcategory = fil_category.filter(x => x.contains("Skin Care"))
+        val fil_subcategory = fil_category.filter(x => x.contains("Skin Care")).cache()
+        showRddSample("Filtro sottocategoria: Beauty + Skin Care", fil_subcategory)
 
-        // take(10) porta al driver solo un piccolo campione, utile per controllare
-        // velocemente che i filtri abbiano selezionato i record attesi.
-        fil_subcategory.take(10).foreach(println)
-
-        // coalesce(2) riduce il numero di partizioni di output a due, quindi Spark
-        // scrivera' due part file nella directory di destinazione. saveAsTextFile
-        // richiede che la directory non esista gia', altrimenti fallisce.
+        printSection("Scrittura output")
+        println("Partizioni output richieste: 2")
+        println("Destinazione: user/cloudera/bigbasket")
         fil_subcategory.coalesce(2).saveAsTextFile("user/cloudera/bigbasket")
+        println("Scrittura completata.")
+
+        sc.stop()
     }
 }

@@ -1,70 +1,90 @@
-// Definisce il package del progetto
 package sparkPractise
 
-// Importa le classi principali di Spark
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.SparkSession
 
-// Definisce un oggetto singleton Scala chiamato obj_India
 object obj_India {
-  // Metodo main: punto di ingresso del programma
+  private val MaxRowsToShow = 100
+
+  private def printSection(title: String): Unit = {
+    println()
+    println("=" * 90)
+    println(title)
+    println("=" * 90)
+  }
+
+  private def showRddSample(title: String, rdd: RDD[String], limit: Int = 50): Unit = {
+    printSection(title)
+    val totalRows = rdd.count()
+    val rowsToShow = math.min(totalRows, limit).toInt
+    println(s"Numero righe: $totalRows")
+    println(s"Righe mostrate: $rowsToShow")
+    rdd.take(rowsToShow).zipWithIndex.foreach {
+      case (row, index) => println(f"${index + 1}%3d | $row")
+    }
+  }
+
+  private def showDataFrameDetails(title: String, df: DataFrame): Unit = {
+    printSection(title)
+    val totalRows = df.count()
+    val rowsToShow = math.min(totalRows, MaxRowsToShow).toInt
+    println(s"Numero colonne: ${df.columns.length}")
+    println(s"Colonne: ${df.columns.mkString(", ")}")
+    println(s"Numero righe: $totalRows")
+    println("Schema:")
+    df.printSchema()
+    println(s"Dati mostrati: $rowsToShow righe su $totalRows")
+    df.show(rowsToShow, truncate = false)
+  }
+
   def main(args: Array[String]): Unit = {
-    // Crea la configurazione Spark, imposta nome e master
     val conf = new SparkConf().setAppName("India Analysis").setMaster("local[*]")
-    // Crea lo SparkContext per gestire il job Spark
     val sc = new SparkContext(conf)
-    // Imposta il livello di log su Error per meno output
     sc.setLogLevel("Error")
 
+    val inputRDD = sc.textFile("India.txt").cache()
+    showRddSample("Input RDD completo da India.txt", inputRDD)
 
-    // Legge il file di testo e crea un RDD, ogni elemento è una riga del file
-    val inputRDD = sc.textFile("India.txt")
-
-    // Esempio 1: Filtra e stampa solo gli stati dove la lingua è Hindi (con RDD)
     val hindiStatesRDD = inputRDD.filter { line =>
       val fields = line.split(",")
       fields.length >= 3 && fields(2).trim == "Hindi"
     }
-    println("\n--- Stati con lingua Hindi (RDD) ---")
-    hindiStatesRDD.collect().foreach(println)
+    showRddSample("Filtro RDD: Lingua = Hindi", hindiStatesRDD)
 
-    // Filtro e stampa i record che contengono "English"
-    println("\n************ Filter English Records ************")
     val filEnglish = inputRDD.filter(_.contains("English"))
-    filEnglish.collect().foreach(println)
+    showRddSample("Filtro RDD: record che contengono English", filEnglish)
 
-    // Filtro e stampa i record che contengono "Andhra Pradesh"
-    println("\n************ Filter Andhra Pradesh ************")
     val filAndhra = inputRDD.filter(_.contains("Andhra Pradesh"))
-    filAndhra.collect().foreach(println)
+    showRddSample("Filtro RDD: record che contengono Andhra Pradesh", filAndhra)
 
-    // Unione dei due RDD filtrati
     val rddUnion = filEnglish.union(filAndhra)
+    showRddSample("Union RDD: English + Andhra Pradesh", rddUnion)
 
-    // Filtro parametrico sull'unione: cambia qui la parola chiave per filtrare
-    val keyword = "English" // Cambia qui la parola chiave per altri filtri
+    val keyword = "English"
     val filteredUnion = rddUnion.filter(_.contains(keyword))
+    showRddSample(s"Union filtrata per keyword = $keyword", filteredUnion)
 
-    println(s"\n************ Count (union filtrata per '$keyword') ************")
-    println(filteredUnion.count())
-
-    println("Take************")
-    filteredUnion.take(2).foreach(println)
-
-    // Esempio 2: Stessa operazione con DataFrame
-    import org.apache.spark.sql.SparkSession
     val spark = SparkSession.builder().getOrCreate()
     import spark.implicits._
 
-    // Legge il file come DataFrame senza header, con delimitatore virgola
     val df = spark.read
       .option("header", "false")
       .option("inferSchema", "false")
       .option("delimiter", ",")
       .csv("India.txt")
       .toDF("Stato", "Capitale", "Lingua")
+      .cache()
 
-    println("\n--- Stati con lingua Hindi (DataFrame) ---")
-    df.filter($"Lingua" === "Hindi").show(false)
+    showDataFrameDetails("DataFrame completo da India.txt", df)
+    showDataFrameDetails("Filtro DataFrame: Lingua = Hindi", df.filter($"Lingua" === "Hindi"))
+
+    printSection("Riepilogo DataFrame per lingua")
+    df.groupBy("Lingua").count().orderBy("Lingua").show(MaxRowsToShow, truncate = false)
+
+    spark.stop()
+    sc.stop()
   }
 }
