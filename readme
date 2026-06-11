@@ -1,3 +1,10 @@
+# Configurare username ed email
+git config --global user.name "Riccardo.portatile.lenovo"
+git config --global user.mail "riccardo.cattani@olidata.com"
+
+git config --global pull.rebase true
+git config --global rebase.autoStash true
+
 # Copia il file nella tua home sul server remoto
 scp /mnt/nvme_storage/download/bigbasket_products.csv riccardo@192.168.1.229:~/tmp
 
