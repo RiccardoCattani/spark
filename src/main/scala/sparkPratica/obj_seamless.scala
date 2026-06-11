@@ -1,39 +1,57 @@
-package sparkPratica // Definisce il package
+package sparkPratica
 
-import org.apache.spark.sql.SparkSession // Importa la classe SparkSession
+import org.apache.spark.sql.SparkSession
 
-object obj_seamless { // Definisce l'oggetto principale
-  def main(args: Array[String]): Unit = { // Metodo main, punto di ingresso
-    val spark = SparkSession.builder() // Crea una SparkSession
-      .appName("Seamless DataFrame Example") // Nome dell'applicazione
-      .master("local[*]") // Usa tutti i core locali
-      .getOrCreate() // Ottiene o crea la sessione
+object obj_seamless {
+  def main(args: Array[String]): Unit = {
+    // SparkSession e' l'entry point moderno per lavorare con DataFrame, Dataset e SQL.
+    // Rispetto a SparkContext, espone API piu' comode per file strutturati come CSV,
+    // JSON e Parquet. local[*] esegue tutto in locale usando i core disponibili.
+    val spark = SparkSession.builder()
+      .appName("Seamless DataFrame Example")
+      .master("local[*]")
+      .getOrCreate()
 
-    spark.sparkContext.setLogLevel("ERROR") // Imposta il livello di log su ERROR
+    // Riduce la quantita' di log prodotti da Spark, cosi' schema e dati mostrati
+    // con printSchema/show restano facili da leggere.
+    spark.sparkContext.setLogLevel("ERROR")
 
-    // Lettura di un file CSV in un DataFrame
-    val df = spark.read // Inizia la lettura
-      .format("csv") // Specifica il formato CSV
-      .option("header", "true") // Indica che il file ha un'intestazione
-      .option("delimiter", ",") // Usa la virgola come delimitatore
-      .load("/home/riccardo/Documenti/repository/spark/spark/test.csv") // Percorso del file da leggere
+    // Lettura di un CSV in un DataFrame.
+    // format("csv") seleziona il datasource CSV.
+    // header=true dice a Spark di usare la prima riga come nomi delle colonne.
+    // delimiter="," specifica il separatore tra i campi.
+    // Senza inferSchema, Spark legge normalmente le colonne come String.
+    val df = spark.read
+      .format("csv")
+      .option("header", "true")
+      .option("delimiter", ",")
+      .load("/home/riccardo/Documenti/repository/spark/spark/test.csv")
 
-    // Mostra lo schema e i primi 5 record
-    df.printSchema() // Stampa la struttura delle colonne
-    df.show(5) // Mostra i primi 5 record
+    // printSchema mostra nomi e tipi delle colonne.
+    // show(5) e' una action: legge i dati necessari e stampa solo le prime cinque righe.
+    df.printSchema()
+    df.show(5)
 
-    // Scrittura del DataFrame in formato Parquet
-    df.write // Inizia la scrittura
-      .format("parquet") // Specifica il formato Parquet
-      .mode("overwrite") // Sovrascrive se esiste già
-      .save("percorso/output/parquet") // Percorso di destinazione
+    // Scrittura in formato Parquet.
+    // Parquet e' colonnare: e' adatto ad analisi, query selettive su poche colonne
+    // e integrazione con motori come Spark, Hive e Impala.
+    // mode("overwrite") elimina il risultato precedente nella stessa directory.
+    df.write
+      .format("parquet")
+      .mode("overwrite")
+      .save("percorso/output/parquet")
 
-    // Scrittura del DataFrame in formato JSON
-    df.write // Inizia la scrittura
-      .format("json") // Specifica il formato JSON
-      .mode("overwrite") // Sovrascrive se esiste già
-      .save("percorso/output/json") // Percorso di destinazione
+    // Scrittura in formato JSON.
+    // Spark salva una directory con uno o piu' part file, non un singolo file JSON.
+    // Il numero di file dipende dalle partizioni del DataFrame.
+    df.write
+      .format("json")
+      .mode("overwrite")
+      .save("percorso/output/json")
 
-    val inputRDD = spark.sparkContext.textFile("C:/SparkScala/SparkScalaPractise/src/main/scala/sparkPractise/logs/logs.txt") // Esempio di lettura di un file come RDD (non usato nel resto dello script)
+    // Esempio di lettura dello stesso contenuto tramite API RDD.
+    // In questo script l'RDD non viene usato dopo la creazione: serve solo a mostrare
+    // che dalla SparkSession si puo' ancora accedere allo SparkContext.
+    val inputRDD = spark.sparkContext.textFile("C:/SparkScala/SparkScalaPractise/src/main/scala/sparkPractise/logs/logs.txt")
   }
 }

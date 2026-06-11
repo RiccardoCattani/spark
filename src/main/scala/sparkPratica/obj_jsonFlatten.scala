@@ -10,25 +10,30 @@ object obj_jsonFlatten {
       .master("local[*]")
       .getOrCreate()
 
-    // ===== 🟦 FASE 1: Lettura JSON complesso =====
-    println("\n🟦 [FASE 1] Leggo il file JSON complesso:")
+    // FASE 1: lettura del JSON complesso.
+    // Il file contiene campi annidati, quindi prima conviene osservare lo schema
+    // generato da Spark. In questo modo si capisce quali campi sono array,
+    // quali sono struct e quali sono valori semplici.
+    println("\n[FASE 1] Leggo il file JSON complesso:")
     val complexDf = spark.read
       .format("json")
-      // multiLine=true serve quando il JSON e' formattato su piu righe invece che JSON Lines.
       .option("multiLine", true)
       .load("/home/riccardo/Documenti/repository/spark/spark/random_user.json")
 
-    // Controlla la struttura annidata prima di selezionare i campi.
     complexDf.printSchema()
 
-    // ===== 🟩 FASE 2: Appiattimento array 'results' =====
-    println("\n🟩 [FASE 2] Appiattisco l'array 'results'...")
-    // explode trasforma ogni elemento dell'array results in una riga separata.
+    // FASE 2: appiattimento dell'array results.
+    // explode crea una nuova riga per ogni elemento dell'array. Se results contiene
+    // 10 elementi, una riga del DataFrame originale diventa 10 righe nel DataFrame
+    // risultante. Ogni elemento esploso viene salvato nella colonna "result".
+    println("\n[FASE 2] Appiattisco l'array 'results'...")
     val flatDf = complexDf.withColumn("result", explode(col("results")))
 
-    // ===== 🟨 FASE 3: Selezione colonne annidate =====
-    println("\n🟨 [FASE 3] Seleziono alcune colonne annidate come esempio:")
-    // Con la dot notation puoi navigare dentro struct annidate; alias rinomina le colonne finali.
+    // FASE 3: selezione di campi annidati.
+    // La dot notation permette di navigare dentro struct annidate:
+    // result.user.name.first significa: colonna result -> campo user -> campo name -> campo first.
+    // alias rinomina le colonne finali per ottenere un DataFrame piu' leggibile.
+    println("\n[FASE 3] Seleziono alcune colonne annidate come esempio:")
     val selectedDf = flatDf.select(
       col("nationality"),
       col("result.user.gender"),
@@ -40,6 +45,7 @@ object obj_jsonFlatten {
     )
 
     // truncate=false stampa il contenuto completo delle colonne selezionate.
+    // E' utile quando email, indirizzi o campi JSON lunghi verrebbero tagliati.
     selectedDf.show(false)
 
     spark.stop()

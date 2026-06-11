@@ -5,23 +5,39 @@ import org.apache.spark.SparkContext
 
 object rdd_Oggetto {
     def main(args: Array[String]): Unit = {
-        // Crea la configurazione Spark, imposta nome e master
+        // Configura un job Spark locale dedicato al dataset BigBasket.
+        // Il nome dell'app serve per riconoscere il job nei log o nella Spark UI;
+        // local[*] usa tutti i core disponibili sulla macchina.
         val conf = new SparkConf().setAppName("BigBasketJob").setMaster("local[*]")
-        // Crea lo SparkContext per gestire il job Spark
+
+        // SparkContext e' il punto di ingresso dell'API RDD.
+        // Gestisce la creazione degli RDD e l'esecuzione delle action.
         val sc = new SparkContext(conf)
-        // Imposta il livello di log su ERROR per meno output
+
+        // Riduce il rumore dei log Spark, lasciando visibili solo gli errori.
         sc.setLogLevel("ERROR")
 
-        // Legge il file CSV da /home/riccardo/datasets e crea un RDD, ogni elemento è una riga del file
+        // Legge il CSV come file di testo: ogni elemento dell'RDD e' una riga completa.
+        // Non viene interpretato lo schema CSV; i filtri successivi sono semplici ricerche
+        // di sottostringhe dentro la riga. Per parsing robusto di colonne CSV sarebbe meglio
+        // usare la DataFrame API con spark.read.option("header", ...).csv(...).
         val data = sc.textFile("file:///home/riccardo/datasets/bigbasket_products.csv")
 
-        // Filtra le righe che contengono "Beauty"
+        // Primo filtro: conserva solo le righe che contengono la categoria "Beauty".
+        // contains e' case-sensitive, quindi "beauty" minuscolo non verrebbe trovato.
         val fil_category = data.filter(x => x.contains("Beauty"))
-        // Filtra ulteriormente le righe che contengono "Skin Care"
+
+        // Secondo filtro applicato al risultato precedente: restringe il dataset
+        // alla sottocategoria "Skin Care".
         val fil_subcategory = fil_category.filter(x => x.contains("Skin Care"))
-        // Stampa le prime 10 righe filtrate
+
+        // take(10) porta al driver solo un piccolo campione, utile per controllare
+        // velocemente che i filtri abbiano selezionato i record attesi.
         fil_subcategory.take(10).foreach(println)
-        // Salva tutte le righe filtrate in un file di testo (2 partizioni)
+
+        // coalesce(2) riduce il numero di partizioni di output a due, quindi Spark
+        // scrivera' due part file nella directory di destinazione. saveAsTextFile
+        // richiede che la directory non esista gia', altrimenti fallisce.
         fil_subcategory.coalesce(2).saveAsTextFile("user/cloudera/bigbasket")
     }
 }

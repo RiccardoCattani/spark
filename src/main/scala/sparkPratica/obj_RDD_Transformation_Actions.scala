@@ -1,7 +1,14 @@
-
+// Esecuzione:
 // sbt "runMain sparkPractise.obj_RDD_Transformation_Actions"
-// Questo file contiene un esempio di come creare un RDD a partire da un file di testo e come eseguire alcune operazioni di base su di esso. Puoi aggiungere ulteriori trasformazioni e azioni per esplorare i dati in modo più approfondito.
-// Assicurati di avere un file di testo chiamato "India.txt" nella directory specificata, o modifica il percorso del file di conseguenza.
+//
+// Esempio guidato sulle principali transformation e action degli RDD.
+// Il file India.txt viene letto come RDD di righe; poi vengono mostrati map,
+// filter, flatMap, distinct, union, intersection, subtract e varie action.
+//
+// Obiettivo didattico:
+// - capire quali operazioni sono lazy transformation
+// - capire quali operazioni sono action e quindi avviano davvero il job Spark
+// - vedere quando i dati restano distribuiti e quando vengono portati sul driver
 
 package sparkPractise
 import java.nio.file.{Files, Path, Paths}
@@ -12,123 +19,144 @@ import scala.collection.JavaConverters._
 
 object obj_RDD_Transformation_Actions {
   def main(args: Array[String]): Unit = {
+    // Configura Spark in modalita' locale.
+    // local[*] usa tutti i core della macchina, utile per esercitarsi senza cluster.
     val conf = new SparkConf().setAppName("Logs Analysis").setMaster("local[*]")
     val sc = new SparkContext(conf)
     sc.setLogLevel("Error")
 
-// Legge il file di testo e crea un RDD, ogni elemento è una riga del file
+    // textFile crea un RDD[String]: ogni elemento rappresenta una riga del file.
+    // Questa e' una transformation lazy: la lettura fisica avviene alla prima action.
     val inputRDD = sc.textFile("C:\\repository\\spark\\1.input\\India.txt")
 
-// Stampa alcune righe dell'RDD di input
+    // foreach e' una action: esegue println su ogni elemento distribuito.
+    // Va bene per file piccoli; su dataset grandi produce troppo output.
     println("************ Input originale ************")
     inputRDD.foreach(println)
 
-// Esegue un'azione di conteggio per ottenere il numero totale di righe nell'RDD
+    // count e' una action: Spark deve leggere tutte le partizioni per contare le righe.
     println("************ Conteggio righe ************")
     println("Righe totali: " + inputRDD.count())
 
-// Esegue una trasformazione di mappatura per convertire tutte le righe in maiuscolo
+    // map applica una funzione a ogni elemento e restituisce un nuovo RDD.
+    // Qui normalizziamo tutto in maiuscolo per semplificare i filtri successivi.
     println("************ Trasformazione con map: maiuscolo ************")
     val upperRDD = inputRDD.map(x => x.toUpperCase())
     upperRDD.foreach(println)
 
-// Esegue una trasformazione di filtro per selezionare solo le righe che contengono "ENGLISH"
+    // filter conserva solo gli elementi che soddisfano la condizione.
+    // Dopo la normalizzazione in maiuscolo, contains("ENGLISH") diventa piu' prevedibile.
     println("************ Filtro con filter: righe con ENGLISH ************")
     val englishRDD = upperRDD.filter(x => x.contains("ENGLISH"))
     englishRDD.foreach(println)
     println("Righe con ENGLISH: " + englishRDD.count())
 
-// Esegue una trasformazione di filtro per selezionare solo le righe che contengono "HINDI"
     println("************ RDD union, intersection, subtract ************")
 
-// Esegue una trasformazione di flatMap per ottenere un RDD di parole da righe ENGLISH e HINDI
+    // flatMap e' usato quando una riga produce piu' elementi.
+    // split(",") divide la riga in campi/parole, map(trim) rimuove spazi iniziali/finali.
+    // Il risultato non e' piu' un RDD di righe, ma un RDD di token.
     val englishWordsRDD = englishRDD.flatMap(row => row.split(",")).map(word => word.trim)
     val hindiWordsRDD = upperRDD
       .filter(row => row.contains("HINDI"))
       .flatMap(row => row.split(","))
       .map(word => word.trim)
 
-// Stampa alcune parole uniche da righe ENGLISH e HINDI
+    // distinct rimuove duplicati tramite shuffle, quindi puo' essere costoso.
+    // take(10) limita l'output portato al driver.
     println("Parole da righe ENGLISH")
     englishWordsRDD.distinct().take(10).foreach(println)
 
-// Stampa alcune parole uniche da righe HINDI
     println("Parole da righe HINDI")
     hindiWordsRDD.distinct().take(10).foreach(println)
 
-// Esegue una trasformazione di union per combinare le parole uniche da ENGLISH e HINDI
+    // union concatena i due RDD. Da sola non elimina duplicati, per questo qui
+    // viene aggiunto distinct() subito dopo.
     println("Union: parole ENGLISH + parole HINDI")
     val unionWordsRDD = englishWordsRDD.union(hindiWordsRDD).distinct()
     unionWordsRDD.take(20).foreach(println)
 
-// Esegue alcune azioni su unionWordsRDD
+    // collect porta l'intero RDD sul driver come Array.
+    // E' utile per esempi piccoli, ma per dati grandi puo' causare OutOfMemory.
     println("************ Actions su union RDD con collect e for ************")
     val unionRows = unionWordsRDD.collect()
     for (row <- unionRows) {
       println(row)
     }
-// Esegue alcune azioni su unionWordsRDD
+
+    // take e' piu' sicuro di collect quando serve solo un campione.
     println("Take: primi 2 elementi della union")
     unionWordsRDD.take(2).foreach(println)
 
-// Esegue una trasformazione di intersection per trovare parole presenti sia in ENGLISH sia in HINDI
+    // intersection restituisce gli elementi presenti in entrambi gli RDD.
+    // Anche questa operazione richiede confronto tra partizioni e puo' attivare shuffle.
     println("Intersection: parole presenti sia in ENGLISH sia in HINDI")
     englishWordsRDD.intersection(hindiWordsRDD).foreach(println)
 
-// Esegue una trasformazione di subtract per trovare parole presenti in ENGLISH ma non in HINDI
+    // subtract restituisce gli elementi presenti nel primo RDD ma non nel secondo.
+    // In questo caso mostra parole associate a ENGLISH ed escluse da HINDI.
     println("Subtract: parole ENGLISH escluse quelle HINDI")
     englishWordsRDD.subtract(hindiWordsRDD).distinct().take(20).foreach(println)
 
-// Esegue alcune azioni su inputRDD
     println("************ RDD actions ************")
 
-// Esegue l'azione first per ottenere la prima riga dell'RDD
+    // first legge quanto basta per restituire il primo elemento dell'RDD.
     println("Action first: prima riga")
     println(inputRDD.first())
 
-// Esegue l'azione take per ottenere le prime 5 righe dell'RDD
+    // take(n) restituisce al driver i primi n elementi.
     println("Action take: prime 5 righe")
     inputRDD.take(5).foreach(println)
 
-// Esegue l'azione collect per raccogliere tutte le righe dell'RDD sul driver e stampare le prime 5
+    // collect raccoglie tutte le righe sul driver.
+    // Qui stampiamo solo le prime cinque, ma l'Array contiene comunque tutto il file.
     println("Action collect: prime 5 righe raccolte sul driver")
     val collectedRows = inputRDD.collect()
     collectedRows.take(5).foreach(println)
 
-// Esegue l'azione countByValue per contare le occorrenze di ogni riga e stampare le prime 5
+    // countByValue conta quante volte compare ogni riga identica.
+    // Restituisce una Map sul driver, quindi va usata con attenzione se ci sono molte chiavi.
     println("Action countByValue: prime 5 righe con numero occorrenze")
     inputRDD.countByValue().take(5).foreach {
       case (row, count) => println(row + " -> " + count)
     }
 
-// Esegue l'azione takeOrdered per ottenere le prime 5 righe in ordine alfabetico
+    // takeOrdered usa l'ordinamento naturale per restituire i primi elementi ordinati.
     println("Action takeOrdered: prime 5 righe in ordine alfabetico")
     inputRDD.takeOrdered(5).foreach(println)
 
-
-// Esegue l'azione top per ottenere le ultime 5 righe in ordine alfabetico
+    // top e' simile a takeOrdered, ma restituisce gli elementi piu' alti
+    // secondo l'ordinamento naturale.
     println("Action top: ultime 5 righe in ordine alfabetico")
     inputRDD.top(5).foreach(println)
 
-// questo è un esempio di come utilizzare diverse azioni per ottenere informazioni specifiche sull'RDD, come la prima riga, le prime righe, il conteggio delle occorrenze, e l'ordinamento.
+    // reduce combina tutti gli elementi dell'RDD usando una funzione associativa.
+    // Qui confrontiamo due righe alla volta e manteniamo quella piu' lunga.
     println("Action reduce: riga piu lunga")
     val longestRow = inputRDD.reduce((a, b) => if (a.length >= b.length) a else b)
     println(longestRow)
 
-// questo è un esempio di come utilizzare l'azione reduce per trovare la riga più lunga nell'RDD, confrontando la lunghezza di ogni riga e restituendo quella con la lunghezza maggiore.
+    // foreachPartition lavora una partizione alla volta.
+    // E' utile quando vuoi aprire una connessione o una risorsa una sola volta
+    // per partizione, invece che una volta per elemento.
     println("Action foreachPartition: numero righe per partizione")
     inputRDD.foreachPartition(partition => println("Righe nella partizione: " + partition.size))
 
-// questo è un esempio di come eseguire un'azione su ogni partizione dell'RDD, in questo caso contando il numero di righe in ogni partizione.
+    // parallelize crea un RDD partendo da una collezione gia' presente nel driver.
+    // Serve spesso negli esempi, nei test o per piccoli dataset di supporto.
     println("************ parallelize: create RDD ************")
     val numberRDD = sc.parallelize(List(1, 2, 3, 4, 5))
     numberRDD.foreach(println)
 
-// questo è un esempio di come creare un RDD a partire da una collezione in memoria e come eseguire un'azione di riduzione su di esso.
+    // reduce sugli interi somma tutti gli elementi.
+    // La funzione _ + _ e' associativa, quindi Spark puo' combinarla in parallelo.
     println("************ reduce ************")
     val sum = numberRDD.reduce(_ + _)
     println(sum)
 
+    // Salvataggio locale dell'output in maiuscolo.
+    // Qui non usiamo saveAsTextFile di Spark: raccogliamo upperRDD sul driver e
+    // scriviamo con le API Java NIO. Va bene per un file piccolo di esercizio.
     val outputPath = "C:\\repository\\spark\\2.output\\india_uppercase.txt"
     deleteIfExists(Paths.get(outputPath))
     Files.createDirectories(Paths.get("C:\\repository\\spark\\2.output"))
@@ -138,6 +166,9 @@ object obj_RDD_Transformation_Actions {
     sc.stop()
   }
 
+  // Elimina file o directory esistente prima di riscrivere l'output.
+  // La walk viene ordinata al contrario per cancellare prima i file figli
+  // e poi la directory padre.
   private def deleteIfExists(path: Path): Unit = {
     if (Files.exists(path)) {
       Files
