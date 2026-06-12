@@ -1,5 +1,10 @@
 // Esecuzione:
 // sbt "runMain sparkPratica.obj_PairRDD"
+//
+// Scopo:
+// questo script mostra le operazioni principali sui PairRDD, cioe' RDD composti
+// da coppie chiave-valore. L'esempio legge vendite prodotto/quantita e applica
+// keys, values, mapValues, reduceByKey e groupByKey.
 
 package sparkPratica
 
@@ -40,13 +45,17 @@ object obj_PairRDD {
   }
 
   def main(arg: Array[String]): Unit = {
+    // Configura Spark in locale e crea lo SparkContext.
     val conf = new SparkConf().setAppName("TestLog").setMaster("local[*]")
     val sc = new SparkContext(conf)
     sc.setLogLevel("Error")
 
+    // Legge sales.txt come RDD di righe testuali.
     val inputRDD = sc.textFile("C:\\repository\\spark\\1.input\\sales.txt").cache()
     showRdd("Input sales.txt", inputRDD)
 
+    // Converte ogni riga in una coppia (prodotto, quantita).
+    // trim e filter eliminano spazi esterni e righe vuote.
     val pairRDD = inputRDD
       .map(_.trim)
       .filter(line => line.nonEmpty)
@@ -60,12 +69,21 @@ object obj_PairRDD {
       .cache()
 
     showPairRdd("PairRDD iniziale: prodotto -> quantita", pairRDD)
+
+    // keys estrae solo le chiavi; distinct rimuove prodotti duplicati.
     showRdd("Chiavi distinte: prodotti", pairRDD.keys.distinct())
+
+    // values estrae solo i valori numerici.
     showRdd("Valori: quantita originali", pairRDD.values)
+
+    // mapValues modifica solo il valore, lasciando invariata la chiave.
     showPairRdd("mapValues: quantita raddoppiata mantenendo la chiave", pairRDD.mapValues(a => a * 2))
+
+    // reduceByKey aggrega le quantita per prodotto sommando i valori.
     showPairRdd("reduceByKey: somma quantita per prodotto", pairRDD.reduceByKey(_ + _))
 
     printSection("groupByKey: valori originali raggruppati per prodotto")
+    // groupByKey raccoglie tutti i valori associati alla stessa chiave.
     val grouped = pairRDD.groupByKey().cache()
     println(s"Prodotti distinti: ${grouped.count()}")
     grouped.take(MaxRowsToShow).zipWithIndex.foreach {
@@ -74,6 +92,7 @@ object obj_PairRDD {
         println(f"${index + 1}%3d | prodotto=$product | valori=${list.mkString("[", ", ", "]")} | occorrenze=${list.size}")
     }
 
+    // Chiude lo SparkContext.
     sc.stop()
   }
 }

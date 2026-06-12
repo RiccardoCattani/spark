@@ -6,6 +6,9 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
 
+// Questo script combina esempi RDD e DataFrame sul file India.txt.
+// La prima parte usa transformation RDD come filter e union.
+// La seconda parte legge lo stesso file come DataFrame per mostrare filtri e groupBy.
 object obj_India {
   private val MaxRowsToShow = 100
 
@@ -41,35 +44,43 @@ object obj_India {
   }
 
   def main(args: Array[String]): Unit = {
+    // Configura Spark in locale e crea lo SparkContext per la parte RDD.
     val conf = new SparkConf().setAppName("India Analysis").setMaster("local[*]")
     val sc = new SparkContext(conf)
     sc.setLogLevel("Error")
 
+    // Legge India.txt come RDD di righe.
     val inputRDD = sc.textFile("India.txt").cache()
     showRddSample("Input RDD completo da India.txt", inputRDD)
 
+    // Filtro RDD robusto: controlla che la riga abbia almeno 3 campi e poi verifica la lingua.
     val hindiStatesRDD = inputRDD.filter { line =>
       val fields = line.split(",")
       fields.length >= 3 && fields(2).trim == "Hindi"
     }
     showRddSample("Filtro RDD: Lingua = Hindi", hindiStatesRDD)
 
+    // Filtri RDD basati su ricerca testuale nella riga completa.
     val filEnglish = inputRDD.filter(_.contains("English"))
     showRddSample("Filtro RDD: record che contengono English", filEnglish)
 
     val filAndhra = inputRDD.filter(_.contains("Andhra Pradesh"))
     showRddSample("Filtro RDD: record che contengono Andhra Pradesh", filAndhra)
 
+    // union concatena i due RDD filtrati.
     val rddUnion = filEnglish.union(filAndhra)
     showRddSample("Union RDD: English + Andhra Pradesh", rddUnion)
 
+    // Applica un ulteriore filtro sull'RDD ottenuto con union.
     val keyword = "English"
     val filteredUnion = rddUnion.filter(_.contains(keyword))
     showRddSample(s"Union filtrata per keyword = $keyword", filteredUnion)
 
+    // Crea SparkSession per la parte DataFrame.
     val spark = SparkSession.builder().getOrCreate()
     import spark.implicits._
 
+    // Legge India.txt come CSV senza header e assegna nomi colonna espliciti.
     val df = spark.read
       .option("header", "false")
       .option("inferSchema", "false")
@@ -79,11 +90,15 @@ object obj_India {
       .cache()
 
     showDataFrameDetails("DataFrame completo da India.txt", df)
+
+    // Filtro equivalente sul DataFrame: la condizione lavora sulla colonna Lingua.
     showDataFrameDetails("Filtro DataFrame: Lingua = Hindi", df.filter($"Lingua" === "Hindi"))
 
+    // Raggruppa i dati per lingua e conta i record per ogni gruppo.
     printSection("Riepilogo DataFrame per lingua")
     df.groupBy("Lingua").count().orderBy("Lingua").show(MaxRowsToShow, truncate = false)
 
+    // Chiude SparkSession e SparkContext.
     spark.stop()
     sc.stop()
   }

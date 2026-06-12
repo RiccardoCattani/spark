@@ -4,6 +4,9 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
+// Questo script mostra come appiattire un JSON annidato.
+// Il file random_user.json contiene un array results: explode trasforma ogni
+// elemento dell'array in una riga, poi select estrae i campi annidati utili.
 object obj_jsonFlatten {
   private val MaxRowsToShow = 100
 
@@ -28,12 +31,14 @@ object obj_jsonFlatten {
   }
 
   def main(args: Array[String]): Unit = {
+    // Crea la SparkSession per lavorare con DataFrame.
     val spark = SparkSession.builder()
       .appName("Flatten JSON Example")
       .master("local[*]")
       .getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
 
+    // Legge un JSON multiLine, cioe' un documento JSON distribuito su piu righe.
     val complexDf = spark.read
       .format("json")
       .option("multiLine", true)
@@ -41,9 +46,11 @@ object obj_jsonFlatten {
       .cache()
     showDataFrameDetails("FASE 1 - JSON complesso originale", complexDf)
 
+    // explode trasforma ogni elemento dell'array results in una riga separata.
     val flatDf = complexDf.withColumn("result", explode(col("results"))).cache()
     showDataFrameDetails("FASE 2 - Array results esploso con explode", flatDf)
 
+    // Seleziona campi annidati dentro result.user e li rinomina con alias leggibili.
     val selectedDf = flatDf.select(
       col("nationality"),
       col("result.user.gender"),
@@ -55,6 +62,7 @@ object obj_jsonFlatten {
     )
     showDataFrameDetails("FASE 3 - Colonne annidate selezionate e rinominate", selectedDf)
 
+    // Chiude la SparkSession.
     spark.stop()
   }
 }

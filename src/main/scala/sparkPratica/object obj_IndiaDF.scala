@@ -6,6 +6,9 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
 
+// Questo script confronta due modi di lavorare sugli stessi dati:
+// 1. RDD: lettura di righe testuali e filtro manuale tramite split/contains.
+// 2. DataFrame: lettura strutturata con colonne nominate e filtri su colonne.
 object obj_IndiaDF {
   private val MaxRowsToShow = 100
 
@@ -41,22 +44,27 @@ object obj_IndiaDF {
   }
 
   def main(args: Array[String]): Unit = {
+    // Configura Spark in locale e crea lo SparkContext per la parte RDD.
     val conf = new SparkConf().setAppName("IndiaDF Example").setMaster("local[*]")
     val sc = new SparkContext(conf)
     sc.setLogLevel("Error")
 
+    // Legge India.txt come RDD di righe.
     val inputRDD = sc.textFile("India.txt").cache()
     showRddSample("Input RDD completo da India.txt", inputRDD)
 
+    // Filtro RDD: divide ogni riga per virgola e controlla il terzo campo, la lingua.
     val hindiStatesRDD = inputRDD.filter { line =>
       val fields = line.split(",")
       fields.length >= 3 && fields(2).trim == "Hindi"
     }
     showRddSample("Filtro RDD: Lingua = Hindi", hindiStatesRDD)
 
+    // Crea la SparkSession per lavorare con DataFrame.
     val spark = SparkSession.builder().getOrCreate()
     import spark.implicits._
 
+    // Legge lo stesso file come DataFrame e assegna i nomi alle colonne.
     val df = spark.read
       .option("header", "false")
       .option("inferSchema", "false")
@@ -66,8 +74,11 @@ object obj_IndiaDF {
       .cache()
 
     showDataFrameDetails("DataFrame completo da India.txt", df)
+
+    // Filtro DataFrame equivalente al filtro RDD precedente, ma espresso su colonna.
     showDataFrameDetails("Filtro DataFrame: Lingua = Hindi", df.filter($"Lingua" === "Hindi"))
 
+    // Chiude SparkSession e SparkContext.
     spark.stop()
     sc.stop()
   }

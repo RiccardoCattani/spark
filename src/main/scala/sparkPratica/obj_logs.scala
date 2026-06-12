@@ -1,5 +1,9 @@
 // Esecuzione:
 // sbt "runMain sparkPractise.obj_Logs"
+//
+// Scopo:
+// questo script legge un file di log Hadoop come RDD di righe e mostra semplici
+// trasformazioni di filtro: righe WARN, righe ERROR e unione dei due risultati.
 
 package sparkPractise
 
@@ -30,22 +34,28 @@ object obj_Logs {
 
     def main(arg:Array[String]):Unit=
     {
+        // Configura Spark in locale e crea lo SparkContext per lavorare con RDD.
         val conf = new SparkConf().setAppName("TestLog").setMaster("local[*]")
         val sc = new SparkContext(conf)
         sc.setLogLevel("Error")
 
+        // Legge il file di log: ogni riga del file diventa un elemento dell'RDD.
         val inputRDD = sc.textFile("C:\\repository\\spark\\1.input\\Hadoop_2k.log").cache()
         showRddSample("Log completo Hadoop_2k.log", inputRDD)
 
+        // Filtra solo le righe che contengono la parola WARN.
         val warnRDD = inputRDD.filter(w => w.contains("WARN")).cache()
         showRddSample("Filtro log: righe WARN", warnRDD)
 
+        // Filtra solo le righe che contengono la parola ERROR.
         val errorRDD = inputRDD.filter(w => w.contains("ERROR")).cache()
         showRddSample("Filtro log: righe ERROR", errorRDD)
 
+        // Unisce i due RDD filtrati. union concatena i risultati e non elimina duplicati.
         val unionRDD = warnRDD.union(errorRDD).cache()
         showRddSample("Union WARN + ERROR", unionRDD)
 
+        // Stampa i conteggi finali per confrontare input e output dei filtri.
         printSection("Riepilogo conteggi log")
         println(s"Righe totali input: ${inputRDD.count()}")
         println(s"Righe WARN: ${warnRDD.count()}")
@@ -53,6 +63,7 @@ object obj_Logs {
         println(s"Righe WARN + ERROR: ${unionRDD.count()}")
         println("Nota: union non rimuove duplicati; una riga con WARN e ERROR comparirebbe due volte.")
 
+        // Chiude lo SparkContext.
         sc.stop()
     }
 }

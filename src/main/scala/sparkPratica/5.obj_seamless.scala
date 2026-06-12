@@ -3,6 +3,10 @@ package sparkPratica
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
 
+// Questo script mostra un esempio semplice di lettura CSV con DataFrame e
+// scrittura dello stesso contenuto in Parquet e JSON.
+// In fondo crea anche un RDD tramite spark.sparkContext per mostrare che dalla
+// SparkSession si puo' accedere anche alle API RDD.
 object obj_seamless {
   private val MaxRowsToShow = 100
 
@@ -27,12 +31,14 @@ object obj_seamless {
   }
 
   def main(args: Array[String]): Unit = {
+    // Crea la SparkSession per lavorare con DataFrame.
     val spark = SparkSession.builder()
       .appName("Seamless DataFrame Example")
       .master("local[*]")
       .getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
 
+    // Legge test.csv come DataFrame CSV con header.
     val df = spark.read
       .format("csv")
       .option("header", "true")
@@ -41,6 +47,8 @@ object obj_seamless {
       .cache()
     showDataFrameDetails("CSV test.csv letto come DataFrame", df)
 
+    // Scrive il DataFrame in formato Parquet.
+    // Parquet e' colonnare ed e' adatto ad analisi e query.
     printSection("Scrittura Parquet")
     println("Formato: parquet")
     println("Modalita': overwrite")
@@ -50,6 +58,8 @@ object obj_seamless {
       .mode("overwrite")
       .save("percorso/output/parquet")
 
+    // Scrive lo stesso DataFrame in formato JSON.
+    // JSON e' testuale e semi-strutturato.
     printSection("Scrittura JSON")
     println("Formato: json")
     println("Modalita': overwrite")
@@ -59,6 +69,7 @@ object obj_seamless {
       .mode("overwrite")
       .save("percorso/output/json")
 
+    // Esempio di creazione RDD usando lo SparkContext accessibile dalla SparkSession.
     val inputRDD = spark.sparkContext.textFile("C:/SparkScala/SparkScalaPractise/src/main/scala/sparkPractise/logs/logs.txt")
     printSection("RDD creato da SparkContext")
     println("Nota: questo RDD viene creato come esempio di accesso a SparkContext dalla SparkSession.")
@@ -67,6 +78,7 @@ object obj_seamless {
       case (row, index) => println(f"${index + 1}%3d | $row")
     }
 
+    // Chiude la SparkSession.
     spark.stop()
   }
 }

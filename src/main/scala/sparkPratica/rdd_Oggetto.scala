@@ -4,6 +4,9 @@ import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 
+// Questo script legge un CSV come RDD di righe e applica filtri testuali.
+// L'esempio cerca prodotti BigBasket della categoria Beauty e poi restringe
+// ulteriormente ai record che contengono Skin Care.
 object rdd_Oggetto {
     private val MaxRowsToShow = 100
 
@@ -26,25 +29,31 @@ object rdd_Oggetto {
     }
 
     def main(args: Array[String]): Unit = {
+        // Configura Spark in locale e crea lo SparkContext.
         val conf = new SparkConf().setAppName("BigBasketJob").setMaster("local[*]")
         val sc = new SparkContext(conf)
         sc.setLogLevel("ERROR")
 
+        // Legge il CSV come semplice RDD di stringhe, senza interpretare colonne.
         val data = sc.textFile("file:///home/riccardo/datasets/bigbasket_products.csv").cache()
         showRddSample("Input BigBasket CSV letto come RDD di righe", data, limit = 20)
 
+        // Primo filtro: mantiene solo le righe che contengono Beauty.
         val fil_category = data.filter(x => x.contains("Beauty")).cache()
         showRddSample("Filtro categoria: righe che contengono Beauty", fil_category)
 
+        // Secondo filtro: parte dal risultato precedente e mantiene Skin Care.
         val fil_subcategory = fil_category.filter(x => x.contains("Skin Care")).cache()
         showRddSample("Filtro sottocategoria: Beauty + Skin Care", fil_subcategory)
 
+        // Scrive il risultato come file di testo, riducendo l'output a 2 partizioni.
         printSection("Scrittura output")
         println("Partizioni output richieste: 2")
         println("Destinazione: user/cloudera/bigbasket")
         fil_subcategory.coalesce(2).saveAsTextFile("user/cloudera/bigbasket")
         println("Scrittura completata.")
 
+        // Chiude lo SparkContext.
         sc.stop()
     }
 }

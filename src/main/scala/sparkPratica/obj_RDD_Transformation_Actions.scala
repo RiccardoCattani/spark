@@ -1,5 +1,10 @@
 // Esecuzione:
 // sbt "runMain sparkPractise.obj_RDD_Transformation_Actions"
+//
+// Scopo:
+// questo script raccoglie esempi di transformation e action sugli RDD.
+// Le transformation creano nuovi RDD in modo lazy, mentre le action eseguono
+// davvero il calcolo e restituiscono un risultato o scrivono dati in output.
 
 package sparkPractise
 import java.nio.file.{Files, Path, Paths}
@@ -31,33 +36,41 @@ object obj_RDD_Transformation_Actions {
   }
 
   def main(args: Array[String]): Unit = {
+    // Configura Spark in modalita' locale.
     val conf = new SparkConf().setAppName("Logs Analysis").setMaster("local[*]")
     val sc = new SparkContext(conf)
     sc.setLogLevel("Error")
 
+    // Legge India.txt come RDD di stringhe, una riga per elemento.
     val inputRDD = sc.textFile("C:\\repository\\spark\\1.input\\India.txt").cache()
     showRddSample("Input originale India.txt", inputRDD)
 
+    // map applica una funzione a ogni elemento: qui converte ogni riga in maiuscolo.
     val upperRDD = inputRDD.map(x => x.toUpperCase()).cache()
     showRddSample("Transformation map: righe convertite in maiuscolo", upperRDD)
 
+    // filter mantiene solo gli elementi che soddisfano la condizione.
     val englishRDD = upperRDD.filter(x => x.contains("ENGLISH")).cache()
     showRddSample("Transformation filter: righe che contengono ENGLISH", englishRDD)
 
+    // Secondo filtro sullo stesso RDD in maiuscolo.
     val hindiRDD = upperRDD.filter(row => row.contains("HINDI")).cache()
     showRddSample("Transformation filter: righe che contengono HINDI", hindiRDD)
 
+    // flatMap divide ogni riga in piu token e appiattisce il risultato in un solo RDD.
     val englishWordsRDD = englishRDD.flatMap(row => row.split(",")).map(word => word.trim).cache()
     val hindiWordsRDD = hindiRDD.flatMap(row => row.split(",")).map(word => word.trim).cache()
     showRddSample("flatMap: token estratti dalle righe ENGLISH", englishWordsRDD.distinct())
     showRddSample("flatMap: token estratti dalle righe HINDI", hindiWordsRDD.distinct())
 
+    // Operazioni insiemistiche tra RDD: union, intersection e subtract.
     val unionWordsRDD = englishWordsRDD.union(hindiWordsRDD).distinct().cache()
     showRddSample("Union + distinct: token ENGLISH e HINDI", unionWordsRDD)
     showRddSample("Intersection: token presenti sia in ENGLISH sia in HINDI", englishWordsRDD.intersection(hindiWordsRDD))
     showRddSample("Subtract: token ENGLISH esclusi quelli HINDI", englishWordsRDD.subtract(hindiWordsRDD).distinct())
 
     printSection("RDD actions su inputRDD")
+    // count, first e take sono action: fanno partire il calcolo Spark.
     println(s"count: ${inputRDD.count()}")
     println(s"first: ${inputRDD.first()}")
     println("take(5):")
@@ -66,25 +79,30 @@ object obj_RDD_Transformation_Actions {
     }
 
     printSection("countByValue: prime 5 righe con numero occorrenze")
+    // countByValue conta quante volte compare ogni valore completo dell'RDD.
     inputRDD.countByValue().take(5).foreach {
       case (row, count) => println(s"$row -> $count")
     }
 
+    // takeOrdered e top restituiscono elementi ordinati secondo l'ordinamento naturale.
     showRddSample("takeOrdered(5): prime righe in ordine alfabetico", sc.parallelize(inputRDD.takeOrdered(5)))
     showRddSample("top(5): ultime righe in ordine alfabetico", sc.parallelize(inputRDD.top(5)))
 
     printSection("reduce: riga piu lunga")
+    // reduce combina gli elementi due alla volta; qui tiene la riga piu lunga.
     val longestRow = inputRDD.reduce((a, b) => if (a.length >= b.length) a else b)
     println(s"Lunghezza: ${longestRow.length}")
     println(longestRow)
 
     printSection("foreachPartition: numero righe per partizione")
+    // mapPartitions lavora su una partizione alla volta; qui conta le righe per partizione.
     val partitionSizes = inputRDD.mapPartitions(partition => Iterator(partition.size)).collect()
     partitionSizes.zipWithIndex.foreach {
       case (size, index) => println(s"Partizione $index -> $size righe")
     }
     println(s"Numero partizioni: ${partitionSizes.length}")
 
+    // parallelize crea un RDD partendo da una collezione Scala locale.
     val numberRDD = sc.parallelize(List(1, 2, 3, 4, 5)).cache()
     showRddSample("parallelize: RDD creato da List(1, 2, 3, 4, 5)", numberRDD)
 
@@ -93,6 +111,7 @@ object obj_RDD_Transformation_Actions {
     println(s"Somma totale: $sum")
 
     printSection("Scrittura output locale")
+    // collect porta i dati dal cluster al driver. Qui va bene per un esercizio piccolo.
     val outputPath = "C:\\repository\\spark\\2.output\\india_uppercase.txt"
     deleteIfExists(Paths.get(outputPath))
     Files.createDirectories(Paths.get("C:\\repository\\spark\\2.output"))
@@ -100,10 +119,12 @@ object obj_RDD_Transformation_Actions {
     println(s"Righe scritte: ${upperRDD.count()}")
     println("Output salvato in: " + outputPath)
 
+    // Chiude lo SparkContext.
     sc.stop()
   }
 
   private def deleteIfExists(path: Path): Unit = {
+    // Utility locale per eliminare un file o una directory prima di riscrivere l'output.
     if (Files.exists(path)) {
       Files
         .walk(path)

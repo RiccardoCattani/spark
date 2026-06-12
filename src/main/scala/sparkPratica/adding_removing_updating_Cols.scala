@@ -6,6 +6,9 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
+// Questo script legge un CSV di transazioni bancarie e mostra operazioni utili
+// per ispezionare un DataFrame: schema, dati, statistiche descrittive e conteggio
+// dei valori null o vuoti per ogni colonna.
 object adding_removing_updating_Cols {
   private val MaxRowsToShow = 100
 
@@ -30,12 +33,16 @@ object adding_removing_updating_Cols {
   }
 
   def main(arg: Array[String]): Unit = {
+    // Configura Spark in locale e crea lo SparkContext.
     val conf = new SparkConf().setAppName("bank_Trans").setMaster("local[*]")
     val sc = new SparkContext(conf)
     sc.setLogLevel("Error")
 
+    // Crea la SparkSession per leggere il CSV come DataFrame.
     val spark = SparkSession.builder().getOrCreate()
 
+    // Legge il CSV con header e inferSchema.
+    // inferSchema prova a riconoscere automaticamente i tipi delle colonne.
     val read_csv_df = spark.read
       .format("csv")
       .option("header", "true")
@@ -45,15 +52,18 @@ object adding_removing_updating_Cols {
 
     showDataFrameDetails("CSV transazioni bancarie letto con inferSchema", read_csv_df)
 
+    // describe calcola statistiche base come count, mean, stddev, min e max.
     printSection("Statistiche descrittive colonne numeriche/stringa")
     read_csv_df.describe().show(MaxRowsToShow, truncate = false)
 
+    // Per ogni colonna conta i valori null o stringhe vuote.
     printSection("Conteggio valori null per colonna")
     val nullCounts = read_csv_df.columns.map { columnName =>
       sum(when(col(columnName).isNull || trim(col(columnName).cast("string")) === "", 1).otherwise(0)).alias(columnName)
     }
     read_csv_df.select(nullCounts: _*).show(truncate = false)
 
+    // Chiude SparkSession e SparkContext.
     spark.stop()
     sc.stop()
   }
