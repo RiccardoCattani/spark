@@ -1,3 +1,16 @@
+// Scopo dello script
+// ------------------
+// Questo script dimostra come trasformare un JSON annidato in un DataFrame piu'
+// semplice e tabellare.
+//
+// Il file random_user.json contiene una struttura complessa con un array results
+// e campi interni come user.name, user.email e user.location. Spark riesce a
+// leggere questa struttura, ma per analizzarla comodamente conviene appiattirla.
+//
+// Lo script usa explode per trasformare ogni elemento dell'array results in una
+// riga separata, poi usa select e alias per estrarre e rinominare i campi
+// annidati piu' utili.
+//
 package sparkPratica
 
 import org.apache.spark.sql.DataFrame

@@ -1,3 +1,16 @@
+// Scopo dello script
+// ------------------
+// Questo script dimostra due modalita' diverse di lettura JSON con Spark.
+//
+// Il primo caso legge un JSON semplice, dove ogni riga del file rappresenta un
+// record JSON autonomo. Questo e' il formato piu' comune per dataset JSON in
+// ambito Big Data.
+//
+// Il secondo caso legge un JSON multiLine, cioe' un documento JSON formattato su
+// piu righe e potenzialmente annidato. In questo caso serve l'opzione
+// multiLine = true, altrimenti Spark prova a interpretare ogni riga come record
+// separato.
+//
 package sparkPratica
 
 import org.apache.spark.sql.DataFrame

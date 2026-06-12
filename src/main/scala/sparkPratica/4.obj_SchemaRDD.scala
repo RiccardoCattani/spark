@@ -1,4 +1,14 @@
 // per lanciare: sbt "runMain sparkPractise.obj_SchemaRDD"
+//
+// Scopo dello script
+// ------------------
+// Questo script dimostra due modi diversi per creare DataFrame con schema:
+// 1. usando una case class, dove lo schema deriva dai campi della classe;
+// 2. usando Row + StructType, dove lo schema viene definito manualmente.
+//
+// L'obiettivo e' mostrare come trasformare dati grezzi letti da un file di testo
+// in dati strutturati, interrogabili con select, filter e query SQL.
+//
 // Questo file contiene un esempio di come creare un DataFrame con schema a partire da un file di testo, utilizzando sia una case class che Row + StructType. Assicurati di avere un file di testo chiamato "india.txt" nella directory specificata, o modifica il percorso del file di conseguenza. Il file dovrebbe essere strutturato con righe del tipo: "state,capital,language,country".
 // Questo script mostra come dare una struttura ai dati grezzi, permettendo di lavorare con colonne nominate e tipi di dati, invece di trattare i dati come semplici stringhe. Vengono mostrati filtri e query SQL su entrambi i DataFrame creati, e infine i risultati filtrati vengono salvati in un nuovo file di output.
 

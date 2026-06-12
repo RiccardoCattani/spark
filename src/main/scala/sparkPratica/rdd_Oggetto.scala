@@ -1,3 +1,16 @@
+// Scopo dello script
+// ------------------
+// Questo script dimostra un'elaborazione RDD molto semplice su un file CSV letto
+// come righe testuali.
+//
+// L'obiettivo e' filtrare un dataset di prodotti BigBasket cercando righe che
+// contengono prima la categoria Beauty e poi la sottocategoria Skin Care.
+// Il risultato filtrato viene scritto in output come file di testo.
+//
+// Questo esempio mostra un approccio basato su contains, quindi adatto a capire
+// le trasformazioni RDD, ma meno strutturato rispetto alla lettura del CSV come
+// DataFrame con colonne nominate.
+//
 package sparkPratica
 
 import org.apache.spark.SparkConf

@@ -1,3 +1,18 @@
+// Scopo dello script
+// ------------------
+// Questo script dimostra alcune operazioni di analisi preliminare su un DataFrame
+// Spark letto da CSV. L'obiettivo non e' trasformare i dati, ma controllarne la
+// struttura e la qualita'.
+//
+// In particolare lo script:
+// - legge un CSV di transazioni bancarie con header e inferenza dello schema;
+// - mostra colonne, schema, numero righe e dati di esempio;
+// - calcola statistiche descrittive con describe();
+// - conta, per ogni colonna, quanti valori sono null o vuoti.
+//
+// Serve quindi come esempio di data profiling iniziale prima di applicare
+// trasformazioni o pulizia piu' avanzata.
+//
 package sparkPratica
 
 import org.apache.spark.SparkConf

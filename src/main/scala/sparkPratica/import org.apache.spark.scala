@@ -1,3 +1,15 @@
+// Scopo dello script
+// ------------------
+// Questo script dimostra come leggere con Spark un file CSV che non contiene
+// una riga di intestazione.
+//
+// Quando un file non ha header, Spark non puo' conoscere i nomi delle colonne.
+// Per questo viene creato manualmente uno schema con StructType e StructField,
+// specificando nome colonna, tipo dato e possibilita' di valori null.
+//
+// Il risultato e' un DataFrame strutturato, con colonne nominate, su cui e'
+// possibile eseguire operazioni come groupBy, count e orderBy.
+//
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession

@@ -1,3 +1,15 @@
+// Scopo dello script
+// ------------------
+// Questo script dimostra come Spark possa leggere un file CSV come DataFrame e
+// salvare lo stesso contenuto in formati diversi, in particolare Parquet e JSON.
+//
+// L'obiettivo e' mostrare che il DataFrame e' una rappresentazione comune dei
+// dati: una volta letto il CSV, Spark puo' scrivere lo stesso dataset in formati
+// fisici differenti senza cambiare il modello logico.
+//
+// Lo script mostra anche che dalla SparkSession si puo' accedere allo
+// SparkContext, quindi alle API RDD, tramite spark.sparkContext.
+//
 package sparkPratica
 
 import org.apache.spark.sql.DataFrame

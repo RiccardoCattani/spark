@@ -1,7 +1,14 @@
 /*
+  Scopo dello script
+  ------------------
   Questo script mostra il passaggio da RDD non strutturato a DataFrame con schema.
   Partiamo da un file di testo, dividiamo ogni riga in colonne e usiamo una case class
   per assegnare nomi e tipi ai campi.
+
+  L'obiettivo e' dimostrare che un RDD di stringhe puo' diventare un DataFrame
+  strutturato quando ogni riga viene trasformata in un oggetto Scala tipizzato.
+  La case class CountryDml definisce lo schema logico: state, capital, language
+  e country.
 */
 
 package sparkPractise

@@ -1,3 +1,15 @@
+// Scopo dello script
+// ------------------
+// Questo script mostra come analizzare il file India.txt usando solo DataFrame,
+// senza passare dagli RDD.
+//
+// Il file viene letto come CSV senza header, poi le colonne vengono nominate con
+// toDF("Stato", "Capitale", "Lingua"). A quel punto Spark permette di filtrare
+// i dati per lingua e di creare un riepilogo con groupBy e count.
+//
+// Serve quindi a mostrare un approccio piu' strutturato e leggibile rispetto
+// alla manipolazione manuale di righe testuali.
+//
 package sparkPractise
 
 import org.apache.spark.sql.DataFrame

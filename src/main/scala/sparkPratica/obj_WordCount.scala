@@ -1,11 +1,15 @@
 // Esecuzione:
 // sbt "runMain sparkPractise.obj_WordCount"
 //
-// Scopo:
+// Scopo dello script
+// ------------------
 // questo script mostra il classico esempio Word Count con Spark RDD.
 // Il file words.txt viene letto come RDD di righe, poi ogni riga viene divisa
 // in parole, ogni parola viene trasformata in una coppia (parola, 1) e infine
 // reduceByKey somma i valori per ottenere il numero di occorrenze di ogni parola.
+//
+// Serve a dimostrare il flusso base:
+// testo -> parole -> coppie chiave-valore -> aggregazione per chiave.
 
 package sparkPractise
 

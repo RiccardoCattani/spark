@@ -1,10 +1,15 @@
 // Esecuzione:
 // sbt "runMain sparkPractise.obj_RDD_Transformation_Actions"
 //
-// Scopo:
+// Scopo dello script
+// ------------------
 // questo script raccoglie esempi di transformation e action sugli RDD.
 // Le transformation creano nuovi RDD in modo lazy, mentre le action eseguono
 // davvero il calcolo e restituiscono un risultato o scrivono dati in output.
+//
+// Vengono mostrati map, filter, flatMap, union, intersection, subtract, count,
+// first, take, countByValue, reduce e mapPartitions. Lo script chiude con una
+// piccola scrittura locale dell'RDD trasformato in maiuscolo.
 
 package sparkPractise
 import java.nio.file.{Files, Path, Paths}

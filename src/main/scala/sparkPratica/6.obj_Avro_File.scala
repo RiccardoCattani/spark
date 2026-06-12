@@ -1,3 +1,19 @@
+// Scopo dello script
+// ------------------
+// Questo script dimostra come convertire un file CSV pipe-delimited in formato
+// Avro usando Apache Spark.
+//
+// Il flusso principale e':
+// 1. leggere India_pipe.txt come CSV con header e delimitatore "|";
+// 2. caricare i dati in un DataFrame;
+// 3. stampare schema e prime righe per controllare la lettura;
+// 4. scrivere il DataFrame in formato Avro;
+// 5. rileggere l'Avro generato e mostrarne il contenuto.
+//
+// L'obiettivo e' mostrare che Avro e' un formato binario strutturato, piu'
+// adatto del CSV a pipeline Big Data, scambio dati tra sistemi ed evoluzione
+// dello schema.
+//
 // Lo script obj_Avro_File mostra un esempio pratico di utilizzo di Apache Spark per convertire un dataset da formato CSV pipe-delimited a formato Avro. 
 // Il programma avvia una sessione Spark in modalità locale, legge il file India_pipe.txt, interpreta la prima riga come intestazione delle colonne e usa il carattere | come delimitatore dei campi.
 // Dopo il caricamento, lo script stampa a video lo schema del DataFrame e visualizza le prime 10 righe del dataset, così da permettere una verifica immediata dei dati letti. Infine, scrive il contenuto del DataFrame in formato Avro nella cartella di output configurata, usando la modalità overwrite, quindi sovrascrivendo eventuali dati già presenti nella destinazione.

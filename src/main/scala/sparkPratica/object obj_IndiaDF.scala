@@ -1,3 +1,16 @@
+// Scopo dello script
+// ------------------
+// Questo script dimostra la differenza pratica tra lavorare con RDD e lavorare
+// con DataFrame sugli stessi dati del file India.txt.
+//
+// Nella prima parte i dati sono letti come RDD di righe testuali: per filtrare
+// bisogna dividere manualmente le righe con split e controllare la posizione dei
+// campi.
+//
+// Nella seconda parte lo stesso file viene letto come DataFrame: le colonne
+// ricevono nomi espliciti e i filtri diventano piu' leggibili, perche' lavorano
+// su colonne come Stato, Capitale e Lingua.
+//
 package sparkPractise
 
 import org.apache.spark.SparkConf

@@ -1,9 +1,14 @@
 // Esecuzione:
 // sbt "runMain sparkPractise.obj_Logs"
 //
-// Scopo:
+// Scopo dello script
+// ------------------
 // questo script legge un file di log Hadoop come RDD di righe e mostra semplici
 // trasformazioni di filtro: righe WARN, righe ERROR e unione dei due risultati.
+//
+// L'obiettivo e' mostrare come usare filter per estrarre eventi specifici da un
+// log e union per combinare piu insiemi di righe. Alla fine vengono stampati i
+// conteggi per confrontare input, WARN, ERROR e risultato combinato.
 
 package sparkPractise
 

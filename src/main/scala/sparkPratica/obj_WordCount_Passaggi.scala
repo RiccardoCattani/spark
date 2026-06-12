@@ -1,10 +1,14 @@
 // Esecuzione:
 // sbt "runMain sparkPractise.obj_WordCount_Passaggi"
 //
-// Scopo:
+// Scopo dello script
+// ------------------
 // versione didattica del Word Count. Lo script stampa ogni passaggio intermedio
 // per mostrare come un file di testo diventa prima un RDD di parole, poi un RDD
 // di coppie (parola, 1), poi un conteggio aggregato per parola.
+//
+// Rispetto a obj_WordCount, questo file e' pensato per seguire passo passo le
+// trasformazioni, quindi stampa ogni RDD intermedio.
 
 package sparkPractise
 

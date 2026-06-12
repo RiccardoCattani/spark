@@ -1,3 +1,17 @@
+// Scopo dello script
+// ------------------
+// Questo script parte da un CSV senza header, applica uno schema manuale e poi
+// mostra alcune trasformazioni tipiche sui DataFrame.
+//
+// L'obiettivo principale e' dimostrare:
+// - come assegnare nomi e tipi alle colonne con StructType;
+// - come pulire valori testuali con trim;
+// - come scrivere un output CSV normale;
+// - come scrivere output partizionati con partitionBy.
+//
+// Il partizionamento crea cartelle separate in base ai valori delle colonne
+// scelte, per esempio cntry_cd oppure cntry_cd + language.
+//
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession

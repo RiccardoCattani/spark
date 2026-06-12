@@ -1,3 +1,15 @@
+// Scopo dello script
+// ------------------
+// Questo script unisce due approcci Spark sullo stesso file India.txt:
+// trasformazioni RDD e operazioni DataFrame.
+//
+// La parte RDD mostra filtri testuali, split delle righe e union tra risultati.
+// La parte DataFrame mostra invece come leggere gli stessi dati con colonne
+// nominate, filtrare per lingua e calcolare un riepilogo con groupBy.
+//
+// L'obiettivo e' confrontare il lavoro manuale sugli RDD con il lavoro piu'
+// strutturato dei DataFrame.
+//
 package sparkPractise
 
 import org.apache.spark.SparkConf

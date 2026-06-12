@@ -6,16 +6,38 @@ import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.SparkSession
 
-// Questo esempio mostra come usare Spark per scrivere e leggere dati in formato XML.
-// Spark non gestisce XML con le sole librerie base: per questo progetto viene usata
-// la dipendenza com.databricks:spark-xml, gia' presente nel file build.sbt.
+// Scopo dello script
+// ------------------
+// Questo script dimostra come Apache Spark puo' lavorare con dati in formato XML
+// usando la libreria esterna com.databricks:spark-xml, gia' configurata nel file
+// build.sbt. Spark, infatti, non legge e scrive XML con le sole librerie base:
+// per usare .format("xml") o .format("com.databricks.spark.xml") serve questa
+// dipendenza aggiuntiva.
 //
-// Il flusso dello script e':
-// 1. legge il file India_pipe.txt come CSV con delimitatore pipe;
-// 2. mostra schema e prime righe del DataFrame;
-// 3. scrive i dati in formato XML;
-// 4. rilegge il file XML generato;
-// 5. mostra i dati XML caricati nuovamente in Spark.
+// L'obiettivo e' mostrare due casi pratici:
+//
+// 1. Lettura di un XML gia' esistente
+//    Lo script legge il file 1.input/books.xml. In questo file ogni libro e'
+//    rappresentato dal tag <book>...</book>. Con l'opzione rowTag = "book",
+//    Spark interpreta ogni elemento <book> come una riga di un DataFrame.
+//    In questo modo un file XML gerarchico viene trasformato in una tabella
+//    con colonne come id, author, title, genre, price e publish_date.
+//
+// 2. Conversione da CSV a XML
+//    Lo script legge India_pipe.txt come CSV separato dal carattere pipe "|",
+//    lo carica in un DataFrame e poi salva lo stesso contenuto in formato XML.
+//    Il DataFrame fa quindi da formato intermedio comune:
+//
+//      CSV -> DataFrame -> XML
+//
+//    Dopo la scrittura, lo script rilegge anche l'XML generato per verificare
+//    che l'output sia corretto e nuovamente utilizzabile da Spark.
+//
+// In sintesi, vogliamo dimostrare che Spark puo':
+// - leggere un file XML gia' pronto e trasformarlo in DataFrame;
+// - leggere un CSV e convertirlo in XML;
+// - rileggere l'XML generato come controllo finale;
+// - usare il DataFrame come rappresentazione comune tra formati diversi.
 object obj_XML_Data {
   def main(arg: Array[String]): Unit = {
     // Percorso del file CSV di input.

@@ -1,10 +1,15 @@
 // Esecuzione:
 // sbt "runMain sparkPratica.obj_PairRDD"
 //
-// Scopo:
+// Scopo dello script
+// ------------------
 // questo script mostra le operazioni principali sui PairRDD, cioe' RDD composti
 // da coppie chiave-valore. L'esempio legge vendite prodotto/quantita e applica
 // keys, values, mapValues, reduceByKey e groupByKey.
+//
+// L'obiettivo e' capire come Spark lavora quando ogni record ha una chiave e un
+// valore, per esempio prodotto -> quantita. Questo modello e' molto comune per
+// aggregazioni, conteggi e riepiloghi per categoria.
 
 package sparkPratica
 
