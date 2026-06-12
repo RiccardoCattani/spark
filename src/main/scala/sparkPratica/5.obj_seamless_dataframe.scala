@@ -28,7 +28,7 @@
   Concetto importante
   -------------------
   Il punto centrale e' che il DataFrame fa da rappresentazione comune dei dati.
-  Una volta letto il file `india_pipe.txt` come DataFrame, lo stesso contenuto puo'
+  Una volta letto il file `India_pipe.txt` come DataFrame, lo stesso contenuto puo'
   essere salvato in formati fisici diversi. Cambia il formato su disco, ma le operazioni
   Spark rimangono molto simili: `read.format(...).load(...)` per leggere e
   `write.format(...).save(...)` per scrivere.
@@ -60,16 +60,16 @@
 
   Percorsi usati
   --------------
-  I path sono locali Windows e puntano a `C:/data/...`.
+  I path sono locali Windows e puntano a `C:/repository/spark/...`.
   Per eseguire lo script senza modifiche devono esistere:
-    - file:///C:/data/train.csv
-    - file:///C:/data/india_pipe.txt
+    - file:///C:/repository/spark/1.input/train.csv
+    - file:///C:/repository/spark/India_pipe.txt
 
   Gli output vengono creati sotto:
-    - file:///C:/data/output/file_india_csv
-    - file:///C:/data/output/file_india_orc
-    - file:///C:/data/output/file_india_parquet
-    - file:///C:/data/output/file_india_json
+    - file:///C:/repository/spark/2.output/file_india_csv
+    - file:///C:/repository/spark/2.output/file_india_orc
+    - file:///C:/repository/spark/2.output/file_india_parquet
+    - file:///C:/repository/spark/2.output/file_india_json
 
   Nota su mode("overwrite")
   -------------------------
@@ -84,6 +84,16 @@ import org.apache.spark.sql.SparkSession
 
 object obj_SeamlessDataframe {
   private val MaxRowsToShow = 100
+  private val WriteMode = "overwrite"
+
+  private val TrainCsvPath = "file:///C:/repository/spark/1.input/train.csv"
+  private val IndiaPipePath = "file:///C:/repository/spark/India_pipe.txt"
+
+  private val OutputBasePath = "file:///C:/repository/spark/2.output"
+  private val CsvOutputPath = s"$OutputBasePath/file_india_csv"
+  private val OrcOutputPath = s"$OutputBasePath/file_india_orc"
+  private val ParquetOutputPath = s"$OutputBasePath/file_india_parquet"
+  private val JsonOutputPath = s"$OutputBasePath/file_india_json"
 
   private def printSection(title: String): Unit = {
     println()
@@ -137,7 +147,7 @@ object obj_SeamlessDataframe {
       .format("csv")
       .option("header", "true")
       .option("delimiter", ",")
-      .load("file:///C:/data/train.csv")
+      .load(TrainCsvPath)
       .cache()
     showDataFrameDetails("Lettura CSV train.csv", read_csv_df)
 
@@ -145,70 +155,70 @@ object obj_SeamlessDataframe {
       .format("csv")
       .option("header", "true")
       .option("delimiter", "|")
-      .load("file:///C:/data/india_pipe.txt")
+      .load(IndiaPipePath)
       .cache()
-    showDataFrameDetails("Lettura CSV pipe-delimited india_pipe.txt", read_pipe_df)
+    showDataFrameDetails("Lettura CSV pipe-delimited India_pipe.txt", read_pipe_df)
 
     printWriteDetails(
       format = "csv",
-      mode = "overwrite",
-      destination = "file:///C:/data/output/file_india_csv",
+      mode = WriteMode,
+      destination = CsvOutputPath,
       extra = "Header: true | Delimiter output: ~"
     )
     read_pipe_df.write
       .format("csv")
       .option("header", "true")
       .option("delimiter", "~")
-      .mode("overwrite")
-      .save("file:///C:/data/output/file_india_csv")
+      .mode(WriteMode)
+      .save(CsvOutputPath)
     println("Scrittura CSV completata.")
 
     printWriteDetails(
       format = "orc",
-      mode = "overwrite",
-      destination = "file:///C:/data/output/file_india_orc"
+      mode = WriteMode,
+      destination = OrcOutputPath
     )
     read_pipe_df.write
       .format("orc")
-      .mode("overwrite")
-      .save("file:///C:/data/output/file_india_orc")
+      .mode(WriteMode)
+      .save(OrcOutputPath)
     println("Scrittura ORC completata.")
 
     printWriteDetails(
       format = "parquet",
-      mode = "overwrite",
-      destination = "file:///C:/data/output/file_india_parquet"
+      mode = WriteMode,
+      destination = ParquetOutputPath
     )
     read_pipe_df.write
       .format("parquet")
-      .mode("overwrite")
-      .save("file:///C:/data/output/file_india_parquet")
+      .mode(WriteMode)
+      .save(ParquetOutputPath)
     println("Scrittura Parquet completata.")
 
     printWriteDetails(
       format = "json",
-      mode = "overwrite",
-      destination = "file:///C:/data/output/file_india_json"
+      mode = WriteMode,
+      destination = JsonOutputPath
     )
     read_pipe_df.write
       .format("json")
-      .mode("overwrite")
-      .save("file:///C:/data/output/file_india_json")
+      .mode(WriteMode)
+      .save(JsonOutputPath)
     println("Scrittura JSON completata.")
 
     val orc_df = spark.read
       .format("orc")
-      .load("file:///C:/data/output/file_india_orc")
+      .load(OrcOutputPath)
     showDataFrameDetails("Rilettura output ORC", orc_df)
 
     val parquet_df = spark.read
       .format("parquet")
-      .load("file:///C:/data/output/file_india_parquet")
+      .load(ParquetOutputPath)
     showDataFrameDetails("Rilettura output Parquet", parquet_df)
 
     val json_df = spark.read
       .format("json")
-      .load("file:///C:/data/output/file_india_json")
+      .load(JsonOutputPath)
     showDataFrameDetails("Rilettura output JSON", json_df)
 
     spark.stop()

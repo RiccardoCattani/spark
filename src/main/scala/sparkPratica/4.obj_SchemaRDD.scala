@@ -53,8 +53,8 @@ object obj_SchemaRDD {
     df.createOrReplaceTempView("country_table")
     spark.sql("SELECT state, capital, language, country FROM country_table WHERE language = 'Hindi'").show(truncate = false)
 
-    // Salva i risultati in un unico file; aggiorna il path per Windows/Linux
-    val outputPath = "C:\\repository\\spark\\2.outputEnglish_1"
+    // Salva i risultati nella directory di output configurata per il progetto.
+    val outputPath = "C:\\repository\\spark\\2.output"
     val fs         = FileSystem.get(sc.hadoopConfiguration)
     val path       = new Path(outputPath)
     if (fs.exists(path)) {
