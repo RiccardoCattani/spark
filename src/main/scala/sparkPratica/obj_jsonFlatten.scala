@@ -44,6 +44,10 @@ object obj_jsonFlatten {
   }
 
   def main(args: Array[String]): Unit = {
+    printSection("AVVIO - Flatten di JSON annidato")
+    println("Obiettivo: leggere random_user.json, esplodere results e selezionare campi annidati.")
+    println("Input: C:\\repository\\spark\\1.input\\random_user.json")
+
     // Crea la SparkSession per lavorare con DataFrame.
     val spark = SparkSession.builder()
       .appName("Flatten JSON Example")
@@ -52,18 +56,26 @@ object obj_jsonFlatten {
     spark.sparkContext.setLogLevel("ERROR")
 
     // Legge un JSON multiLine, cioe' un documento JSON distribuito su piu righe.
+    printSection("1 - Lettura JSON multiLine originale")
+    println("Spark legge il file come un unico documento JSON con multiLine=true.")
+    println("Il risultato contiene colonne annidate, per esempio results.")
     val complexDf = spark.read
       .format("json")
       .option("multiLine", true)
-      .load("/home/riccardo/Documenti/repository/spark/spark/random_user.json")
+      .load("C:\\repository\\spark\\1.input\\random_user.json")
       .cache()
     showDataFrameDetails("FASE 1 - JSON complesso originale", complexDf)
 
     // explode trasforma ogni elemento dell'array results in una riga separata.
+    printSection("2 - Explode dell'array results")
+    println("explode(results) crea una riga per ogni elemento dell'array results.")
+    println("La nuova colonna result contiene il singolo elemento esploso.")
     val flatDf = complexDf.withColumn("result", explode(col("results"))).cache()
     showDataFrameDetails("FASE 2 - Array results esploso con explode", flatDf)
 
     // Seleziona campi annidati dentro result.user e li rinomina con alias leggibili.
+    printSection("3 - Selezione e rinomina delle colonne annidate")
+    println("Selezioniamo campi dentro result.user e li rinominiamo con alias leggibili.")
     val selectedDf = flatDf.select(
       col("nationality"),
       col("result.user.gender"),
@@ -76,6 +88,8 @@ object obj_jsonFlatten {
     showDataFrameDetails("FASE 3 - Colonne annidate selezionate e rinominate", selectedDf)
 
     // Chiude la SparkSession.
+    printSection("FINE - Job completato")
+    println("Il JSON annidato e' stato trasformato in un DataFrame tabellare.")
     spark.stop()
   }
 }

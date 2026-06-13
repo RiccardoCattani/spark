@@ -45,6 +45,11 @@ object obj_jsonMultipleLine {
   }
 
   def main(args: Array[String]): Unit = {
+    printSection("AVVIO - Esempio lettura JSON semplice e JSON multiLine")
+    println("Obiettivo: confrontare JSON Lines, JSON multiLine e JSON appiattito in colonne.")
+    println("Input semplice: C:\\repository\\spark\\1.input\\user.json")
+    println("Input multiLine: C:\\repository\\spark\\1.input\\random_user.json")
+
     // Crea la SparkSession per lavorare con DataFrame.
     val spark = SparkSession.builder()
       .appName("Read JSON Example")
@@ -53,6 +58,10 @@ object obj_jsonMultipleLine {
     spark.sparkContext.setLogLevel("ERROR")
 
     // Lettura JSON standard: Spark si aspetta un oggetto JSON per riga.
+    printSection("1 - Lettura JSON semplice")
+    println("Spark legge user.json come JSON Lines.")
+    println("Ogni riga del file e' un oggetto JSON completo e diventa una riga del DataFrame.")
+    println("Path input: C:\\repository\\spark\\1.input\\user.json")
     val simpleDf = spark.read
       .format("json")
       .load("C:\\repository\\spark\\1.input\\user.json")
@@ -60,6 +69,10 @@ object obj_jsonMultipleLine {
 
     // Lettura JSON multiLine: utile quando il file contiene un unico documento
     // JSON formattato su piu righe.
+    printSection("2 - Lettura JSON multiLine")
+    println("Spark legge random_user.json come un unico documento JSON distribuito su piu righe.")
+    println("L'opzione multiLine=true evita che Spark interpreti ogni riga fisica come record separato.")
+    println("Path input: C:\\repository\\spark\\1.input\\random_user.json")
     val complexDf = spark.read
       .format("json")
       .option("multiLine", true)
@@ -67,6 +80,9 @@ object obj_jsonMultipleLine {
     showDataFrameDetails("JSON complesso multiLine: documento annidato", complexDf)
 
     // Trasforma l'array results in righe e seleziona i campi annidati come colonne.
+    printSection("3 - Conversione del JSON annidato in righe e colonne")
+    println("explode(results) trasforma ogni elemento dell'array results in una riga.")
+    println("select e alias estraggono i campi annidati e assegnano nomi di colonna leggibili.")
     val usersDf = complexDf
       .select(
         col("nationality"),
@@ -93,6 +109,8 @@ object obj_jsonMultipleLine {
     showDataFrameDetails("JSON multiLine convertito in righe e colonne", usersDf)
 
     // Chiude la SparkSession.
+    printSection("FINE - Job completato")
+    println("Sono state mostrate lettura JSON Lines, lettura multiLine e flatten del JSON annidato.")
     spark.stop()
   }
 }

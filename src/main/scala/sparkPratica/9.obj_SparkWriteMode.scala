@@ -35,7 +35,18 @@ import org.apache.spark.sql.SparkSession
 //   stessa directory. Non modifica i file gia presenti.
 //
 object obj_SparkWriteMode {
+  private def printSection(title: String): Unit = {
+    println()
+    println("=" * 90)
+    println(title)
+    println("=" * 90)
+  }
+
   def main(arg: Array[String]): Unit = {
+    printSection("AVVIO - Esempio modalita' di scrittura JSON")
+    println("Obiettivo: leggere user.json e scriverlo con diverse mode di Spark.")
+    println("Input: C:\\repository\\spark\\1.input\\user.json")
+
     // 1. Configurazione dell'applicazione Spark.
     //
     // SparkConf contiene le impostazioni base dell'applicazione:
@@ -45,6 +56,10 @@ object obj_SparkWriteMode {
     val conf = new SparkConf()
       .setAppName("job1")
       .setMaster("local[*]")
+
+    printSection("1 - Configurazione Spark")
+    println("Creo SparkConf con appName=job1 e master=local[*].")
+    println("local[*] usa tutti i core disponibili della macchina.")
 
     // 2. Creazione dello SparkContext.
     //
@@ -57,6 +72,10 @@ object obj_SparkWriteMode {
     val sc = new SparkContext(conf)
     sc.setLogLevel("ERROR")
 
+    printSection("2 - Creazione SparkContext")
+    println("SparkContext inizializza l'applicazione Spark.")
+    println("Il log level ERROR riduce i messaggi non essenziali nel terminale.")
+
     // 3. Creazione della SparkSession.
     //
     // SparkSession e' il punto di ingresso principale per lavorare con
@@ -65,6 +84,9 @@ object obj_SparkWriteMode {
     val spark = SparkSession.builder()
       .config(conf)
       .getOrCreate()
+
+    printSection("3 - Creazione SparkSession")
+    println("SparkSession e' il punto di ingresso principale per lavorare con DataFrame.")
 
     // Import utile quando si lavora con DataFrame e Dataset.
     // In questo esempio non e' indispensabile, ma e' spesso presente per usare
@@ -79,11 +101,18 @@ object obj_SparkWriteMode {
       .format("json")
       .load("C:\\repository\\spark\\1.input\\user.json")
 
+    printSection("4 - Lettura file JSON")
+    println("Spark legge user.json in formato JSON Lines: un oggetto JSON per ogni riga.")
+    println("Path input: C:\\repository\\spark\\1.input\\user.json")
+
     // 5. Controllo del DataFrame letto.
     //
     // printSchema mostra i nomi delle colonne e i tipi riconosciuti da Spark.
     // show(false) mostra il contenuto senza troncare le stringhe lunghe.
+    println(s"Numero righe lette: ${df.count()}")
+    println("Schema del DataFrame letto:")
     df.printSchema()
+    println("Dati letti dal JSON:")
     df.show(false)
 
     // 6. Scrittura con mode("error").
@@ -95,6 +124,10 @@ object obj_SparkWriteMode {
     // Il try/catch serve solo per l'esercizio: se la cartella esiste gia',
     // mostriamo il messaggio ma lasciamo proseguire il programma, cosi si puo
     // vedere anche l'esempio successivo con mode("overwrite").
+    printSection("5 - Scrittura con mode(\"error\")")
+    println("Questa mode prova a scrivere solo se la cartella non esiste gia'.")
+    println("Se la cartella esiste, Spark genera errore. Qui lo intercettiamo con try/catch.")
+    println("Output: C:\\repository\\spark\\2.output\\example\\json")
     try {
       df.write
         .format("json")
@@ -111,6 +144,9 @@ object obj_SparkWriteMode {
     // Questa modalita' sovrascrive la directory di output se esiste gia'.
     // Negli esercizi e' pratica per rilanciare piu volte lo stesso programma
     // senza dover cancellare manualmente la cartella di output.
+    printSection("6 - Scrittura con mode(\"overwrite\")")
+    println("Questa mode sovrascrive la cartella di output se esiste gia'.")
+    println("Output: C:\\repository\\spark\\2.output\\user_json_output")
     df.write
       .format("json")
       .mode("overwrite")
@@ -125,6 +161,10 @@ object obj_SparkWriteMode {
     //
     // E' utile quando si vuole creare un output solo la prima volta, evitando
     // sia la sovrascrittura sia il blocco del programma.
+    printSection("7 - Scrittura con mode(\"ignore\")")
+    println("Questa mode scrive solo se la cartella non esiste.")
+    println("Se la cartella esiste gia', Spark non fa nulla e non genera errore.")
+    println("Output: C:\\repository\\spark\\2.output\\user_json_ignore")
     df.write
       .format("json")
       .mode("ignore")
@@ -138,6 +178,10 @@ object obj_SparkWriteMode {
     //
     // Attenzione: append non aggiorna le righe esistenti. Aggiunge soltanto
     // nuovi dati, quindi rilanciando lo stesso job puoi ottenere duplicati.
+    printSection("8 - Scrittura con mode(\"append\")")
+    println("Questa mode aggiunge nuovi file part-*.json alla cartella esistente.")
+    println("Rilanciando il job piu volte puoi ottenere record duplicati.")
+    println("Output: C:\\repository\\spark\\2.output\\user_json_append")
     df.write
       .format("json")
       .mode("append")
@@ -148,6 +192,9 @@ object obj_SparkWriteMode {
     // stop() libera le risorse usate da Spark. In programmi piccoli sembra
     // secondario, ma e' una buona pratica chiudere sempre SparkSession e
     // SparkContext quando il job e' terminato.
+    printSection("FINE - Job completato")
+    println("Sono stati mostrati gli effetti principali di error, overwrite, ignore e append.")
+
     spark.stop()
     sc.stop()
   }

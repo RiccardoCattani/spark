@@ -39,6 +39,13 @@ import org.apache.spark.sql.SparkSession
 // - rileggere l'XML generato come controllo finale;
 // - usare il DataFrame come rappresentazione comune tra formati diversi.
 object obj_XML_Data {
+  private def printSection(title: String): Unit = {
+    println()
+    println("=" * 90)
+    println(title)
+    println("=" * 90)
+  }
+
   def main(arg: Array[String]): Unit = {
     // Percorso del file CSV di input.
     // Se non viene passato nessun argomento da riga di comando, usa India_pipe.txt.
@@ -52,12 +59,21 @@ object obj_XML_Data {
     // In questo progetto books.xml si trova nella cartella 1.input.
     val booksXmlPath = arg.lift(2).getOrElse("1.input/books.xml")
 
+    printSection("AVVIO - Lettura XML e conversione CSV in XML")
+    println("Obiettivo: leggere un XML esistente, convertire un CSV in XML e rileggere l'output.")
+    println(s"CSV input: $inputPath")
+    println(s"XML output: $outputPath")
+    println(s"XML esistente da leggere: $booksXmlPath")
+
     // Crea la configurazione base di Spark.
     // setAppName assegna un nome al job.
     // setMaster("local[*]") esegue Spark in locale usando tutti i core disponibili.
     val conf = new SparkConf()
       .setAppName("job1")
       .setMaster("local[*]")
+
+    printSection("1 - Configurazione Spark")
+    println("Creo SparkConf con appName=job1 e master=local[*].")
 
     // Crea lo SparkContext, cioe' il punto di ingresso basso livello di Spark.
     // Serve per inizializzare l'applicazione Spark.
@@ -77,7 +93,10 @@ object obj_XML_Data {
     import spark.implicits._
 
     // Prima parte: lettura diretta di un file XML gia' esistente.
-    println("************Read XML file************")
+    printSection("2 - Lettura file XML esistente")
+    println("Spark legge il file XML usando format=com.databricks.spark.xml.")
+    println("L'opzione rowTag=book indica che ogni tag <book> diventa una riga.")
+    println(s"Path input XML: $booksXmlPath")
 
     // Rimuove l'eventuale prefisso file:/// per poter controllare l'esistenza
     // del file con java.io.File.
@@ -94,11 +113,13 @@ object obj_XML_Data {
         .option("rowTag", "book")
         .load(booksXmlPath)
 
-      // Stampa lo schema ricavato dal file XML: colonne, tipi e nullable.
+      println(s"Numero righe XML lette: ${readXmlFile.count()}")
+      println("Schema ricavato dal file XML:")
       readXmlFile.printSchema()
 
       // Mostra i dati letti dal file XML.
       // truncate = false evita di tagliare i testi lunghi.
+      println("Dati letti dal file XML:")
       readXmlFile.show(truncate = false)
     } else {
       // Messaggio mostrato solo se books.xml non viene trovato.
@@ -107,7 +128,9 @@ object obj_XML_Data {
     }
 
     // Seconda parte: lettura di un file CSV e conversione in XML.
-    println("************Reading CSV Data************")
+    printSection("3 - Lettura CSV da convertire in XML")
+    println("Spark legge il CSV con header=true e delimiter=|.")
+    println(s"Path input CSV: $inputPath")
 
     // Legge il file CSV.
     // header = true indica che la prima riga contiene i nomi delle colonne.
@@ -119,16 +142,20 @@ object obj_XML_Data {
       .load(inputPath)
 
     // Mostra lo schema del DataFrame ottenuto dal CSV.
-    println("************Schema del DataFrame letto dal CSV************")
+    println(s"Numero righe CSV lette: ${readCsv.count()}")
+    println("Schema del DataFrame letto dal CSV:")
     readCsv.printSchema()
 
     // Mostra le prime 10 righe del CSV caricato in Spark.
     // Serve per verificare che header e delimitatore siano stati interpretati bene.
-    println("************Prime 10 righe lette dal CSV************")
+    println("Prime 10 righe lette dal CSV:")
     readCsv.show(10, truncate = false)
 
     // Scrive il DataFrame in formato XML.
-    println("************Writing XML Data************")
+    printSection("4 - Scrittura DataFrame in formato XML")
+    println("Spark scrive il DataFrame in XML con rootTag=records e rowTag=record.")
+    println("Mode: overwrite")
+    println(s"Path output XML: $outputPath")
     readCsv.write
       // Usa il formato XML tramite la libreria spark-xml.
       .format("xml")
@@ -144,7 +171,10 @@ object obj_XML_Data {
       .save(outputPath)
 
     // Terza parte: rilettura dell'XML appena generato.
-    println("************Reading XML Data************")
+    printSection("5 - Rilettura XML generato")
+    println("Spark rilegge l'XML appena scritto per verificare l'output.")
+    println("L'opzione rowTag=record indica che ogni tag <record> diventa una riga.")
+    println(s"Path XML generato: $outputPath")
 
     // Legge la cartella XML prodotta nel passaggio precedente.
     // Usa rowTag = "record" perche' in scrittura ogni riga e' stata salvata
@@ -154,11 +184,16 @@ object obj_XML_Data {
       .option("rowTag", "record")
       .load(outputPath)
 
-    // Stampa lo schema dell'XML riletto.
+    println(s"Numero righe XML generate lette: ${readXml.count()}")
+    println("Schema dell'XML riletto:")
     readXml.printSchema()
 
     // Mostra i dati letti dall'XML generato.
+    println("Dati letti dall'XML generato:")
     readXml.show(truncate = false)
+
+    printSection("FINE - Job completato")
+    println("Sono state eseguite lettura XML, conversione CSV -> XML e verifica dell'output.")
 
     // Chiude la SparkSession e libera le risorse usate da Spark SQL/DataFrame.
     spark.stop()

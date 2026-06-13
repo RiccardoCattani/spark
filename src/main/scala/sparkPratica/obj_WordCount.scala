@@ -39,17 +39,25 @@ object obj_WordCount {
   }
 
   def main(arg: Array[String]): Unit = {
+    printSection("AVVIO - Word Count con Spark RDD")
+    println("Obiettivo: leggere words.txt, estrarre parole e contare le occorrenze.")
+    println("Input: C:\\repository\\spark\\1.input\\words.txt")
+
     // Configura Spark in modalita' locale usando tutti i core disponibili.
     val conf = new SparkConf().setAppName("TestLog").setMaster("local[*]")
     val sc   = new SparkContext(conf)
     sc.setLogLevel("Error")
 
     // Legge il file di testo: ogni riga del file diventa un elemento dell'RDD.
+    printSection("1 - Lettura file di testo")
+    println("SparkContext legge words.txt: ogni riga diventa un elemento dell'RDD.")
     val inputRDD = sc.textFile("C:\\repository\\spark\\1.input\\words.txt").cache()
     showRddSample("Input words.txt: righe lette", inputRDD)
 
     // flatMap divide ogni riga in parole e produce un unico RDD di parole.
     // filter rimuove eventuali stringhe vuote.
+    printSection("2 - Estrazione parole con flatMap")
+    println("flatMap divide ogni riga in parole; filter rimuove eventuali stringhe vuote.")
     val wordsRDD = inputRDD
       .flatMap(line => line.split("\\s+"))
       .filter(_.nonEmpty)
@@ -57,22 +65,32 @@ object obj_WordCount {
     showRddSample("Dopo flatMap: parole estratte", wordsRDD)
 
     // Ogni parola viene trasformata in una coppia chiave-valore: (parola, 1).
+    printSection("3 - Creazione coppie chiave-valore")
+    println("Ogni parola diventa una coppia (parola, 1).")
     val pairsRDD = wordsRDD.map(word => (word, 1)).cache()
     showRddSample("Dopo map: coppie (parola, 1)", pairsRDD)
 
     // reduceByKey raggruppa per parola e somma tutti gli 1 associati alla stessa chiave.
+    printSection("4 - Conteggio con reduceByKey")
+    println("reduceByKey raggruppa per parola e somma i valori associati alla stessa chiave.")
     val wordCount = pairsRDD.reduceByKey((x, y) => x + y).cache()
     showRddSample("Dopo reduceByKey: conteggio per parola", wordCount)
 
     // Ordina il risultato per chiave, quindi alfabeticamente per parola.
+    printSection("5 - Ordinamento alfabetico")
+    println("sortByKey ordina il risultato per parola.")
     val sortedByWord = wordCount.sortByKey()
     showRddSample("Conteggio ordinato alfabeticamente per parola", sortedByWord)
 
     // Ordina il risultato per valore, quindi per frequenza decrescente.
+    printSection("6 - Ordinamento per frequenza")
+    println("sortBy ordina le parole in base al conteggio, in ordine decrescente.")
     val sortedByCountDesc = wordCount.sortBy({ case (_, count) => count }, ascending = false)
     showRddSample("Top parole per frequenza decrescente", sortedByCountDesc)
 
     // Chiude lo SparkContext e libera le risorse.
+    printSection("FINE - Job completato")
+    println("Il file e' stato trasformato in conteggio parole tramite RDD.")
     sc.stop()
   }
 }

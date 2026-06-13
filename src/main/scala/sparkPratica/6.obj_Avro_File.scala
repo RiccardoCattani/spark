@@ -45,33 +45,63 @@ import org.apache.spark.SparkContext
 import org.apache.spark.sql.SparkSession
 
 object obj_Avro_File {
+  private def printSection(title: String): Unit = {
+    println()
+    println("=" * 90)
+    println(title)
+    println("=" * 90)
+  }
+
   def main(args: Array[String]): Unit = {
     val inputPath = args.headOption.getOrElse("India_pipe.txt")
     val outputPath = args.lift(1).getOrElse("2.output/avro_data")
+
+    printSection("AVVIO - Conversione CSV pipe-delimited in Avro")
+    println("Obiettivo: leggere India_pipe.txt come CSV e salvarlo in formato Avro.")
+    println(s"Input: $inputPath")
+    println(s"Output: $outputPath")
 
     val conf = new SparkConf()
       .setAppName("job1")
       .setMaster("local[*]")
 
+    printSection("1 - Configurazione Spark")
+    println("Creo SparkConf con appName=job1 e master=local[*].")
+
     val sc = new SparkContext(conf)
     sc.setLogLevel("Error")
 
+    printSection("2 - Creazione SparkSession")
+    println("Creo SparkSession per leggere e scrivere DataFrame.")
+
     val spark = SparkSession.builder().getOrCreate()
 
+    printSection("3 - Lettura CSV con delimitatore pipe")
+    println("Spark legge il file come CSV con header=true e delimiter=|.")
+    println(s"Path input: $inputPath")
     val readDf = spark.read
       .format("csv")
       .option("header", "true")
       .option("delimiter", "|")
       .load(inputPath)
 
+    println(s"Numero righe lette: ${readDf.count()}")
+    println("Schema del DataFrame letto:")
     readDf.printSchema()
+    println("Prime 10 righe lette:")
     readDf.show(10, truncate = false)
 
+    printSection("4 - Scrittura in formato Avro")
+    println("Spark scrive il DataFrame in formato avro con mode=overwrite.")
+    println(s"Path output: $outputPath")
     readDf.write
       .format("avro")
       .option("header", "true")
       .mode("overwrite")
       .save(outputPath)
+
+    printSection("FINE - Job completato")
+    println("Il CSV e' stato convertito in una directory Avro.")
 
     spark.stop()
     sc.stop()
