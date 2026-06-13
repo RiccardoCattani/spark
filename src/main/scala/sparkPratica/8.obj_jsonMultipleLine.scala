@@ -15,11 +15,13 @@ package sparkPratica
 
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.functions.explode
 
 // Questo script mostra due modalita' di lettura JSON con Spark:
 // 1. JSON semplice: un record JSON per ogni riga del file.
 // 2. JSON multiLine: un documento JSON su piu righe, spesso con strutture annidate.
-object ReadJsonExample {
+object obj_jsonMultipleLine {
   private val MaxRowsToShow = 100
 
   private def printSection(title: String): Unit = {
@@ -53,7 +55,7 @@ object ReadJsonExample {
     // Lettura JSON standard: Spark si aspetta un oggetto JSON per riga.
     val simpleDf = spark.read
       .format("json")
-      .load("/home/riccardo/Documenti/repository/spark/spark/user.json")
+      .load("C:\\repository\\spark\\1.input\\user.json")
     showDataFrameDetails("JSON semplice: un record JSON per riga", simpleDf)
 
     // Lettura JSON multiLine: utile quando il file contiene un unico documento
@@ -61,8 +63,34 @@ object ReadJsonExample {
     val complexDf = spark.read
       .format("json")
       .option("multiLine", true)
-      .load("/home/riccardo/Documenti/repository/spark/spark/random_user.json")
+      .load("C:\\repository\\spark\\1.input\\random_user.json")
     showDataFrameDetails("JSON complesso multiLine: documento annidato", complexDf)
+
+    // Trasforma l'array results in righe e seleziona i campi annidati come colonne.
+    val usersDf = complexDf
+      .select(
+        col("nationality"),
+        col("seed"),
+        col("version"),
+        explode(col("results")).alias("result")
+      )
+      .select(
+        col("nationality"),
+        col("seed"),
+        col("version"),
+        col("result.user.gender").alias("gender"),
+        col("result.user.name.title").alias("title"),
+        col("result.user.name.first").alias("first_name"),
+        col("result.user.name.last").alias("last_name"),
+        col("result.user.location.street").alias("street"),
+        col("result.user.location.city").alias("city"),
+        col("result.user.location.state").alias("state"),
+        col("result.user.location.zip").alias("zip"),
+        col("result.user.email").alias("email"),
+        col("result.user.username").alias("username"),
+        col("result.user.phone").alias("phone")
+      )
+    showDataFrameDetails("JSON multiLine convertito in righe e colonne", usersDf)
 
     // Chiude la SparkSession.
     spark.stop()

@@ -1,0 +1,33 @@
+{
+  "nationality": "AU",
+  "results": [
+    {
+      "user": {
+        "gender": "male",
+        "name": {
+          "title": "mr",
+          "first": "jared",
+          "last": "douglas"
+        },
+        "location": {
+          "street": "375 fairview st",
+          "city": "mildura",
+          "state": "western australia",
+          "zip": 4896
+        },
+        "email": "jared.douglas@example.com",
+        "username": "redsnake680",
+        "password": "pizza1",
+        "salt": "5wbAzrfb",
+        "md5": "51866076ac839ee462aefafdc4beb72c",
+        "sha1": "612fc3450e734ca8082f89d20c564b125e9458e6",
+        "sha256": "0b9a2e321d14716583a8bb3eedcfb2f002a43348f5e5c244c08750d6d426fcdf",
+        "registered": 926812053,
+        "dob": 138331249,
+        "phone": "04-0389-9208"
+      }
+    }
+  ],
+  "seed": "912f036038680e4a00",
+  "version": "0.8"
+}
