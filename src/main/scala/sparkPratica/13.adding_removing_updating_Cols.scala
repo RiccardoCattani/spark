@@ -93,12 +93,11 @@ object adding_removing_updating_Cols {
     showDataFrameDetails("CSV transazioni bancarie letto con inferSchema", read_csv_df)
 
     // Selezione delle colonne richieste.
-    //
-    // select crea un nuovo DataFrame contenente solo le colonne indicate.
+    // select crea un nuovo DataFrame contenente solo le colonne indicate rispetto a quelle originali.
     // Il DataFrame originale read_csv_df non viene modificato: i DataFrame Spark
     // sono immutabili, quindi ogni trasformazione restituisce un nuovo DataFrame.
     //
-    // In questo esempio manteniamo solo alcune informazioni utili della transazione:
+    // Quindi manterremo solo queste colonne:
     // - TransactionID: identificativo della transazione;
     // - CustomerID: identificativo del cliente;
     // - CustGender: genere del cliente;
@@ -110,13 +109,13 @@ object adding_removing_updating_Cols {
     // Questo e' utile per togliere spazi, parentesi e caratteri speciali dal nome
     // originale "TransactionAmount (INR)", rendendo la colonna piu comoda da usare
     // nelle trasformazioni successive.
-    val select_df = read_csv_df.select(
+    val select_df = read_csv_df.select( // Seleziona le colonne richieste e rinomina TransactionAmount (INR)
       col("TransactionID"),
       col("CustomerID"),
       col("CustGender"),
       col("CustAccountBalance"),
       col("TransactionDate"),
-      col("TransactionAmount (INR)").alias("Transaction_Amount")
+      col("TransactionAmount (INR)").alias("Transaction_Amount") // Rinomina la colonna con alias
     )
 
     showDataFrameDetails("Selezione colonne richieste con alias su TransactionAmount", select_df)
@@ -138,7 +137,7 @@ object adding_removing_updating_Cols {
     //
     // In questo caso partiamo da select_df, quindi la colonna si chiama gia'
     // Transaction_Amount grazie all'alias applicato sopra.
-    printSection("Selezione colonne usando selectExpr")
+    printSection("Selezione colonne usando selectExpr") 
     val select_df_expr = select_df.selectExpr(
       "TransactionID",
       "CustomerID",
@@ -225,10 +224,8 @@ object adding_removing_updating_Cols {
     showDataFrameDetails("DataFrame con colonne aggiunte", added_cols_df)
 
     // Aggiornamento di una colonna esistente con withColumn.
-    //
     // Se withColumn usa il nome di una colonna gia' presente, Spark non aggiunge
     // una seconda colonna: sostituisce quella esistente nel nuovo DataFrame.
-    //
     // Qui aggiorniamo Transaction_Amount convertendola esplicitamente in Double.
     // Questo e' utile quando vogliamo essere sicuri che la colonna sia numerica
     // prima di fare calcoli, confronti o aggregazioni.
