@@ -10,6 +10,23 @@
 // L'obiettivo e' confrontare il lavoro manuale sugli RDD con il lavoro piu'
 // strutturato dei DataFrame.
 //
+// Esempio prima/dopo
+// ------------------
+// Input RDD:
+// "Andhra Pradesh,Amaravati,Telugu"
+//
+// Dopo filtro testuale contains("English"):
+// rimangono solo le righe che contengono English.
+//
+// Dopo DataFrame:
+// Stato          | Capitale  | Lingua
+// Andhra Pradesh | Amaravati | Telugu
+//
+// Dopo groupBy("Lingua").count():
+// Lingua | count
+// Hindi  | ...
+// Telugu | ...
+//
 package sparkPractise
 
 import org.apache.spark.SparkConf
@@ -73,6 +90,9 @@ object obj_India {
     showRddSample("Filtro RDD: Lingua = Hindi", hindiStatesRDD)
 
     // Filtri RDD basati su ricerca testuale nella riga completa.
+    //
+    // Prima: tutte le righe.
+    // Dopo filEnglish: solo righe che contengono English.
     val filEnglish = inputRDD.filter(_.contains("English"))
     showRddSample("Filtro RDD: record che contengono English", filEnglish)
 
@@ -80,6 +100,13 @@ object obj_India {
     showRddSample("Filtro RDD: record che contengono Andhra Pradesh", filAndhra)
 
     // union concatena i due RDD filtrati.
+    //
+    // Prima:
+    // filEnglish contiene record English.
+    // filAndhra contiene record Andhra Pradesh.
+    //
+    // Dopo:
+    // rddUnion contiene entrambi gli insiemi, senza rimuovere duplicati.
     val rddUnion = filEnglish.union(filAndhra)
     showRddSample("Union RDD: English + Andhra Pradesh", rddUnion)
 
@@ -107,6 +134,7 @@ object obj_India {
     showDataFrameDetails("Filtro DataFrame: Lingua = Hindi", df.filter($"Lingua" === "Hindi"))
 
     // Raggruppa i dati per lingua e conta i record per ogni gruppo.
+    // Output atteso: una riga per lingua con il numero di stati/record.
     printSection("Riepilogo DataFrame per lingua")
     df.groupBy("Lingua").count().orderBy("Lingua").show(MaxRowsToShow, truncate = false)
 

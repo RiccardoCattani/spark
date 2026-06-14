@@ -10,6 +10,18 @@
 // Serve quindi a mostrare un approccio piu' strutturato e leggibile rispetto
 // alla manipolazione manuale di righe testuali.
 //
+// Esempio prima/dopo
+// ------------------
+// Prima, riga senza header:
+// Andhra Pradesh,Amaravati,Telugu
+//
+// Dopo toDF("Stato", "Capitale", "Lingua"):
+// Stato          | Capitale  | Lingua
+// Andhra Pradesh | Amaravati | Telugu
+//
+// Dopo filter Lingua = Hindi:
+// rimangono solo gli stati che hanno Hindi come lingua.
+//
 package sparkPractise
 
 import org.apache.spark.sql.DataFrame
@@ -53,6 +65,12 @@ object obj_IndiaDF2 {
 
     // Legge India.txt come CSV senza header.
     // toDF assegna manualmente i nomi alle tre colonne lette dal file.
+    //
+    // Prima:
+    // Andhra Pradesh,Amaravati,Telugu
+    //
+    // Dopo:
+    // Stato=Andhra Pradesh, Capitale=Amaravati, Lingua=Telugu
     val df = spark.read
       .option("header", "false")
       .option("inferSchema", "false")
@@ -64,6 +82,9 @@ object obj_IndiaDF2 {
     showDataFrameDetails("Tutti i dati caricati da India.txt", df)
 
     // Filtra il DataFrame mantenendo solo gli stati con lingua Hindi.
+    //
+    // Prima: tutte le lingue.
+    // Dopo: solo Lingua = Hindi.
     val hindiDf = df.filter(df("Lingua") === "Hindi")
     showDataFrameDetails("Filtro DataFrame: Lingua = Hindi", hindiDf)
 

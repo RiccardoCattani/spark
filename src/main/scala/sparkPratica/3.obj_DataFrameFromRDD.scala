@@ -9,6 +9,21 @@
   strutturato quando ogni riga viene trasformata in un oggetto Scala tipizzato.
   La case class CountryDml definisce lo schema logico: state, capital, language
   e country.
+
+  Esempio prima/dopo
+  ------------------
+  Riga testuale in countries.txt:
+    Alaska,Juneau,English,US
+
+  Dopo split:
+    Array("Alaska", "Juneau", "English", "US")
+
+  Dopo mapping in case class:
+    CountryDml("Alaska", "Juneau", "English", "US")
+
+  Dopo toDF:
+    state  | capital | language | country
+    Alaska | Juneau  | English  | US
 */
 
 package sparkPractise
@@ -60,6 +75,11 @@ object obj_DataFrameFromRDD {
       case (row, index) => println(f"${index + 1}%3d | $row")
     }
 
+    // Prima:
+    // Alaska,Juneau,English,US
+    //
+    // Dopo:
+    // CountryDml(Alaska,Juneau,English,US)
     val inputColumns = inputSplit.map(x => CountryDml(x(0), x(1), x(2), x(3)))
     val dataframe_schema = inputColumns.toDF().cache()
 

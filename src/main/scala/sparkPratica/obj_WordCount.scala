@@ -10,6 +10,21 @@
 //
 // Serve a dimostrare il flusso base:
 // testo -> parole -> coppie chiave-valore -> aggregazione per chiave.
+//
+// Esempio prima/dopo
+// ------------------
+// Input:
+// ciao spark
+// ciao scala
+//
+// Dopo flatMap:
+// ciao, spark, ciao, scala
+//
+// Dopo map:
+// (ciao,1), (spark,1), (ciao,1), (scala,1)
+//
+// Dopo reduceByKey:
+// (ciao,2), (spark,1), (scala,1)
 
 package sparkPractise
 
@@ -56,6 +71,12 @@ object obj_WordCount {
 
     // flatMap divide ogni riga in parole e produce un unico RDD di parole.
     // filter rimuove eventuali stringhe vuote.
+    //
+    // Prima:
+    // "ciao spark"
+    //
+    // Dopo:
+    // "ciao", "spark"
     printSection("2 - Estrazione parole con flatMap")
     println("flatMap divide ogni riga in parole; filter rimuove eventuali stringhe vuote.")
     val wordsRDD = inputRDD
@@ -71,6 +92,12 @@ object obj_WordCount {
     showRddSample("Dopo map: coppie (parola, 1)", pairsRDD)
 
     // reduceByKey raggruppa per parola e somma tutti gli 1 associati alla stessa chiave.
+    //
+    // Prima:
+    // (ciao,1), (ciao,1)
+    //
+    // Dopo:
+    // (ciao,2)
     printSection("4 - Conteggio con reduceByKey")
     println("reduceByKey raggruppa per parola e somma i valori associati alla stessa chiave.")
     val wordCount = pairsRDD.reduceByKey((x, y) => x + y).cache()

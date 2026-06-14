@@ -9,6 +9,18 @@
 //
 // Rispetto a obj_WordCount, questo file e' pensato per seguire passo passo le
 // trasformazioni, quindi stampa ogni RDD intermedio.
+//
+// Esempio prima/dopo
+// ------------------
+// Input:
+// ciao spark
+// ciao scala
+//
+// Passaggi:
+// righe -> parole -> (parola,1) -> conteggio
+//
+// Output finale:
+// (ciao,2), (spark,1), (scala,1)
 
 package sparkPractise
 
@@ -59,6 +71,12 @@ object obj_WordCount_Passaggi {
 
       // flatMap divide le righe in parole e le mette tutte nello stesso RDD.
       // filter elimina eventuali parole vuote.
+      //
+      // Prima:
+      // "ciao spark"
+      //
+      // Dopo:
+      // "ciao", "spark"
       val paroleRDD = righeRDD
         .flatMap(riga => riga.split("\\s+"))
         .filter(parola => parola.nonEmpty)
@@ -75,6 +93,12 @@ object obj_WordCount_Passaggi {
       stampaRDD("3. Dopo map: ogni parola diventa (parola, 1)", coppieRDD)
 
       // reduceByKey somma i valori associati alla stessa parola.
+      //
+      // Prima:
+      // (ciao,1), (ciao,1)
+      //
+      // Dopo:
+      // (ciao,2)
       val conteggioRDD = coppieRDD
         .reduceByKey((x, y) => x + y)
         .cache()

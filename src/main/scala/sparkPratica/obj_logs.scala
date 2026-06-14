@@ -9,6 +9,23 @@
 // L'obiettivo e' mostrare come usare filter per estrarre eventi specifici da un
 // log e union per combinare piu insiemi di righe. Alla fine vengono stampati i
 // conteggi per confrontare input, WARN, ERROR e risultato combinato.
+//
+// Esempio prima/dopo
+// ------------------
+// Input:
+// INFO servizio avviato
+// WARN memoria alta
+// ERROR task fallito
+//
+// Dopo filter WARN:
+// WARN memoria alta
+//
+// Dopo filter ERROR:
+// ERROR task fallito
+//
+// Dopo union:
+// WARN memoria alta
+// ERROR task fallito
 
 package sparkPractise
 
@@ -49,6 +66,9 @@ object obj_Logs {
         showRddSample("Log completo Hadoop_2k.log", inputRDD)
 
         // Filtra solo le righe che contengono la parola WARN.
+        //
+        // Prima: tutte le righe del log.
+        // Dopo: solo righe con WARN.
         val warnRDD = inputRDD.filter(w => w.contains("WARN")).cache()
         showRddSample("Filtro log: righe WARN", warnRDD)
 
@@ -57,6 +77,13 @@ object obj_Logs {
         showRddSample("Filtro log: righe ERROR", errorRDD)
 
         // Unisce i due RDD filtrati. union concatena i risultati e non elimina duplicati.
+        //
+        // Prima:
+        // warnRDD = righe WARN
+        // errorRDD = righe ERROR
+        //
+        // Dopo:
+        // unionRDD = righe WARN seguite da righe ERROR.
         val unionRDD = warnRDD.union(errorRDD).cache()
         showRddSample("Union WARN + ERROR", unionRDD)
 

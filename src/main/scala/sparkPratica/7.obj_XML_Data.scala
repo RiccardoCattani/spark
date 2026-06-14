@@ -38,6 +38,22 @@ import org.apache.spark.sql.SparkSession
 // - leggere un CSV e convertirlo in XML;
 // - rileggere l'XML generato come controllo finale;
 // - usare il DataFrame come rappresentazione comune tra formati diversi.
+//
+// Esempio prima/dopo
+// ------------------
+// XML input:
+// <book><author>Gambardella</author><title>XML Developer's Guide</title></book>
+//
+// Dopo lettura con rowTag="book":
+// author      | title
+// Gambardella | XML Developer's Guide
+//
+// CSV -> DataFrame -> XML:
+// state|capital|language
+// Kerala|Thiruvananthapuram|Malayalam
+//
+// diventa:
+// <record><state>Kerala</state><capital>Thiruvananthapuram</capital><language>Malayalam</language></record>
 object obj_XML_Data {
   private def printSection(title: String): Unit = {
     println()
@@ -148,6 +164,7 @@ object obj_XML_Data {
 
     // Mostra le prime 10 righe del CSV caricato in Spark.
     // Serve per verificare che header e delimitatore siano stati interpretati bene.
+    println("Esempio: una riga CSV diventa una riga del DataFrame con colonne nominate.")
     println("Prime 10 righe lette dal CSV:")
     readCsv.show(10, truncate = false)
 
@@ -156,6 +173,7 @@ object obj_XML_Data {
     println("Spark scrive il DataFrame in XML con rootTag=records e rowTag=record.")
     println("Mode: overwrite")
     println(s"Path output XML: $outputPath")
+    println("Output atteso: <records> con un tag <record> per ogni riga del DataFrame.")
     readCsv.write
       // Usa il formato XML tramite la libreria spark-xml.
       .format("xml")

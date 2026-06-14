@@ -10,6 +10,19 @@
 // Lo script mostra anche che dalla SparkSession si puo' accedere allo
 // SparkContext, quindi alle API RDD, tramite spark.sparkContext.
 //
+// Esempio output atteso
+// ---------------------
+// Input CSV:
+// col1,col2
+// A,10
+//
+// Dopo lettura:
+// DataFrame con colonne col1 e col2.
+//
+// Dopo scrittura:
+// percorso/output/parquet/part-*.parquet
+// percorso/output/json/part-*.json
+//
 package sparkPratica
 
 import org.apache.spark.sql.DataFrame
@@ -61,6 +74,9 @@ object obj_seamless {
 
     // Scrive il DataFrame in formato Parquet.
     // Parquet e' colonnare ed e' adatto ad analisi e query.
+    //
+    // Prima: DataFrame in memoria.
+    // Dopo: directory percorso/output/parquet con file part-*.parquet.
     printSection("Scrittura Parquet")
     println("Formato: parquet")
     println("Modalita': overwrite")
@@ -72,6 +88,9 @@ object obj_seamless {
 
     // Scrive lo stesso DataFrame in formato JSON.
     // JSON e' testuale e semi-strutturato.
+    //
+    // Prima: DataFrame in memoria.
+    // Dopo: directory percorso/output/json con file part-*.json.
     printSection("Scrittura JSON")
     println("Formato: json")
     println("Modalita': overwrite")

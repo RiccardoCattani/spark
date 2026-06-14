@@ -76,6 +76,23 @@
   Tutte le scritture usano `mode("overwrite")`: se la cartella di destinazione esiste
   gia', Spark la sostituisce. Questo e' comodo negli esercizi, ma in produzione va usato
   con attenzione per evitare di cancellare dati utili.
+
+  Esempio output atteso
+  ---------------------
+  Prima, India_pipe.txt:
+    State|Capital|Language
+    Kerala|Thiruvananthapuram|Malayalam
+
+  Dopo lettura:
+    DataFrame con colonne State, Capital e Language.
+
+  Dopo scrittura CSV con delimiter "~":
+    State~Capital~Language
+    Kerala~Thiruvananthapuram~Malayalam
+
+  Dopo scrittura ORC/Parquet/JSON:
+    vengono create directory file_india_orc, file_india_parquet e file_india_json
+    contenenti file part-* nel formato scelto.
 */
 
 import org.apache.spark.SparkConf
@@ -165,6 +182,7 @@ object obj_SeamlessDataframe {
       destination = CsvOutputPath,
       extra = "Header: true | Delimiter output: ~"
     )
+    println("Prima: colonne separate da pipe. Dopo: output CSV con colonne separate da ~.")
     read_pipe_df.write
       .format("csv")
       .option("header", "true")

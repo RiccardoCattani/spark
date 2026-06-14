@@ -11,6 +11,22 @@
 // multiLine = true, altrimenti Spark prova a interpretare ogni riga come record
 // separato.
 //
+// Esempio prima/dopo
+// ------------------
+// JSON Lines:
+// {"name":"Mario","age":30}
+//
+// Dopo lettura:
+// name  | age
+// Mario | 30
+//
+// JSON annidato:
+// results: [{ user: { name: { first: "Mario" } } }]
+//
+// Dopo explode + select:
+// first_name
+// Mario
+//
 package sparkPratica
 
 import org.apache.spark.sql.DataFrame
@@ -83,6 +99,7 @@ object obj_jsonMultipleLine {
     printSection("3 - Conversione del JSON annidato in righe e colonne")
     println("explode(results) trasforma ogni elemento dell'array results in una riga.")
     println("select e alias estraggono i campi annidati e assegnano nomi di colonna leggibili.")
+    println("Esempio: result.user.name.first diventa la colonna first_name.")
     val usersDf = complexDf
       .select(
         col("nationality"),

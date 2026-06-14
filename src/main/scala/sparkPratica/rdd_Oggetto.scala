@@ -11,6 +11,21 @@
 // le trasformazioni RDD, ma meno strutturato rispetto alla lettura del CSV come
 // DataFrame con colonne nominate.
 //
+// Esempio prima/dopo
+// ------------------
+// Input CSV come riga testuale:
+// 1,Face Cream,Beauty,Skin Care,...
+//
+// Dopo filter contains("Beauty"):
+// rimangono solo le righe che contengono Beauty.
+//
+// Dopo filter contains("Skin Care"):
+// rimangono solo le righe Beauty che contengono anche Skin Care.
+//
+// Output:
+// user/cloudera/bigbasket/part-00000
+// user/cloudera/bigbasket/part-00001
+//
 package sparkPratica
 
 import org.apache.spark.SparkConf
@@ -52,10 +67,16 @@ object rdd_Oggetto {
         showRddSample("Input BigBasket CSV letto come RDD di righe", data, limit = 20)
 
         // Primo filtro: mantiene solo le righe che contengono Beauty.
+        //
+        // Prima: tutte le righe del CSV.
+        // Dopo: solo righe dove compare la parola Beauty.
         val fil_category = data.filter(x => x.contains("Beauty")).cache()
         showRddSample("Filtro categoria: righe che contengono Beauty", fil_category)
 
         // Secondo filtro: parte dal risultato precedente e mantiene Skin Care.
+        //
+        // Prima: righe Beauty.
+        // Dopo: righe Beauty + Skin Care.
         val fil_subcategory = fil_category.filter(x => x.contains("Skin Care")).cache()
         showRddSample("Filtro sottocategoria: Beauty + Skin Care", fil_subcategory)
 

@@ -35,6 +35,21 @@
 // In sintesi:
 // - il file 11 spiega schema manuale, pulizia e scrittura partizionata;
 // - il file 12 spiega query SQL, vista temporanea e filtri con DataFrame DSL.
+//
+// Esempio prima/dopo
+// ------------------
+// Prima, train.csv contiene molte colonne:
+// Age | BusinessTravel | Department | EducationField | JobRole | ...
+// 49  | Travel_Frequently | Research & Development | Life Sciences | Research Scientist | ...
+//
+// Dopo la query SQL/DSL con i parametri di default:
+// - Age > 45
+// - EducationField = "Life Sciences"
+// - JobRole != "Sales Executive"
+//
+// Output:
+// Age | BusinessTravel    | Department             | EducationField | JobRole
+// 49  | Travel_Frequently | Research & Development | Life Sciences  | Research Scientist
 
 package sparkPratica
 import org.apache.spark.SparkConf
@@ -187,6 +202,10 @@ object obj_employee_tempview_dsl {
         |- Age maggiore del parametro minAge;
         |- EducationField uguale al parametro educationField;
         |- JobRole diverso dal parametro excludedJobRole.
+        |
+        |Esempio risultato:
+        |Age=49, EducationField=Life Sciences, JobRole=Research Scientist rimane.
+        |Age=41, EducationField=Life Sciences, JobRole=Sales Executive viene escluso.
       """
     )
 

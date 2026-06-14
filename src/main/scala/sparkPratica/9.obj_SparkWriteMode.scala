@@ -34,6 +34,20 @@ import org.apache.spark.sql.SparkSession
 //   se la cartella esiste gia', Spark aggiunge nuovi file part-*.json nella
 //   stessa directory. Non modifica i file gia presenti.
 //
+// Esempio output atteso
+// ---------------------
+// Prima:
+// DataFrame letto da user.json.
+//
+// Dopo overwrite:
+// 2.output/user_json_output/part-*.json viene ricreato da zero.
+//
+// Dopo ignore:
+// se 2.output/user_json_ignore esiste gia', non cambia nulla.
+//
+// Dopo append:
+// 2.output/user_json_append riceve nuovi part-*.json a ogni esecuzione.
+//
 object obj_SparkWriteMode {
   private def printSection(title: String): Unit = {
     println()
@@ -147,6 +161,7 @@ object obj_SparkWriteMode {
     printSection("6 - Scrittura con mode(\"overwrite\")")
     println("Questa mode sovrascrive la cartella di output se esiste gia'.")
     println("Output: C:\\repository\\spark\\2.output\\user_json_output")
+    println("Prima: cartella eventualmente gia presente. Dopo: cartella ricreata con i nuovi part-*.json.")
     df.write
       .format("json")
       .mode("overwrite")
@@ -165,6 +180,7 @@ object obj_SparkWriteMode {
     println("Questa mode scrive solo se la cartella non esiste.")
     println("Se la cartella esiste gia', Spark non fa nulla e non genera errore.")
     println("Output: C:\\repository\\spark\\2.output\\user_json_ignore")
+    println("Prima: se la cartella esiste, resta invariata. Dopo: nessun nuovo file viene scritto.")
     df.write
       .format("json")
       .mode("ignore")
@@ -182,6 +198,7 @@ object obj_SparkWriteMode {
     println("Questa mode aggiunge nuovi file part-*.json alla cartella esistente.")
     println("Rilanciando il job piu volte puoi ottenere record duplicati.")
     println("Output: C:\\repository\\spark\\2.output\\user_json_append")
+    println("Prima: cartella con eventuali part-*.json. Dopo: nuovi part-*.json aggiunti.")
     df.write
       .format("json")
       .mode("append")

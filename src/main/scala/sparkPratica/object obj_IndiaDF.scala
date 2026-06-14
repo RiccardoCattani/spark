@@ -11,6 +11,21 @@
 // ricevono nomi espliciti e i filtri diventano piu' leggibili, perche' lavorano
 // su colonne come Stato, Capitale e Lingua.
 //
+// Esempio prima/dopo
+// ------------------
+// RDD:
+// "Andhra Pradesh,Amaravati,Telugu"
+//
+// Filtro RDD:
+// split(",")(2) == "Hindi"
+//
+// DataFrame:
+// Stato          | Capitale  | Lingua
+// Andhra Pradesh | Amaravati | Telugu
+//
+// Filtro DataFrame:
+// $"Lingua" === "Hindi"
+//
 package sparkPractise
 
 import org.apache.spark.SparkConf
@@ -67,6 +82,9 @@ object obj_IndiaDF {
     showRddSample("Input RDD completo da India.txt", inputRDD)
 
     // Filtro RDD: divide ogni riga per virgola e controlla il terzo campo, la lingua.
+    //
+    // Prima: righe testuali complete.
+    // Dopo: solo righe con terzo campo uguale a Hindi.
     val hindiStatesRDD = inputRDD.filter { line =>
       val fields = line.split(",")
       fields.length >= 3 && fields(2).trim == "Hindi"
@@ -89,6 +107,8 @@ object obj_IndiaDF {
     showDataFrameDetails("DataFrame completo da India.txt", df)
 
     // Filtro DataFrame equivalente al filtro RDD precedente, ma espresso su colonna.
+    // Prima: tutte le righe del DataFrame.
+    // Dopo: solo righe dove Lingua = Hindi.
     showDataFrameDetails("Filtro DataFrame: Lingua = Hindi", df.filter($"Lingua" === "Hindi"))
 
     // Chiude SparkSession e SparkContext.

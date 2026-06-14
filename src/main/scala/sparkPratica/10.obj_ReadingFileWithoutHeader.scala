@@ -25,6 +25,19 @@ import org.apache.spark.sql.types._
 // - un tipo dato;
 // - la possibilita' di contenere valori null.
 //
+// Esempio prima/dopo
+// ------------------
+// Prima, riga CSV senza header:
+// Alaska,Juneau,English,US
+//
+// Senza schema Spark creerebbe:
+// _c0    | _c1    | _c2     | _c3
+// Alaska | Juneau | English | US
+//
+// Con schema manuale otteniamo:
+// state  | capital | language | cntry_cd
+// Alaska | Juneau  | English  | US
+//
 object obj_ReadingFileWithoutHeader {
   private def printSection(title: String): Unit = {
     println()
@@ -89,6 +102,12 @@ object obj_ReadingFileWithoutHeader {
     // non una intestazione.
     //
     // schema(dml) applica lo schema definito sopra.
+    //
+    // Prima:
+    // Alaska,Juneau,English,US
+    //
+    // Dopo:
+    // state=Alaska, capital=Juneau, language=English, cntry_cd=US
     val df = spark.read
       .format("csv")
       .option("header", "false")
@@ -118,6 +137,12 @@ object obj_ReadingFileWithoutHeader {
     //
     // trim rimuove gli spazi iniziali e finali dalle colonne testuali, evitando
     // raggruppamenti e cartelle di partizione duplicate.
+    //
+    // Prima:
+    // cntry_cd = "US   "
+    //
+    // Dopo:
+    // cntry_cd = "US"
     val dfClean = df
       .withColumn("state", trim($"state"))
       .withColumn("capital", trim($"capital"))

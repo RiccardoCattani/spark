@@ -10,6 +10,20 @@
 // Vengono mostrati map, filter, flatMap, union, intersection, subtract, count,
 // first, take, countByValue, reduce e mapPartitions. Lo script chiude con una
 // piccola scrittura locale dell'RDD trasformato in maiuscolo.
+//
+// Esempio prima/dopo
+// ------------------
+// Input:
+// Kerala,Thiruvananthapuram,Malayalam
+//
+// Dopo map(_.toUpperCase):
+// KERALA,THIRUVANANTHAPURAM,MALAYALAM
+//
+// Dopo filter contiene ENGLISH:
+// rimangono solo le righe dove compare ENGLISH.
+//
+// Dopo flatMap split(","):
+// KERALA, THIRUVANANTHAPURAM, MALAYALAM
 
 package sparkPractise
 import java.nio.file.{Files, Path, Paths}
@@ -51,10 +65,19 @@ object obj_RDD_Transformation_Actions {
     showRddSample("Input originale India.txt", inputRDD)
 
     // map applica una funzione a ogni elemento: qui converte ogni riga in maiuscolo.
+    //
+    // Prima:
+    // Kerala,Thiruvananthapuram,Malayalam
+    //
+    // Dopo:
+    // KERALA,THIRUVANANTHAPURAM,MALAYALAM
     val upperRDD = inputRDD.map(x => x.toUpperCase()).cache()
     showRddSample("Transformation map: righe convertite in maiuscolo", upperRDD)
 
     // filter mantiene solo gli elementi che soddisfano la condizione.
+    //
+    // Prima: tutte le righe.
+    // Dopo: solo righe che contengono ENGLISH.
     val englishRDD = upperRDD.filter(x => x.contains("ENGLISH")).cache()
     showRddSample("Transformation filter: righe che contengono ENGLISH", englishRDD)
 
@@ -63,6 +86,14 @@ object obj_RDD_Transformation_Actions {
     showRddSample("Transformation filter: righe che contengono HINDI", hindiRDD)
 
     // flatMap divide ogni riga in piu token e appiattisce il risultato in un solo RDD.
+    //
+    // Prima:
+    // KERALA,THIRUVANANTHAPURAM,MALAYALAM
+    //
+    // Dopo:
+    // KERALA
+    // THIRUVANANTHAPURAM
+    // MALAYALAM
     val englishWordsRDD = englishRDD.flatMap(row => row.split(",")).map(word => word.trim).cache()
     val hindiWordsRDD = hindiRDD.flatMap(row => row.split(",")).map(word => word.trim).cache()
     showRddSample("flatMap: token estratti dalle righe ENGLISH", englishWordsRDD.distinct())

@@ -10,6 +10,19 @@
 // 4. scrivere il DataFrame in formato Avro;
 // 5. rileggere l'Avro generato e mostrarne il contenuto.
 //
+// Esempio prima/dopo
+// ------------------
+// Prima, CSV pipe-delimited:
+// state|capital|language
+// Kerala|Thiruvananthapuram|Malayalam
+//
+// Dopo, DataFrame:
+// state  | capital            | language
+// Kerala | Thiruvananthapuram | Malayalam
+//
+// Dopo scrittura Avro:
+// 2.output/avro_data/part-*.avro
+//
 // L'obiettivo e' mostrare che Avro e' un formato binario strutturato, piu'
 // adatto del CSV a pipeline Big Data, scambio dati tra sistemi ed evoluzione
 // dello schema.
@@ -94,6 +107,7 @@ object obj_Avro_File {
     printSection("4 - Scrittura in formato Avro")
     println("Spark scrive il DataFrame in formato avro con mode=overwrite.")
     println(s"Path output: $outputPath")
+    println("Output atteso: una directory con file part-*.avro e metadati Spark.")
     readDf.write
       .format("avro")
       .option("header", "true")

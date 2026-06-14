@@ -10,6 +10,19 @@
 // Il risultato e' un DataFrame strutturato, con colonne nominate, su cui e'
 // possibile eseguire operazioni come groupBy, count e orderBy.
 //
+// Esempio prima/dopo
+// ------------------
+// Prima, riga senza header:
+// Alaska,Juneau,English,US
+//
+// Dopo schema manuale:
+// state  | capital | language | cntry_cd
+// Alaska | Juneau  | English  | US
+//
+// Dopo groupBy("cntry_cd").count():
+// cntry_cd | count
+// US       | ...
+//
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
@@ -55,6 +68,12 @@ object ReadingFileWithoutHeader {
     ))
 
     // Legge il CSV senza header usando lo schema definito sopra.
+    //
+    // Prima:
+    // Alaska,Juneau,English,US
+    //
+    // Dopo:
+    // state=Alaska, capital=Juneau, language=English, cntry_cd=US
     val df = spark.read
       .option("header", "false")
       .schema(dml)

@@ -10,6 +10,22 @@
 // L'obiettivo e' capire come Spark lavora quando ogni record ha una chiave e un
 // valore, per esempio prodotto -> quantita. Questo modello e' molto comune per
 // aggregazioni, conteggi e riepiloghi per categoria.
+//
+// Esempio prima/dopo
+// ------------------
+// Input sales.txt:
+// pen 10
+// book 5
+// pen 7
+//
+// Dopo la conversione in PairRDD:
+// (pen, 10)
+// (book, 5)
+// (pen, 7)
+//
+// Dopo reduceByKey(_ + _):
+// (book, 5)
+// (pen, 17)
 
 package sparkPratica
 
@@ -61,6 +77,12 @@ object obj_PairRDD {
 
     // Converte ogni riga in una coppia (prodotto, quantita).
     // trim e filter eliminano spazi esterni e righe vuote.
+    //
+    // Prima:
+    // pen 10
+    //
+    // Dopo:
+    // (pen, 10)
     val pairRDD = inputRDD
       .map(_.trim)
       .filter(line => line.nonEmpty)
@@ -85,6 +107,12 @@ object obj_PairRDD {
     showPairRdd("mapValues: quantita raddoppiata mantenendo la chiave", pairRDD.mapValues(a => a * 2))
 
     // reduceByKey aggrega le quantita per prodotto sommando i valori.
+    //
+    // Prima:
+    // (pen, 10), (pen, 7)
+    //
+    // Dopo:
+    // (pen, 17)
     showPairRdd("reduceByKey: somma quantita per prodotto", pairRDD.reduceByKey(_ + _))
 
     printSection("groupByKey: valori originali raggruppati per prodotto")

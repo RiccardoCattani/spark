@@ -11,6 +11,20 @@
 // riga separata, poi usa select e alias per estrarre e rinominare i campi
 // annidati piu' utili.
 //
+// Esempio prima/dopo
+// ------------------
+// Prima, struttura annidata:
+// results: [
+//   { user: { name: { first: "Mario", last: "Rossi" }, email: "mario@test.it" } }
+// ]
+//
+// Dopo explode(results):
+// result contiene un singolo utente per riga.
+//
+// Dopo select + alias:
+// first_name | last_name | email
+// Mario      | Rossi     | mario@test.it
+//
 package sparkPratica
 
 import org.apache.spark.sql.DataFrame
@@ -70,12 +84,14 @@ object obj_jsonFlatten {
     printSection("2 - Explode dell'array results")
     println("explode(results) crea una riga per ogni elemento dell'array results.")
     println("La nuova colonna result contiene il singolo elemento esploso.")
+    println("Prima: una riga con array results. Dopo: una riga per ogni elemento dell'array.")
     val flatDf = complexDf.withColumn("result", explode(col("results"))).cache()
     showDataFrameDetails("FASE 2 - Array results esploso con explode", flatDf)
 
     // Seleziona campi annidati dentro result.user e li rinomina con alias leggibili.
     printSection("3 - Selezione e rinomina delle colonne annidate")
     println("Selezioniamo campi dentro result.user e li rinominiamo con alias leggibili.")
+    println("Esempio: result.user.name.first diventa first_name.")
     val selectedDf = flatDf.select(
       col("nationality"),
       col("result.user.gender"),

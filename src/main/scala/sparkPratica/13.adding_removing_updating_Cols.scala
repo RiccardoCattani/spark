@@ -1,3 +1,4 @@
+// sbt "runMain sparkPratica.adding_removing_updating_Cols" *> output_script_13.txt
 // Scopo dello script
 // ------------------
 // Questo script dimostra alcune operazioni di analisi preliminare su un DataFrame
@@ -83,6 +84,11 @@ object adding_removing_updating_Cols {
     // ma su file grandi puo' costare tempo perche' Spark deve ispezionare i dati.
     // In produzione spesso e' meglio definire uno schema esplicito con StructType,
     // cosi i tipi sono controllati e non dipendono da come Spark interpreta il file.
+    //
+    // Esempio risultato dopo la lettura:
+    //
+    // TransactionID | CustomerID | CustomerDOB | CustGender | CustLocation | CustAccountBalance | TransactionDate | TransactionTime | TransactionAmount (INR)
+    // T1            | C5841053   | 10/1/94     | F          | JAMSHEDPUR   | 17819.05           | 2/8/16          | 143207          | 25.0
     val read_csv_df = spark.read
       .format("csv")
       .option("header", "true")
@@ -109,6 +115,16 @@ object adding_removing_updating_Cols {
     // Questo e' utile per togliere spazi, parentesi e caratteri speciali dal nome
     // originale "TransactionAmount (INR)", rendendo la colonna piu comoda da usare
     // nelle trasformazioni successive.
+    //
+    // Prima, read_csv_df:
+    //
+    // TransactionID | CustomerID | CustomerDOB | CustGender | CustLocation | CustAccountBalance | TransactionDate | TransactionTime | TransactionAmount (INR)
+    // T1            | C5841053   | 10/1/94     | F          | JAMSHEDPUR   | 17819.05           | 2/8/16          | 143207          | 25.0
+    //
+    // Dopo, select_df:
+    //
+    // TransactionID | CustomerID | CustGender | CustAccountBalance | TransactionDate | Transaction_Amount
+    // T1            | C5841053   | F          | 17819.05           | 2/8/16          | 25.0
     val select_df = read_csv_df.select( // Seleziona le colonne richieste e rinomina TransactionAmount (INR)
       col("TransactionID"),
       col("CustomerID"),
@@ -137,6 +153,11 @@ object adding_removing_updating_Cols {
     //
     // In questo caso partiamo da select_df, quindi la colonna si chiama gia'
     // Transaction_Amount grazie all'alias applicato sopra.
+    //
+    // Risultato di select_df_expr:
+    //
+    // TransactionID | CustomerID | CustAccountBalance | Transaction_Amount
+    // T1            | C5841053   | 17819.05           | 25.0
     printSection("Selezione colonne usando selectExpr") 
     val select_df_expr = select_df.selectExpr(
       "TransactionID",
@@ -162,6 +183,11 @@ object adding_removing_updating_Cols {
     //
     // In questo modo otteniamo lo stesso alias creato prima con:
     // col("TransactionAmount (INR)").alias("Transaction_Amount")
+    //
+    // Risultato di select_df_expr_direct:
+    //
+    // TransactionID | CustomerID | CustGender | CustAccountBalance | TransactionDate | Transaction_Amount
+    // T1            | C5841053   | F          | 17819.05           | 2/8/16          | 25.0
     printSection("selectExpr diretto dal DataFrame originale con backtick e alias")
     val select_df_expr_direct = read_csv_df.selectExpr(
       "TransactionID",
@@ -186,6 +212,21 @@ object adding_removing_updating_Cols {
     // Con [2] prendiamo quindi il terzo pezzo, cioe' l'anno nel formato presente
     // nel file. In questo dataset l'anno e' scritto con due cifre.
     // alias con "as Transaction_Year" assegna un nome chiaro alla colonna calcolata.
+    //
+    // Prima:
+    //
+    // TransactionDate
+    // 2/8/16
+    //
+    // Dopo l'espressione split(TransactionDate, '/')[2]:
+    //
+    // Transaction_Year
+    // 16
+    //
+    // Risultato di select_df_expr_with_year:
+    //
+    // TransactionID | CustomerID | CustGender | CustAccountBalance | Transaction_Year | Transaction_Amount
+    // T1            | C5841053   | F          | 17819.05           | 16               | 25.0
     printSection("Selezione colonne con selectExpr e split della data")
     val select_df_expr_with_year = select_df.selectExpr(
       "TransactionID",
@@ -210,6 +251,16 @@ object adding_removing_updating_Cols {
     //
     // when(...).otherwise(...) funziona come un IF:
     // se la condizione e' vera assegna un valore, altrimenti ne assegna un altro.
+    //
+    // Prima, select_df:
+    //
+    // TransactionID | TransactionDate | Transaction_Amount
+    // T1            | 2/8/16          | 25.0
+    //
+    // Dopo, added_cols_df:
+    //
+    // TransactionID | TransactionDate | Transaction_Amount | Transaction_Year | Currency | Amount_Bucket
+    // T1            | 2/8/16          | 25.0               | 16               | INR      | LOW
     printSection("Aggiunta colonne con withColumn")
     val added_cols_df = select_df
       .withColumn("Transaction_Year", split(col("TransactionDate"), "/")(2))
@@ -229,6 +280,19 @@ object adding_removing_updating_Cols {
     // Qui aggiorniamo Transaction_Amount convertendola esplicitamente in Double.
     // Questo e' utile quando vogliamo essere sicuri che la colonna sia numerica
     // prima di fare calcoli, confronti o aggregazioni.
+    //
+    // Prima:
+    //
+    // Transaction_Amount
+    // 25.0
+    //
+    // Dopo:
+    //
+    // Transaction_Amount
+    // 25.0
+    //
+    // Il valore a video sembra uguale, ma nello schema la colonna viene forzata
+    // a double. La differenza si vede con printSchema().
     printSection("Aggiornamento colonna esistente con withColumn")
     val updated_amount_df = added_cols_df
       .withColumn("Transaction_Amount", col("Transaction_Amount").cast("double"))
@@ -239,6 +303,16 @@ object adding_removing_updating_Cols {
     //
     // withColumnRenamed cambia solo il nome della colonna, non i valori.
     // Qui rendiamo piu descrittivo il nome CustGender.
+    //
+    // Prima:
+    //
+    // CustGender
+    // F
+    //
+    // Dopo:
+    //
+    // Customer_Gender
+    // F
     printSection("Rinomina colonna con withColumnRenamed")
     val renamed_cols_df = updated_amount_df
       .withColumnRenamed("CustGender", "Customer_Gender")
@@ -251,6 +325,16 @@ object adding_removing_updating_Cols {
     // Qui rimuoviamo TransactionDate perche' ormai abbiamo gia' estratto
     // Transaction_Year, e rimuoviamo Currency solo per mostrare come eliminare
     // piu colonne nella stessa operazione.
+    //
+    // Prima, renamed_cols_df:
+    //
+    // TransactionID | Customer_Gender | TransactionDate | Transaction_Amount | Transaction_Year | Currency | Amount_Bucket
+    // T1            | F               | 2/8/16          | 25.0               | 16               | INR      | LOW
+    //
+    // Dopo, dropped_cols_df:
+    //
+    // TransactionID | Customer_Gender | Transaction_Amount | Transaction_Year | Amount_Bucket
+    // T1            | F               | 25.0               | 16               | LOW
     printSection("Rimozione colonne con drop")
     val dropped_cols_df = renamed_cols_df
       .drop("TransactionDate", "Currency")
@@ -258,10 +342,25 @@ object adding_removing_updating_Cols {
     showDataFrameDetails("DataFrame dopo rimozione colonne", dropped_cols_df)
 
     // describe calcola statistiche base come count, mean, stddev, min e max.
+    //
+    // Risultato atteso: una tabella di riepilogo con righe come count, mean,
+    // stddev, min e max. Esempio su alcune colonne:
+    //
+    // summary | TransactionID | CustomerID | CustAccountBalance | TransactionAmount (INR)
+    // count   | 1048567       | 1048567    | 1046198            | 1048567
+    // mean    | NULL          | NULL       | 115403.54...       | 1574.33...
+    // min     | T1            | C1010011   | 0.0                | 0.0
+    // max     | T999999       | C9099956   | 1.150354951E8      | 1560034.99
     printSection("Statistiche descrittive colonne numeriche/stringa")
     read_csv_df.describe().show(MaxRowsToShow, truncate = false)
 
     // Per ogni colonna conta i valori null o stringhe vuote.
+    //
+    // Risultato atteso: una sola riga, con il numero di valori mancanti per colonna.
+    // Nell'esecuzione su questo file si ottiene per esempio:
+    //
+    // TransactionID | CustomerID | CustomerDOB | CustGender | CustLocation | CustAccountBalance | TransactionDate | TransactionTime | TransactionAmount (INR)
+    // 0             | 0          | 0           | 1100       | 151          | 2369               | 0               | 0               | 0
     printSection("Conteggio valori null per colonna")
     val nullCounts = read_csv_df.columns.map { columnName =>
       sum(when(col(columnName).isNull || trim(col(columnName).cast("string")) === "", 1).otherwise(0)).alias(columnName)

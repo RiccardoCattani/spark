@@ -14,6 +14,21 @@ package sparkPratica
 // Il partizionamento crea cartelle separate in base ai valori delle colonne
 // scelte, per esempio cntry_cd oppure cntry_cd + language.
 //
+// Esempio prima/dopo
+// ------------------
+// Prima, riga CSV senza header:
+// Andhra Pradesh,Amaravati,Telugu,IND
+//
+// Dopo schema manuale:
+// state          | capital   | language | cntry_cd
+// Andhra Pradesh | Amaravati | Telugu   | IND
+//
+// Dopo trim:
+// cntry_cd="US   " diventa cntry_cd="US"
+//
+// Dopo partitionBy("cntry_cd", "language"):
+// apply_output_by_country_language/cntry_cd=IND/language=Telugu/part-*.csv
+//
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
@@ -317,6 +332,12 @@ object obj_apply_transformation {
     // Il DataFrame originale df non viene modificato: i DataFrame Spark sono
     // immutabili. withColumn restituisce un nuovo DataFrame, qui chiamato
     // df_clean.
+    //
+    // Prima:
+    // cntry_cd = "US   "
+    //
+    // Dopo:
+    // cntry_cd = "US"
     printSection("6 - Pulizia del codice paese con trim")
     printExplanation(
       """

@@ -9,6 +9,18 @@
 // L'obiettivo e' mostrare come trasformare dati grezzi letti da un file di testo
 // in dati strutturati, interrogabili con select, filter e query SQL.
 //
+// Esempio prima/dopo
+// ------------------
+// Riga input:
+// Andhra Pradesh,Amaravati,Telugu,IND
+//
+// Dopo split:
+// Array("Andhra Pradesh", "Amaravati", "Telugu", "IND")
+//
+// Dopo case class o Row + StructType:
+// state          | capital   | language | country
+// Andhra Pradesh | Amaravati | Telugu   | IND
+//
 // Questo file contiene un esempio di come creare un DataFrame con schema a partire da un file di testo, utilizzando sia una case class che Row + StructType. Assicurati di avere un file di testo chiamato "india.txt" nella directory specificata, o modifica il percorso del file di conseguenza. Il file dovrebbe essere strutturato con righe del tipo: "state,capital,language,country".
 // Questo script mostra come dare una struttura ai dati grezzi, permettendo di lavorare con colonne nominate e tipi di dati, invece di trattare i dati come semplici stringhe. Vengono mostrati filtri e query SQL su entrambi i DataFrame creati, e infine i risultati filtrati vengono salvati in un nuovo file di output.
 
@@ -53,6 +65,7 @@ object obj_SchemaRDD {
     // Se il file ha solo 3 colonne, assegniamo un valore di default a country.
     printSection("2 - Split delle righe in colonne")
     println("Ogni riga viene divisa con split(\",\") e gli spazi vengono rimossi con trim.")
+    println("Esempio: Andhra Pradesh,Amaravati,Telugu,IND -> Array(Andhra Pradesh, Amaravati, Telugu, IND)")
     val inputSplit = inputFile.map(line => line.split(",", -1).map(_.trim))
 
     // La case class produce un DataFrame con schema implicito: colonne = campi della case class.
@@ -77,6 +90,7 @@ object obj_SchemaRDD {
 
     printSection("5 - Filtro con DSL su DataFrame da case class")
     println("Filtriamo le righe dove language = English.")
+    println("Prima: tutte le lingue. Dopo: rimangono solo le righe con language=English.")
     val englishDf = df.filter($"language" === "English")
     englishDf.show(truncate = false)
 
