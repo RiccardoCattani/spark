@@ -1,4 +1,3 @@
-package sparkPratica
 
 // sbt "runMain sparkPratica.obj_employee_tempview_dsl"
 //
@@ -17,14 +16,15 @@ package sparkPratica
 //
 // Differenza rispetto a 11.apply.trasformation.scala
 // --------------------------------------------------
-// Il file 11 lavora sui dati country* senza header, ossia:
-// - legge piu file countries* senza intestazione (Ossia senza nomi colonne);
+// Il file 11 lavora sui dati country* che sono semplici txt senza nomi e colonne (Ossia file senza nomi colonne) senza header, ossia:
+// - legge piu file countries* senza intestazione (Ossia file senza nomi colonne);
 // - definisce uno schema manuale con StructType e StructField;
 // - pulisce colonne testuali con trim (per togliere spazi) e upper (per mettere tutto maiuscolo);
 // - scrive output CSV su disco;
 // - mostra partitionBy per creare cartelle partizionate per cntry_cd e language.
 //
-// Questo file 12 invece lavora sul dataset employee train.csv con header:
+// Questo file 12 invece lavora sul dataset employee train.csv il quale ha invece nomi e colonne (Ha header e inferSchema), quindi:
+// e mostra come interrogare i dati in due modi diversi:
 // - legge un CSV che contiene gia' i nomi delle colonne;
 // - usa inferSchema per far dedurre a Spark i tipi delle colonne;
 // - crea una vista temporanea con createOrReplaceTempView("employee");
@@ -37,6 +37,7 @@ package sparkPratica
 // - il file 11 spiega schema manuale, pulizia e scrittura partizionata;
 // - il file 12 spiega query SQL, vista temporanea e filtri con DataFrame DSL.
 
+package sparkPratica
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
@@ -232,8 +233,8 @@ object obj_employee_tempview_dsl {
     printExplanation(
       """
         |isin controlla se il valore della colonna e' presente in una lista.
-        |In questo esempio manteniamo solo i JobRole indicati dal parametro jobRoles.
-        |
+        |In questo esempio manteniamo solo i JobRole indicati dal parametro jobRoles 
+        |nella parte allowedJobRoles: Seq[String] = Seq("Research Scientist", "Manager")
         |Quando usiamo isin, il filtro JobRole =!= excludedJobRole diventa spesso ridondante:
         |se la lista contiene solo i ruoli ammessi, tutti gli altri ruoli vengono gia' esclusi.
       """
