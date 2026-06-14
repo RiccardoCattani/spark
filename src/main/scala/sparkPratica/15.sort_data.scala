@@ -37,10 +37,34 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
+// object definisce il punto di ingresso Scala che useremo con runMain.
+//
+// Il comando:
+// sbt "runMain sparkPratica.obj_sort_data"
+//
+// cerca proprio questo object dentro il package sparkPratica e chiama il metodo main.
 object obj_sort_data {
+  // Numero massimo di righe da mostrare quando stampiamo un DataFrame.
+  //
+  // Il dataset ha piu di un milione di righe, quindi non vogliamo stampare tutto.
+  // Con 40 vediamo abbastanza esempi senza riempire troppo il terminale.
   private val MaxRowsToShow = 40
+
+  // Percorso locale del CSV usato dallo script.
+  //
+  // Lo teniamo in una costante per evitare di ripetere la stringa piu volte
+  // e per poterlo cambiare facilmente in un solo punto.
   private val BankTransactionsPath = "C:\\repository\\spark\\1.input\\bank_transactions.csv"
 
+  // Funzione di utilita' per stampare un titolo di sezione leggibile.
+  //
+  // Esempio output:
+  //
+  // ==========================================================================================
+  // AVVIO - Ordinamento DataFrame
+  // ==========================================================================================
+  //
+  // Non modifica dati Spark: serve solo a rendere l'output in console piu ordinato.
   private def printSection(title: String): Unit = {
     println()
     println("=" * 90)
@@ -48,32 +72,80 @@ object obj_sort_data {
     println("=" * 90)
   }
 
+  // Funzione di utilita' per stampare informazioni complete su un DataFrame.
+  //
+  // Parametri:
+  // - title: titolo della sezione da stampare;
+  // - df: DataFrame da analizzare e mostrare.
+  //
+  // Questa funzione esegue alcune action Spark:
+  // - df.count() conta tutte le righe;
+  // - df.printSchema() stampa lo schema;
+  // - df.show(...) mostra alcune righe.
+  //
+  // Nota importante:
+  // count() e show() fanno partire davvero il calcolo Spark. Le trasformazioni
+  // come select, orderBy e sort sono lazy, ma qui vengono materializzate.
   private def showDataFrameDetails(title: String, df: DataFrame): Unit = {
     printSection(title)
+
+    // Conta quante righe contiene il DataFrame.
     val totalRows = df.count()
+
+    // Decide quante righe mostrare:
+    // - se il DataFrame ha meno di 40 righe, le mostra tutte;
+    // - se ne ha piu di 40, ne mostra solo 40.
     val rowsToShow = math.min(totalRows, MaxRowsToShow).toInt
 
+    // Stampa il numero di colonne.
     println(s"Numero colonne: ${df.columns.length}")
+
+    // Stampa i nomi delle colonne separati da virgola.
     println(s"Colonne: ${df.columns.mkString(", ")}")
+
+    // Stampa il numero totale di righe.
     println(s"Numero righe: $totalRows")
+
+    // Stampa lo schema, cioe' nomi colonna, tipi e nullable.
     println("Schema:")
     df.printSchema()
+
+    // Mostra un campione di righe.
+    // truncate=false evita di tagliare valori lunghi nelle colonne.
     println(s"Dati mostrati: $rowsToShow righe su $totalRows")
     df.show(rowsToShow, truncate = false)
   }
 
+  // Metodo main: e' il punto da cui parte il programma quando usiamo runMain.
+  //
+  // args contiene eventuali parametri passati da riga di comando.
+  // In questo script non li usiamo ancora, ma la firma standard resta questa:
+  // def main(args: Array[String]): Unit
   def main(args: Array[String]): Unit = {
+    // SparkConf contiene le impostazioni base dell'applicazione Spark.
     val conf = new SparkConf()
+      // Nome del job Spark. Lo vedresti anche nella Spark UI.
       .setAppName("sort-data")
+      // local[*] esegue Spark in locale usando tutti i core disponibili.
       .setMaster("local[*]")
 
+    // SparkSession e' l'entry point principale per lavorare con DataFrame.
+    //
+    // builder() crea il costruttore della sessione.
+    // config(conf) applica la configurazione definita sopra.
+    // getOrCreate() crea una nuova SparkSession oppure riusa quella esistente.
     val spark = SparkSession
       .builder()
       .config(conf)
       .getOrCreate()
 
+    // Riduce i log Spark mostrati in console.
+    //
+    // Senza questa riga vedresti molti messaggi INFO, rendendo piu difficile
+    // leggere l'output didattico dello script.
     spark.sparkContext.setLogLevel("ERROR")
 
+    // Stampa il titolo iniziale del job e una breve descrizione.
     printSection("AVVIO - Ordinamento DataFrame")
     println("Leggo bank_transactions.csv e mostro diversi modi per ordinare i dati.")
 
