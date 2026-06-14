@@ -58,6 +58,7 @@ object obj_remove_duplicates {
   }
 
   private def showDataFrameDetails(title: String, df: DataFrame): Unit = {
+
     // Questa funzione stampa sempre lo stesso tipo di riepilogo per ogni DataFrame.
     //
     // Esempio output:
@@ -71,6 +72,7 @@ object obj_remove_duplicates {
     // Dati mostrati: 13 righe su 13
     //
     // Serve per confrontare velocemente il "prima" e il "dopo" di ogni passaggio.
+
     printSection(title)
     val totalRows = df.count()
     val rowsToShow = math.min(totalRows, MaxRowsToShow).toInt
@@ -85,6 +87,7 @@ object obj_remove_duplicates {
   }
 
   private def printCount(label: String, df: DataFrame): Unit = {
+
     // Stampa un conteggio compatto.
     //
     // Esempio output:
@@ -123,6 +126,7 @@ object obj_remove_duplicates {
     //
     // header=true usa la prima riga come nomi colonne.
     // inferSchema=true converte importi e numeri nei tipi Spark piu adatti.
+
     val read_csv_df = spark.read
       .format("csv")
       .option("header", "true")
@@ -131,6 +135,7 @@ object obj_remove_duplicates {
       .persist()
 
     showDataFrameDetails("1 - CSV originale", read_csv_df.limit(10))
+
     // Output atteso di questa sezione:
     //
     // - 9 colonne, cioe' tutte le colonne originali del CSV;
@@ -170,6 +175,7 @@ object obj_remove_duplicates {
       .persist()
 
     showDataFrameDetails("2 - DataFrame piccolo senza duplicati creati da noi", selected_df)
+
     // Output atteso di questa sezione:
     //
     // - 5 colonne invece delle 9 originali;
@@ -222,12 +228,14 @@ object obj_remove_duplicates {
     // selected_df = 10 righe
     // duplicated_rows_df = 3 righe
     // with_duplicates_df = 13 righe
+
     val duplicated_rows_df = selected_df.limit(3)
     val with_duplicates_df = selected_df
       .union(duplicated_rows_df)
       .persist()
 
     showDataFrameDetails("3 - DataFrame con duplicati creati tramite union", with_duplicates_df)
+    
     // Output atteso di questa sezione:
     //
     // Le righe T1, T2 e T3 compaiono due volte:
@@ -243,8 +251,8 @@ object obj_remove_duplicates {
     // Il conteggio totale passa da 10 a 13.
 
     printSection("4 - Conteggi prima della deduplica")
+
     // Risultato atteso:
-    //
     // Righe selected_df                             10
     // Righe duplicate aggiunte                      3
     // Righe with_duplicates_df                      13
@@ -278,6 +286,7 @@ object obj_remove_duplicates {
     //
     // Nota: distinct puo' cambiare l'ordine delle righe mostrate, perche'
     // Spark distribuisce e riorganizza i dati durante la deduplica.
+    
     val distinct_df = with_duplicates_df.distinct().persist()
 
     showDataFrameDetails("5 - Rimozione duplicati con distinct", distinct_df)
@@ -302,19 +311,18 @@ object obj_remove_duplicates {
     // Differenza pratica:
     // - distinct() e' piu breve da scrivere;
     // - dropDuplicates() e' piu flessibile, perche' puo' ricevere una lista di colonne.
+    
     val drop_duplicates_all_columns_df = with_duplicates_df.dropDuplicates().persist()
 
     showDataFrameDetails("6 - Rimozione duplicati con dropDuplicates su tutta la riga", drop_duplicates_all_columns_df)
     // Output atteso di questa sezione:
-    //
     // Stesso numero righe di distinct_df:
-    //
     // Con duplicati: 13
     // Dopo dropDuplicates(): 10
-    //
     // Perche' qui dropDuplicates() considera tutte le colonne della riga.
 
     printSection("7 - Confronto conteggi")
+    
     // Risultato atteso:
     //
     // Con duplicati                                  13

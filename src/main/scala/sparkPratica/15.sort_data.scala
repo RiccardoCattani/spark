@@ -7,14 +7,11 @@ package sparkPratica
 // Questo script mostra come ordinare un DataFrame Spark.
 //
 // Il video di riferimento mostra un esempio chiamato sortData.scala sul dataset
-// bank_transactions.csv. La parte centrale e':
-//
+// bank_transactions.csv. 
+// La parte centrale e':
 // read_csv_df.orderBy(col("CustGender").desc, col("CustLocation").asc)
-//
 // e poi una variante:
-//
 // read_csv_df.orderBy(col("CustLocation").asc_nulls_first)
-//
 // In questo script riprendiamo lo stesso concetto e lo rendiamo piu didattico:
 // - lettura del CSV bancario;
 // - selezione di poche colonne utili per vedere meglio l'ordinamento;
