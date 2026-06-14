@@ -24,7 +24,6 @@
 // - mostra partitionBy per creare cartelle partizionate per cntry_cd e language.
 //
 // Questo file 12 invece lavora sul dataset employee train.csv il quale ha invece nomi e colonne (Ha header e inferSchema), quindi:
-// e mostra come interrogare i dati in due modi diversi:
 // - legge un CSV che contiene gia' i nomi delle colonne;
 // - usa inferSchema per far dedurre a Spark i tipi delle colonne;
 // - crea una vista temporanea con createOrReplaceTempView("employee");
